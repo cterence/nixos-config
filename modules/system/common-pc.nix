@@ -35,6 +35,7 @@
   environment = {
     systemPackages = with pkgs; [
       air
+      avidemux
       chromium
       cobra-cli
       discord
@@ -42,6 +43,7 @@
       gimp
       gnome-tweaks
       (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
+      gpu-screen-recorder
       kitty
       libguestfs
       libreoffice-fresh
