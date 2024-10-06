@@ -1,0 +1,54 @@
+# Source: https://github.com/tlvince/nixos-config/blob/master/.github/workflows/update-flake.yml
+name: Update flake
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * *"
+
+jobs:
+  lockfile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@da36cb69b1c3247ad7a1f931ebfd954a1105ef14 # v14
+      # https://status.nixos.org shows the last update time
+      - name: Update flake.lock
+        uses: DeterminateSystems/update-flake-lock@a2bbe0274e3a0c4194390a1e445f734c597ebc37 # v24
+        id: update-flake-lock
+        with:
+          commit-msg: "chore(flake.lock): update"
+          pr-body: |
+            ```
+            {{ env.GIT_COMMIT_MESSAGE }}
+            ```
+          pr-title: "chore(flake.lock): update"
+          pr-labels: |
+            automated
+            automerge
+            dependencies
+          token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+      - name: Create compare URLs
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        if: steps.update-flake-lock.outputs.pull-request-operation == 'created' || steps.update-flake-lock.outputs.pull-request-operation == 'updated'
+        with:
+          github-token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          script: |
+            const comment = require('.github/scripts/comment')
+            const compare = require('.github/scripts/compare')
+
+            const urls = await compare({ core })
+            if (!urls?.length) {
+              return
+            }
+
+            const header = "# Compare URLs"
+            const body = urls.map((url) => `- ${url}`).join("\n")
+
+            const issueNumber = parseInt(process.env.PULL_REQUEST_NUMBER, 10)
+            if (Number.isNaN(issueNumber)) {
+              return
+            }
+
+            await comment({ github, context, header, body, issueNumber })
