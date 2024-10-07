@@ -1,5 +1,5 @@
 # Contains the common configurations across all my systems.
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   # Select internationalisation properties.
@@ -193,6 +193,27 @@
     nix-ld.enable = true;
   };
 
+  sops = {
+    age.keyFile = config.users.users.terence.home + "/.config/sops/age/keys.txt";
+    defaultSopsFile = ./secrets.yaml;
+    defaultSopsFormat = "yaml";
+    secrets = {
+      "nixos-access-tokens" = {
+        mode = "0440";
+        group = config.users.groups.keys.name;
+        owner = config.users.users.terence.name;
+      };
+      "nix-daemon-environment" = {
+        path = "/etc/nixos/nix-daemon-environment";
+        mode = "0440";
+        group = config.users.groups.keys.name;
+        owner = config.users.users.terence.name;
+      };
+    };
+  };
+
+  systemd.services.nix-daemon.serviceConfig.EnvironmentFile = "/etc/nixos/nix-daemon-environment";
+
   nix = {
     gc = {
       automatic = false;
@@ -204,6 +225,9 @@
       "nix-command"
       "flakes"
     ];
+    extraOptions = ''
+      !include ${config.sops.secrets.nixos-access-tokens.path}
+    '';
   };
 
   time.timeZone = "Europe/Paris";
