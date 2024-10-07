@@ -3,4 +3,5 @@ pkgs: {
   google-chat-linux = pkgs.callPackage ./google-chat-linux.nix { };
   guacamole = pkgs.callPackage ./guacamole.nix { };
   openfortivpn-webview = pkgs.callPackage ./openfortivpn-webview.nix { };
+  playground = pkgs.callPackage ./playground.nix { };
 }
