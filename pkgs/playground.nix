@@ -1,15 +1,18 @@
 {
   buildGoModule,
+  fetchFromGitHub,
 }:
 
 buildGoModule rec {
   pname = "playground";
   version = "0.1.1";
 
-  src = builtins.fetchGit {
-    url = "git@github.com:padok-team/playground.git";
-    ref = "refs/tags/v${version}";
-    rev = "3245e28c8b20ecb9c804bd54d2bb2ebaf1ee301e";
+  src = fetchFromGitHub {
+    owner = "padok-team";
+    repo = "playground";
+    rev = "refs/tags/v${version}";
+    hash = "sha256-Bqyp4rnuXIAGARsgXqVCrlQ9hY+m4Qk6sLdUsItiMUg=";
+    private = true;
   };
 
   vendorHash = "sha256-2VR/WrsyPX4swuFCQwAUzqp8k1fbPTzAISe2YRk5Gu0=";

@@ -1,15 +1,18 @@
 {
   buildGoModule,
+  fetchFromGitHub,
 }:
 
 buildGoModule rec {
   pname = "baywatch";
   version = "0.2.2";
 
-  src = builtins.fetchGit {
-    url = "git@github.com:padok-team/baywatch.git";
-    ref = "refs/tags/v${version}";
-    rev = "f34e1c94535d1d5a50c00f4f666d0a917da16558";
+  src = fetchFromGitHub {
+    owner = "padok-team";
+    repo = "baywatch";
+    rev = "refs/tags/v${version}";
+    hash = "sha256-GVMBj/9obedLbwXSqY1yK9Tvcnc7zSNQBZyfdSOc394=";
+    private = true;
   };
 
   vendorHash = "sha256-WOdaq8EhcDs9PTTclAhmji9+TtyxklYXLaSJnHrSyo4=";
