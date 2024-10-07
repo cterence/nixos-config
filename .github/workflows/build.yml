@@ -20,10 +20,7 @@ jobs:
     strategy:
       matrix:
         host:
-          # - homelab
-          # - stronghold
-          # FIXME: handle private repos and secrets in CI
-          # - framework
+          - framework
           - t14s
       fail-fast: false
     steps:
