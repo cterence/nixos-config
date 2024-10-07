@@ -66,9 +66,6 @@
   systemd.extraConfig = "DefaultLimitNOFILE=16384";
 
   sops = {
-    age.keyFile = config.users.users.terence.home + "/.config/sops/age/keys.txt";
-    defaultSopsFile = ./secrets.yaml;
-    defaultSopsFormat = "yaml";
     secrets = {
       "k0s-token" = {
         path = "/etc/k0s/k0stoken";

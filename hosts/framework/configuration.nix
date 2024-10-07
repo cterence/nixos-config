@@ -61,9 +61,6 @@
   services.fprintd.enable = true;
 
   sops = {
-    age.keyFile = config.users.users.terence.home + "/.config/sops/age/keys.txt";
-    defaultSopsFile = ./secrets.yaml;
-    defaultSopsFormat = "yaml";
     secrets = {
       "kolide-k2-secret" = {
         path = "/etc/kolide-k2/secret";
