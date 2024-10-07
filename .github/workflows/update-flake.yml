@@ -8,6 +8,9 @@ on:
 jobs:
   lockfile:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
@@ -28,13 +31,11 @@ jobs:
             automated
             automerge
             dependencies
-          nix-options: "--access-tokens github.com=${{ secrets.GH_TOKEN_FOR_UPDATES }}"
-          token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          nix-options: "--access-tokens github.com=${{ github.token }}"
       - name: Create compare URLs
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         if: steps.update-flake-lock.outputs.pull-request-operation == 'created' || steps.update-flake-lock.outputs.pull-request-operation == 'updated'
         with:
-          github-token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
           script: |
             const comment = require('.github/scripts/comment')
             const compare = require('.github/scripts/compare')
