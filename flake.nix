@@ -63,7 +63,7 @@
         };
         t14s = nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit inputs;
+            inherit inputs outputs;
           };
           modules = [
             ./hosts/t14s/configuration.nix

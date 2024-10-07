@@ -2,7 +2,11 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ inputs, config, ... }:
+{
+  inputs,
+  outputs,
+  ...
+}:
 
 {
   imports = [
@@ -12,6 +16,12 @@
     ../../modules/system/common.nix
     ../../modules/system/common-pc.nix
     ../../modules/system/personal.nix
+  ];
+
+  nixpkgs.overlays = [
+    outputs.overlays.additions
+    outputs.overlays.modifications
+    outputs.overlays.unstable-packages
   ];
 
   home-manager = {
@@ -87,22 +97,6 @@
     };
   };
 
-  sops = {
-    age.keyFile = config.users.users.terence.home + "/.config/sops/age/keys.txt";
-    defaultSopsFile = ./secrets.yaml;
-    defaultSopsFormat = "yaml";
-    secrets = {
-      "nixos-access-tokens" = {
-        mode = "0440";
-        group = config.users.groups.keys.name;
-        owner = "terence";
-      };
-    };
-  };
-
-  nix.extraOptions = ''
-    !include ${config.sops.secrets.nixos-access-tokens.path}
-  '';
   system = {
     # This option defines the first version of NixOS you have installed on this particular machine,
     # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
