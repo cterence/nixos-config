@@ -106,15 +106,15 @@
       "locked": {
         "lastModified": 1728233925,
         "narHash": "sha256-7eMLgDi3Xf7Vk7+qPUZVRfK0tXYfrhGdV4j+KaLlzUA=",
-        "ref": "refs/heads/main",
+        "owner": "cterence",
+        "repo": "nixos-work-config",
         "rev": "fb33b87b318a238c06191bfb47109d700314627b",
-        "revCount": 16,
-        "type": "git",
-        "url": "ssh://git@github.com/cterence/nixos-work-config"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/cterence/nixos-work-config"
+        "owner": "cterence",
+        "repo": "nixos-work-config",
+        "type": "github"
       }
     },
     "nixpkgs": {

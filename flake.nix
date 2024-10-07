@@ -26,7 +26,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-work-config = {
-      url = "git+ssh://git@github.com/cterence/nixos-work-config";
+      url = "github:cterence/nixos-work-config";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

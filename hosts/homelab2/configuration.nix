@@ -72,7 +72,8 @@
     secrets = {
       "k0s-token" = {
         path = "/etc/k0s/k0stoken";
-        mode = "0600";
+        mode = "0440";
+        group = config.users.groups.keys.name;
       };
     };
   };

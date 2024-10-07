@@ -56,6 +56,10 @@ jobs:
       #     nix flake check --no-build | tee "$CHECK_OUTPUT"
       #     [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > "$CHECK_OUTPUT"
       #     echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
+      - name: Setup age key
+        run: |
+          mkdir -p $HOME/.config/sops/age
+          echo "${{ secrets.SOPS_CI_AGE_KEY }}" > $HOME/.config/sops/age/keys.txt
       - name: Build
         run: |
           OUT_PATH="$(nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel --print-out-paths)"

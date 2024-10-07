@@ -91,8 +91,18 @@
     age.keyFile = config.users.users.terence.home + "/.config/sops/age/keys.txt";
     defaultSopsFile = ./secrets.yaml;
     defaultSopsFormat = "yaml";
+    secrets = {
+      "nixos-access-tokens" = {
+        mode = "0440";
+        group = config.users.groups.keys.name;
+        owner = "terence";
+      };
+    };
   };
 
+  nix.extraOptions = ''
+    !include ${config.sops.secrets.nixos-access-tokens.path}
+  '';
   system = {
     # This option defines the first version of NixOS you have installed on this particular machine,
     # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

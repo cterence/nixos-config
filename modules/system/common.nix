@@ -119,7 +119,6 @@
         "networkmanager"
         "docker"
         "input"
-        "libvirt"
         "kvm"
       ];
     };
