@@ -12,8 +12,8 @@ jobs:
   build:
     env:
       PR_JOB_SUMMARY: pr-job-summary
-      NIX_GITHUB_PRIVATE_USERNAME: ${{ github.repository_owner }}
-      NIX_GITHUB_PRIVATE_PASSWORD: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+      NIX_GITHUB_PRIVATE_USERNAME:
+      NIX_GITHUB_PRIVATE_PASSWORD:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -61,6 +61,8 @@ jobs:
           echo "${{ secrets.SOPS_CI_AGE_KEY }}" > $HOME/.config/sops/age/keys.txt
       - name: Build
         run: |
+          sudo export NIX_GITHUB_PRIVATE_USERNAME=${{ github.repository_owner }}
+          sudo export NIX_GITHUB_PRIVATE_PASSWORD=${{ secrets.GH_TOKEN_FOR_UPDATES }}
           sudo systemctl import-environment NIX_GITHUB_PRIVATE_USERNAME NIX_GITHUB_PRIVATE_PASSWORD
           sudo systemctl daemon-reload && sudo systemctl restart nix-daemon
           OUT_PATH="$(nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel --print-out-paths --access-tokens github.com=${{ secrets.GH_TOKEN_FOR_UPDATES }})"
