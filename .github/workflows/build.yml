@@ -61,6 +61,7 @@ jobs:
           echo "${{ secrets.SOPS_CI_AGE_KEY }}" > $HOME/.config/sops/age/keys.txt
       - name: Build
         run: |
+          systemctl daemon-reload && systemctl restart nix-daemon
           OUT_PATH="$(nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel --print-out-paths --access-tokens github.com=${{ secrets.GH_TOKEN_FOR_UPDATES }})"
           echo -e "\x1b[32;1mSuccessfully built .#nixosConfigurations.${{ matrix.host }}\x1b[0m"
           echo -e "## Build ${{ matrix.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
