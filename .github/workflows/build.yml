@@ -58,6 +58,9 @@ jobs:
           mkdir -p $HOME/.config/sops/age
           echo "${{ secrets.SOPS_CI_AGE_KEY }}" > $HOME/.config/sops/age/keys.txt
       - name: Build
+        env:
+          NIX_GITHUB_PRIVATE_USERNAME: ${{ github.repository_owner }}
+          NIX_GITHUB_PRIVATE_PASSWORD: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
         run: |
           OUT_PATH="$(nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel --print-out-paths --access-tokens github.com=${{ secrets.GH_TOKEN_FOR_UPDATES }})"
           echo -e "\x1b[32;1mSuccessfully built .#nixosConfigurations.${{ matrix.host }}\x1b[0m"
