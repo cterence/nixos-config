@@ -12,6 +12,8 @@ jobs:
   build:
     env:
       PR_JOB_SUMMARY: pr-job-summary
+      NIX_GITHUB_PRIVATE_USERNAME: ${{ github.repository_owner }}
+      NIX_GITHUB_PRIVATE_PASSWORD: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -39,9 +41,6 @@ jobs:
         uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@da36cb69b1c3247ad7a1f931ebfd954a1105ef14 # v14
-        env:
-          NIX_GITHUB_PRIVATE_USERNAME: ${{ github.repository_owner }}
-          NIX_GITHUB_PRIVATE_PASSWORD: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
       - name: Set up GitHub actions cache
         uses: DeterminateSystems/magic-nix-cache-action@87b14cf437d03d37989d87f0fa5ce4f5dc1a330b # v8
       - name: Set up public cache
