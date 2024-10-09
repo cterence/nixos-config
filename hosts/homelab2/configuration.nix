@@ -16,6 +16,7 @@
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.default
     ../../modules/system/common.nix
+    ../../modules/system/server.nix
   ];
 
   nixpkgs.overlays = [
