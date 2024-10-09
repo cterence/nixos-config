@@ -70,6 +70,7 @@
       "k0s-token" = {
         path = "/etc/k0s/k0stoken";
         mode = "0440";
+        sopsFile = ./secrets.yaml;
         group = config.users.groups.keys.name;
       };
     };
