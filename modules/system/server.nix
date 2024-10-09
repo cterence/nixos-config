@@ -6,4 +6,7 @@
       openiscsi
     ];
   };
+  services = {
+    openiscsi.enable = true;
+  };
 }
