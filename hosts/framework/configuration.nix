@@ -78,6 +78,7 @@
       with pkgs;
       [
         aws-vault
+        azure-cli
         bruno
         checkov
         filezilla
