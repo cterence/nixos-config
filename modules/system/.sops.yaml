@@ -1,6 +1,6 @@
 keys:
   - &framework age1ggewvthjqlw00k678ler222pp6tqmgrtzdpa5l2lua3dvkyk493q5mj7ge
-  # - &homelab
+  - &homelab age1ypv9mf4lzqvapr8sthdfv2vwdzz7nqrruup57xuuygkq802wdguqghgj9m
   - &homelab2 age1ky8phu7rmf6yashsrp25ep22yc4nulm7eakss2l764rhf0m4r3tqm0jgz8
   # - &stronghold
   - &t14s age1tjd9fn32wuykv83zejgjw4azqtetw5lzqae602hcgmgmzsagg37q2d7ka5
@@ -9,5 +9,6 @@ creation_rules:
     key_groups:
       - age:
           - *framework
+          - *homelab
           - *homelab2
           - *t14s
