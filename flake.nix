@@ -82,6 +82,7 @@
             home-manager.nixosModules.default
             k0s.nixosModules.default
             nix-index-database.nixosModules.nix-index
+            sops-nix.nixosModules.sops
           ];
         };
         homelab2 = nixpkgs.lib.nixosSystem {
