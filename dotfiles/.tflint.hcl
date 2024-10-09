@@ -5,10 +5,6 @@ plugin "terraform" {
   version = "0.9.1"
 }
 
-rule "terraform_naming_convention" {
-  enabled = true
-}
-
 plugin "aws" {
   enabled = true
   source  = "github.com/terraform-linters/tflint-ruleset-aws"
