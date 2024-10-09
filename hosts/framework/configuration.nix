@@ -79,6 +79,7 @@
       [
         aws-vault
         bruno
+        checkov
         filezilla
         glab
         k6
@@ -97,6 +98,9 @@
         sshuttle
         ssm-session-manager-plugin
         teams-for-linux
+        tflint
+        tflint-plugins.tflint-ruleset-aws
+        tflint-plugins.tflint-ruleset-google
         typora
         vault
         yatas
