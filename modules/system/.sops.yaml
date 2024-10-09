@@ -1,5 +1,4 @@
 keys:
-  - &ci age1yy3st8hmrlz2h4nmu4nuqns9y8heq6ge8ug8d8pwaajdg66hyetq4z0w8j
   - &framework age1ggewvthjqlw00k678ler222pp6tqmgrtzdpa5l2lua3dvkyk493q5mj7ge
   # - &homelab
   - &homelab2 age1ky8phu7rmf6yashsrp25ep22yc4nulm7eakss2l764rhf0m4r3tqm0jgz8
@@ -9,7 +8,6 @@ creation_rules:
   - path_regex: secrets.yaml
     key_groups:
       - age:
-          - *ci
           - *framework
           - *homelab2
           - *t14s
