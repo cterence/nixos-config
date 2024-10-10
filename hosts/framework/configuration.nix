@@ -81,6 +81,7 @@
         azure-cli
         bruno
         checkov
+        copilot-cli
         filezilla
         glab
         k6
