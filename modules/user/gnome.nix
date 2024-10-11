@@ -88,6 +88,10 @@
         edge-tiling = true;
         experimental-features = "['scale-monitor-framebuffer']";
       };
+
+      "org/gnome/settings-daemon/plugins/power" = {
+        ambient-enabled = false;
+      };
     };
   };
 
