@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1728337164,
-        "narHash": "sha256-VdRTjJFyq4Q9U7Z/UoC2Q5jK8vSo6E86lHc2OanXtvc=",
+        "lastModified": 1728726232,
+        "narHash": "sha256-8ZWr1HpciQsrFjvPMvZl0W+b0dilZOqXPoKa2Ux36bc=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "038630363e7de57c36c417fd2f5d7c14773403e4",
+        "rev": "d57112db877f07387ce7104b5ac346ede556d2d7",
         "type": "github"
       },
       "original": {
@@ -27,15 +27,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1724477599,
-        "narHash": "sha256-8x+y9nYZnegiqYs/6j3oHz9Q7eOIR+5JT2qL2Ng7c8U=",
-        "owner": "johbo",
+        "lastModified": 1728768640,
+        "narHash": "sha256-Wv1FMRfizDbJoCtSBUL9qWFxm0eSMGDXDzD36XtTvK4=",
+        "owner": "cterence",
         "repo": "k0s-nix",
-        "rev": "888b7c9f675f3084c74423fd9e1a9da46013d067",
+        "rev": "b26f935ef1347265daf95ad837d7b6f6b70347d1",
         "type": "github"
       },
       "original": {
-        "owner": "johbo",
+        "owner": "cterence",
+        "ref": "feat/k0s-1-31",
         "repo": "k0s-nix",
         "type": "github"
       }
@@ -83,11 +84,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1728269138,
-        "narHash": "sha256-oKxDImsOvgUZMY4NwXVyUc/c1HiU2qInX+b5BU0yXls=",
+        "lastModified": 1728729581,
+        "narHash": "sha256-oazkQ/z7r43YkDLLQdMg8oIB3CwWNb+2ZrYOxtLEWTQ=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "ecfcd787f373f43307d764762e139a7cdeb9c22b",
+        "rev": "a8dd1b21995964b115b1e3ec639dd6ce24ab9806",
         "type": "github"
       },
       "original": {
