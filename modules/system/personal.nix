@@ -11,8 +11,6 @@
       picard
       qbittorrent
       signal-desktop
-      steam-run
-      steamPackages.steamcmd
       velero
       winetricks
       wineWowPackages.stable
