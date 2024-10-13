@@ -27,9 +27,9 @@ let
     "zsh"
   ];
   # Create a list of all the file paths in the userModulePath
-  userModules = builtins.map (userModuleName: "${userModulePath}/${userModuleName}.nix") (
-    userModuleNames
-  );
+  userModules = builtins.map (
+    userModuleName: "${userModulePath}/${userModuleName}.nix"
+  ) userModuleNames;
 in
 {
   imports = userModules;

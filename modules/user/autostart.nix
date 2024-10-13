@@ -24,7 +24,7 @@
             # Application has a desktopItem entry.
             # Assume that it was made with makeDesktopEntry, which exposes a
             # text attribute with the contents of the .desktop file
-            text = pkg.desktopItem.text;
+            inherit (pkg.desktopItem) text;
             # } else if pkg.pname == "nextcloud-client" then {
             #   # Edge case for nextcloud-client, which has a different name for the .desktop file
             #   source = (pkg + "/share/applications/com.nextcloud.desktopclient.nextcloud.desktop");
@@ -33,7 +33,7 @@
           {
             # Application does *not* have a desktopItem entry. Try to find a
             # matching .desktop name in /share/applications
-            source = (pkg + "/share/applications/" + pkg.pname + ".desktop");
+            source = pkg + "/share/applications/" + pkg.pname + ".desktop";
           };
     }) config.autostartPrograms
   );

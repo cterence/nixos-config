@@ -40,7 +40,7 @@
   # See: https://github.com/NixOS/nixpkgs/issues/171136
   # See: https://github.com/NixOS/nixpkgs/pull/171140
   security.pam.services.login.fprintAuth = false;
-  security.pam.services.gdm-fingerprint = lib.mkIf (config.services.fprintd.enable) {
+  security.pam.services.gdm-fingerprint = lib.mkIf config.services.fprintd.enable {
     text = ''
       auth       required                    pam_shells.so
       auth       requisite                   pam_nologin.so
