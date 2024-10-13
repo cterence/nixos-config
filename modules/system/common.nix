@@ -63,6 +63,7 @@
       bash
       code-server
       cryptsetup
+      deadnix
       dig
       efibootmgr
       ffmpeg
@@ -73,18 +74,24 @@
       kubernetes-helm
       libva-utils
       lsof
+      manix
       mlocate
       neofetch
       neovim
       nil
+      nix-init
+      nix-prefetch
       nixd
       nixfmt-rfc-style
       nmap
       nodejs_20
+      nurl
       openssl
       pciutils
+      pre-commit
       python3Full
       sops
+      statix
       tfswitch
       tgswitch
       tree

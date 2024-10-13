@@ -8,18 +8,18 @@
       syntaxHighlighting.enable = true;
 
       shellAliases = {
+        k = "kubectl";
+        kctx = "kubectl ctx";
+        kdebug = ''kubectl run shell-terence-$(cat /proc/sys/kernel/random/uuid | sed "s/[ - ] // g " | head -c 8; echo;) --image=stangirard/alpine-powerhouse -i --tty --rm'';
+        kns = "kubectl ns";
         ll = "ls -l";
         nhup = "cd ~/nixos && git pull --rebase --autostash && nh os switch ~/nixos && cd -";
         nixup = "cd ~/nixos && git pull --rebase --autostash && nixos-rebuild switch --use-remote-sudo --flake ~/nixos && cd -";
-        kdebug = ''kubectl run shell-terence-$(cat /proc/sys/kernel/random/uuid | sed "s/[ - ] // g " | head -c 8; echo;) --image=stangirard/alpine-powerhouse -i --tty --rm'';
+        src = "source $HOME/.zshrc";
+        ssh = "kitty +kitten ssh";
         tf = "terraform fmt && terraform";
         tg = "terragrunt hclfmt && terragrunt";
-        k = "kubectl";
-        kctx = "kubectl ctx";
-        kns = "kubectl ns";
         watch = "watch ";
-        ssh = "kitty +kitten ssh";
-        src = "source $HOME/.zshrc";
       };
 
       localVariables = {
@@ -45,6 +45,10 @@
 
       initExtra = ''
         source ~/.p10k.zsh
+
+        nb () {
+          nix-build -E "(import <nixpkgs> { }).callPackage ./$1 { }"
+        }
       '';
       plugins = [
         {
