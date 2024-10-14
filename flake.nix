@@ -74,6 +74,9 @@
           buildInputs = self.checks.${system}.pre-commit-check.enabledPackages;
         };
       });
+      formatter = forAllSystems (system: {
+        ${system} = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
+      });
       nixosConfigurations = {
         stronghold = nixpkgs.lib.nixosSystem {
           specialArgs = {
