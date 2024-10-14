@@ -99,6 +99,7 @@
         slack
         sshuttle
         ssm-session-manager-plugin
+        sq
         teams-for-linux
         tflint
         tflint-plugins.tflint-ruleset-aws
