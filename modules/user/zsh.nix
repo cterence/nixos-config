@@ -13,6 +13,7 @@
         kdebug = ''kubectl run shell-terence-$(cat /proc/sys/kernel/random/uuid | sed "s/[ - ] // g " | head -c 8; echo;) --image=stangirard/alpine-powerhouse -i --tty --rm'';
         kns = "kubectl ns";
         ll = "ls -l";
+        nfu = "nix flake update";
         nhup = "cd ~/nixos && git pull --rebase --autostash && nh os switch ~/nixos && cd -";
         nixup = "cd ~/nixos && git pull --rebase --autostash && nixos-rebuild switch --use-remote-sudo --flake ~/nixos && cd -";
         src = "source $HOME/.zshrc";
