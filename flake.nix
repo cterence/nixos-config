@@ -17,16 +17,20 @@
       url = "github:cterence/k0s-nix/feat/k0s-1-31";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-work-config = {
       url = "github:cterence/nixos-work-config";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    pre-commit-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -46,10 +50,30 @@
     }@inputs:
     let
       inherit (self) outputs;
+      supportedSystems = [ "x86_64-linux" ];
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
     in
     {
       packages = import ./pkgs nixpkgs.legacyPackages.x86_64-linux;
       overlays = import ./overlays { inherit inputs; };
+      checks = forAllSystems (system: {
+        pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
+          src = ./.;
+          hooks = {
+            deadnix.enable = true;
+            flake-checker.enable = true;
+            nil.enable = true;
+            nixfmt-rfc-style.enable = true;
+            statix.enable = true;
+          };
+        };
+      });
+      devShells = forAllSystems (system: {
+        default = nixpkgs.legacyPackages.${system}.mkShell {
+          inherit (self.checks.${system}.pre-commit-check) shellHook;
+          buildInputs = self.checks.${system}.pre-commit-check.enabledPackages;
+        };
+      });
       nixosConfigurations = {
         stronghold = nixpkgs.lib.nixosSystem {
           specialArgs = {

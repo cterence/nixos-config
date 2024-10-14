@@ -40,60 +40,62 @@
   # For some reason, the brightness level is reset to 100% after resuming from suspend.
   # The previous value is still stored in /sys/class/backlight/amdgpu_bl1/brightness.
   # Applying a small modification to the value will reset the brightness level to the previous value.
-  systemd.services."reset-screen-brightness" = {
-    script = ''
-      echo "Resetting screen brightness"
-      BR=$(cat /sys/class/backlight/amdgpu_bl1/brightness)
-      echo $((BR + 1)) > /sys/class/backlight/amdgpu_bl1/brightness
-      echo $((BR - 1)) > /sys/class/backlight/amdgpu_bl1/brightness
-    '';
-    after = [
-      "suspend.target"
-      "hibernate.target"
-      "hybrid-sleep.target"
-      "suspend-then-hibernate.target"
-    ];
-    wantedBy = [
-      "suspend.target"
-      "hibernate.target"
-      "hybrid-sleep.target"
-      "suspend-then-hibernate.target"
-    ];
-    serviceConfig = {
-      User = "root";
+  systemd = {
+    services = {
+      "tboi-backup" = {
+        script = ''
+          # Take a backup of the save directory for The Binding of Isaac: Rebirth
+          TIME=$(date +"%Y-%m-%d_%H-%M-%S")
+          cp -r ~/.local/share/Steam/userdata/182269349/250900/remote ~/Nextcloud/Archives/TBOI/backup_$TIME
+          echo "Backup taken at $TIME" >> ~/Nextcloud/Archives/TBOI/backup.log
+
+          # Only keep the last 5 backups if there are more than 5
+          cd ~/Nextcloud/Archives/TBOI
+          # Count the number of backups
+          COUNT=$(ls -1 | grep backup_ | wc -l)
+          # If there are more than 5 backups, delete the oldest ones
+          if [ $COUNT -gt 5 ]; then
+              # Delete the oldest backups
+              ls -1 | head -n $(($COUNT - 5)) | xargs rm -r
+              echo "Deleted $(($COUNT - 5)) old backups" >> ~/Nextcloud/Archives/TBOI/backup.log
+          fi
+        '';
+        serviceConfig = {
+          Type = "oneshot";
+          User = "terence";
+        };
+      };
+      "reset-screen-brightness" = {
+        script = ''
+          echo "Resetting screen brightness"
+          BR=$(cat /sys/class/backlight/amdgpu_bl1/brightness)
+          echo $((BR + 1)) > /sys/class/backlight/amdgpu_bl1/brightness
+          echo $((BR - 1)) > /sys/class/backlight/amdgpu_bl1/brightness
+        '';
+        after = [
+          "suspend.target"
+          "hibernate.target"
+          "hybrid-sleep.target"
+          "suspend-then-hibernate.target"
+        ];
+        wantedBy = [
+          "suspend.target"
+          "hibernate.target"
+          "hybrid-sleep.target"
+          "suspend-then-hibernate.target"
+        ];
+        serviceConfig = {
+          User = "root";
+        };
+      };
     };
-  };
-
-  systemd.timers."tboi-backup" = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnBootSec = "5m";
-      OnUnitActiveSec = "1d";
-      Unit = "tboi-backup.service";
-    };
-  };
-
-  systemd.services."tboi-backup" = {
-    script = ''
-      # Take a backup of the save directory for The Binding of Isaac: Rebirth
-      TIME=$(date +"%Y-%m-%d_%H-%M-%S")
-      cp -r ~/.local/share/Steam/userdata/182269349/250900/remote ~/Nextcloud/Archives/TBOI/backup_$TIME
-      echo "Backup taken at $TIME" >> ~/Nextcloud/Archives/TBOI/backup.log
-
-      # Only keep the last 5 backups if there are more than 5
-      cd ~/Nextcloud/Archives/TBOI
-      # Count the number of backups
-      COUNT=$(ls -1 | grep backup_ | wc -l)
-      # If there are more than 5 backups, delete the oldest ones
-      if [ $COUNT -gt 5 ]; then
-          # Delete the oldest backups
-          ls -1 | head -n $(($COUNT - 5)) | xargs rm -r
-          echo "Deleted $(($COUNT - 5)) old backups" >> ~/Nextcloud/Archives/TBOI/backup.log
-      fi
-    '';
-    serviceConfig = {
-      Type = "oneshot";
-      User = "terence";
+    timers."tboi-backup" = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnBootSec = "5m";
+        OnUnitActiveSec = "1d";
+        Unit = "tboi-backup.service";
+      };
     };
   };
 

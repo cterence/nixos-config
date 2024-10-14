@@ -11,36 +11,39 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [
-    "nvme"
-    "ehci_pci"
-    "xhci_pci"
-    "ahci"
-    "usbhid"
-    "usb_storage"
-    "sd_mod"
-  ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
-  boot.extraModulePackages = [ ];
-
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/28d978d8-cfd1-4041-a0ba-fc96b5a7d204";
-    fsType = "ext4";
+  boot = {
+    initrd = {
+      availableKernelModules = [
+        "nvme"
+        "ehci_pci"
+        "xhci_pci"
+        "ahci"
+        "usbhid"
+        "usb_storage"
+        "sd_mod"
+      ];
+      kernelModules = [ ];
+    };
+    kernelModules = [ "kvm-amd" ];
+    extraModulePackages = [ ];
   };
-
-  fileSystems."/mnt/mx500" = {
-    device = "/dev/disk/by-uuid/eaebd5a8-f20c-4c56-a035-a8cdb23c3cb6";
-    fsType = "ext4";
-    options = [
-      "users"
-      "nofail"
-    ];
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/D254-A486";
-    fsType = "vfat";
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/28d978d8-cfd1-4041-a0ba-fc96b5a7d204";
+      fsType = "ext4";
+    };
+    "/mnt/mx500" = {
+      device = "/dev/disk/by-uuid/eaebd5a8-f20c-4c56-a035-a8cdb23c3cb6";
+      fsType = "ext4";
+      options = [
+        "users"
+        "nofail"
+      ];
+    };
+    "/boot" = {
+      device = "/dev/disk/by-uuid/D254-A486";
+      fsType = "vfat";
+    };
   };
 
   swapDevices = [ { device = "/dev/disk/by-uuid/46d4ffd7-3ebc-4e31-b627-a19c72de63fe"; } ];

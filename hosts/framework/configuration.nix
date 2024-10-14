@@ -57,9 +57,11 @@
     '';
   };
 
-  services.printing.enable = true;
-  services.fprintd.enable = true;
-
+  services = {
+    fprintd.enable = true;
+    kolide-launcher.enable = true;
+    printing.enable = true;
+  };
   sops = {
     secrets = {
       "kolide-k2-secret" = {
@@ -70,8 +72,6 @@
       };
     };
   };
-
-  services.kolide-launcher.enable = true;
 
   environment = {
     systemPackages =
