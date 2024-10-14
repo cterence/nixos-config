@@ -16,7 +16,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ../../modules/system/common.nix
-    ../../modules/system/common-pc.nix
+    ../../modules/system/desktop.nix
     inputs.home-manager.nixosModules.default
   ];
 
