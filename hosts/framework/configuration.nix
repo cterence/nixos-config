@@ -80,7 +80,7 @@
         aws-vault
         azure-cli
         bruno
-        checkov
+        # checkov
         copilot-cli
         filezilla
         glab
@@ -109,6 +109,7 @@
         yatas
       ]
       ++ [
+        aws-sso-util
         baywatch
         google-chat-linux
         guacamole
