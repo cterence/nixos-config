@@ -50,6 +50,14 @@
         nb () {
           nix-build -E "(import <nixpkgs> { }).callPackage ./$1 { }"
         }
+
+        nfi () {
+          for input in $@; do
+          inputs="$inputs --update-input $input";
+          done
+          echo $inputs | xargs nix flake lock
+          unset inputs
+        }
       '';
       plugins = [
         {
