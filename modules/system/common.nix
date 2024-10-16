@@ -86,6 +86,7 @@
       nil
       nix-init
       nix-prefetch
+      nix-update
       nixd
       nixfmt-rfc-style
       nmap
