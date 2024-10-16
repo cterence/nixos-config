@@ -110,7 +110,7 @@
       ]
       ++ [
         aws-sso-util
-        baywatch
+        inputs.baywatch.packages.x86_64-linux.baywatch
         google-chat-linux
         guacamole
         openfortivpn-webview
