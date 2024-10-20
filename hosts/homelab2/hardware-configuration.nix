@@ -33,6 +33,14 @@
       device = "/dev/disk/by-uuid/71306661-b21b-4dc6-8981-a5972dfb7904";
       fsType = "ext4";
     };
+    "/mnt/870evo" = {
+      device = "/dev/disk/by-uuid/ac2a68b8-7f0e-4db9-939f-f9fb0ca1d66e";
+      fsType = "ext4";
+      options = [
+        "users"
+        "nofail"
+      ];
+    };
     "/boot" = {
       device = "/dev/disk/by-uuid/C8AD-CF95";
       fsType = "vfat";
