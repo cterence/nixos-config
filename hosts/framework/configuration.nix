@@ -82,6 +82,7 @@
         copilot-cli
         filezilla
         glab
+        google-chrome
         k6
         kubent
         kubeshark
