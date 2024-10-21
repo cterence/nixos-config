@@ -44,7 +44,6 @@ in
           "org.gnome.Nautilus.desktop"
           "code.desktop"
           "kitty.desktop"
-          "teams-for-linux.desktop"
           "slack.desktop"
           "thunderbird.desktop"
           "typora.desktop"
@@ -57,7 +56,6 @@ in
 
   autostartPrograms = with pkgs; [
     slack
-    teams-for-linux
     thunderbird
     todoist
   ];
