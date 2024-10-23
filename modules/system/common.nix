@@ -1,5 +1,10 @@
 # Contains the common configurations across all my systems.
-{ pkgs, config, ... }:
+{
+  inputs,
+  pkgs,
+  config,
+  ...
+}:
 
 {
   # Select internationalisation properties.
@@ -225,6 +230,7 @@
   };
 
   nix = {
+    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     gc = {
       automatic = false;
       dates = "weekly";
