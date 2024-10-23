@@ -72,6 +72,7 @@
       dig
       efibootmgr
       ffmpeg
+      file
       gnumake
       kind
       krew
