@@ -81,6 +81,7 @@
       libva-utils
       lsof
       manix
+      mariadb-client
       mlocate
       neofetch
       neovim
@@ -95,6 +96,7 @@
       nurl
       openssl
       pciutils
+      postgresql
       pre-commit
       python3Full
       sops

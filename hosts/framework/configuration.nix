@@ -90,7 +90,6 @@
         networkmanager-openvpn
         networkmanager-vpnc
         openfortivpn
-        postgresql
         pre-commit
         python311Packages.boto3
         python311Packages.numpy
