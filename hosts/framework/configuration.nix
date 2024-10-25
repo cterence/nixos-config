@@ -81,6 +81,7 @@
         # checkov
         copilot-cli
         filezilla
+        git-crypt
         glab
         google-chrome
         k6
@@ -108,7 +109,7 @@
       ]
       ++ [
         aws-sso-util
-        inputs.baywatch.packages.x86_64-linux.baywatch
+        inputs.baywatch.packages.x86_64-linux.default
         google-chat-linux
         guacamole
         openfortivpn-webview

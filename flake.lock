@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1729498389,
-        "narHash": "sha256-HyNj91F6CfooTyu2trivDzp7dkDgP7V65fW5iMrXE6w=",
+        "lastModified": 1729787536,
+        "narHash": "sha256-4fVameZ6v9OGRE/MaGUA7Y+j0aFSDs4BjN92iqLFydI=",
         "owner": "padok-team",
         "repo": "baywatch",
-        "rev": "3e9e6c4d8fbeb8d012f249f2a476a063e2fed358",
+        "rev": "598b26b9956b5f8a5aa0db13872dbe2077946367",
         "type": "github"
       },
       "original": {
