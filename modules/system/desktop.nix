@@ -56,6 +56,7 @@
       virt-manager
       vlc
       wireshark
+      wl-clipboard
       zed-editor
     ];
 
