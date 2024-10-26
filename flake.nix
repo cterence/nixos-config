@@ -137,14 +137,11 @@
         };
         framework = nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit inputs outputs;
+            inherit inputs outputs plasma-manager;
           };
           modules = [
             ./hosts/framework/configuration.nix
             home-manager.nixosModules.default
-            {
-              home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
-            }
             kolide-launcher.nixosModules.kolide-launcher
             nixos-hardware.nixosModules.framework-13-7040-amd
             nix-index-database.nixosModules.nix-index

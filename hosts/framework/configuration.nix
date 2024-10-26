@@ -8,6 +8,7 @@
   pkgs,
   lib,
   config,
+  plasma-manager,
   ...
 }:
 
@@ -122,6 +123,7 @@
     extraSpecialArgs = {
       inherit inputs;
     };
+    sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
     users = {
       "terence" = import ./home.nix;
     };
