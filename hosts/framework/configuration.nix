@@ -17,6 +17,7 @@
     ./hardware-configuration.nix
     ../../modules/system/common.nix
     ../../modules/system/desktop.nix
+    ../../modules/system/kde-plasma.nix
     inputs.home-manager.nixosModules.default
   ];
 

@@ -29,6 +29,11 @@
       url = "github:cterence/nixos-work-config";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
     pre-commit-hooks = {
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -45,6 +50,7 @@
       nixpkgs,
       nixos-hardware,
       home-manager,
+      plasma-manager,
       kolide-launcher,
       nix-index-database,
       sops-nix,
@@ -136,6 +142,9 @@
           modules = [
             ./hosts/framework/configuration.nix
             home-manager.nixosModules.default
+            {
+              home-manager.sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
+            }
             kolide-launcher.nixosModules.kolide-launcher
             nixos-hardware.nixosModules.framework-13-7040-amd
             nix-index-database.nixosModules.nix-index

@@ -10,6 +10,7 @@
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.default
     ../../modules/system/common.nix
+    ../../modules/system/gnome.nix
     ../../modules/system/desktop.nix
     ../../modules/system/personal.nix
   ];

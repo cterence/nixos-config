@@ -28,7 +28,10 @@
     useXkbConfig = true; # use xkb.options in tty.
   };
 
-  hardware.pulseaudio.enable = false;
+  hardware = {
+    pulseaudio.enable = false;
+    bluetooth.enable = true;
+  };
   security.rtkit.enable = true;
 
   nixpkgs.config.allowUnfree = true;

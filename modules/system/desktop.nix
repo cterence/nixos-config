@@ -10,13 +10,8 @@
   '';
 
   services = {
-    # Enable the X11 windowing system.
     xserver = {
-      enable = true;
-      displayManager.gdm.enable = true;
-      desktopManager.gnome.enable = true;
       videoDrivers = [ "amdgpu" ];
-
       # Configure keymap in X11
       xkb = {
         layout = "us";
@@ -24,14 +19,10 @@
       };
     };
 
-    udev.packages = with pkgs; [ gnome-settings-daemon ];
     kbfs.enable = true;
     flatpak.enable = true;
   };
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment = {
     systemPackages = with pkgs; [
       air
@@ -41,7 +32,6 @@
       discord
       filezilla
       gimp
-      gnome-tweaks
       (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
       gpu-screen-recorder
       kitty
@@ -58,20 +48,6 @@
       wireshark
       wl-clipboard
       zed-editor
-    ];
-
-    gnome.excludePackages = with pkgs; [
-      atomix
-      cheese
-      epiphany
-      geary
-      gnome-music
-      gnome-photos
-      gnome-tour
-      hitori
-      iagno
-      tali
-      totem
     ];
   };
 

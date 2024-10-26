@@ -19,9 +19,10 @@ let
     }) (builtins.attrNames (builtins.readDir dotfilesPath))
   );
   # Create a list of all the file paths in the userModulesPath
-  userModules = builtins.map (moduleName: "${userModulesPath}/${moduleName}") (
-    builtins.attrNames (builtins.readDir userModulesPath)
-  );
+  userModules = builtins.map (
+    moduleName:
+    if !builtins.elem moduleName [ "gnome.nix" ] then "${userModulesPath}/${moduleName}" else ""
+  ) (builtins.attrNames (builtins.readDir userModulesPath));
 in
 {
   imports = userModules ++ [
