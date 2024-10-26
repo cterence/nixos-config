@@ -78,13 +78,6 @@
         "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
       ];
     };
-    gamemode.enable = true;
-    steam = {
-      enable = true;
-      gamescopeSession.enable = true;
-      remotePlay.openFirewall = true;
-      dedicatedServer.openFirewall = true;
-    };
     firefox.enable = true;
     wireshark.enable = true;
   };
