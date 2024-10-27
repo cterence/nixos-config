@@ -40,7 +40,7 @@ let
   ) userModuleNames;
 in
 {
-  imports = userModules ++ [ "${userModulesPath}/gnome/default.nix" ];
+  imports = userModules;
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
