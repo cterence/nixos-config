@@ -13,16 +13,22 @@
     xserver.enable = false;
   };
 
-  # security = {
-  #   pam = {
-  #     services = {
-  #       login =
-  #     };
-  #   };
-  # };
+  security = {
+    pam = {
+      services = {
+        sddm = {
+          text = ''
+            auth            optional        ${pkgs.kwallet-pam}/lib/security/pam_kwallet5.so
+            session         optional        ${pkgs.kwallet-pam}/lib/security/pam_kwallet5.so auto_start
+          '';
+        };
+      };
+    };
+  };
 
   programs = {
     ssh = {
+      startAgent = true;
       enableAskPassword = true;
       askPassword = pkgs.lib.mkForce "${pkgs.kdePackages.ksshaskpass.out}/bin/ksshaskpass";
     };
