@@ -15,10 +15,29 @@ let
       };
     }) (builtins.attrNames (builtins.readDir dotfilesPath))
   );
-  # Create a list of all the file paths in the userModulesPath
-  userModules = builtins.map (moduleName: "${userModulesPath}/${moduleName}") (
-    builtins.attrNames (builtins.readDir userModulesPath)
-  );
+  userModuleNames = [
+    "autostart"
+    "awscli"
+    "direnv"
+    "fzf"
+    "git"
+    "gnome"
+    "go"
+    "htop"
+    "jq"
+    "k9s"
+    "kitty"
+    "mangohud"
+    "nextcloud-client"
+    "thunderbird"
+    "vscode"
+    "yt-dlp"
+    "zsh"
+  ];
+  # Create a list of all the file paths in the userModulePath
+  userModules = builtins.map (
+    userModuleName: "${userModulesPath}/${userModuleName}.nix"
+  ) userModuleNames;
 in
 {
   imports = userModules ++ [ "${userModulesPath}/gnome/default.nix" ];

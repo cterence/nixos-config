@@ -17,15 +17,30 @@ let
       };
     }) (builtins.attrNames (builtins.readDir dotfilesPath))
   );
-  # Create a list of all the file paths in the userModulesPath
-  userModules = builtins.map (moduleName: "${userModulesPath}/${moduleName}") (
-    builtins.attrNames (builtins.readDir userModulesPath)
-  );
+  userModuleNames = [
+    "autostart"
+    "awscli"
+    "direnv"
+    "fzf"
+    "git"
+    "go"
+    "htop"
+    "jq"
+    "k9s"
+    "kde-plasma"
+    "kitty"
+    "thunderbird"
+    "vscode"
+    "zsh"
+  ];
+  # Create a list of all the file paths in the userModulePath
+  userModules = builtins.map (
+    userModuleName: "${userModulesPath}/${userModuleName}.nix"
+  ) userModuleNames;
 in
 {
   imports = userModules ++ [
     inputs.nixos-work-config.nixosModules.home-manager
-    "${userModulesPath}/kde-plasma/default.nix"
   ];
 
   # Overrides
