@@ -56,7 +56,6 @@
       nixos-hardware,
       nixos-work-config,
       nixpkgs,
-      nixpkgs-c31898ad,
       plasma-manager,
       sops-nix,
       ...
@@ -70,9 +69,6 @@
         nixpkgs.legacyPackages.${system} {
           overlays = [
             self.overlays.default
-            (_: _: {
-              inherit (nixpkgs-c31898ad) azure-cli;
-            })
           ];
         }
       );
