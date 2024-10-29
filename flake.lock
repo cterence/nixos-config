@@ -7,16 +7,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1729860693,
-        "narHash": "sha256-dqjmlFJLeyatRNgHnxUXI+qF/gG0JKaNusK3ZxF6S00=",
+        "lastModified": 1730201104,
+        "narHash": "sha256-UgSJ4wTugfTNcAGHpazJEQC9fO4MfJExB73OUWrAEXg=",
         "owner": "padok-team",
         "repo": "baywatch",
-        "rev": "1767c692b413632da0ec9624ea5459d84a302c63",
+        "rev": "386f457cc52148d8f9daa734be1bc6579506f33b",
         "type": "github"
       },
       "original": {
         "owner": "padok-team",
-        "ref": "feat/nix-flake",
         "repo": "baywatch",
         "type": "github"
       }

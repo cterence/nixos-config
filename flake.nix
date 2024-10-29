@@ -8,7 +8,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     baywatch = {
-      url = "github:padok-team/baywatch/feat/nix-flake";
+      url = "github:padok-team/baywatch";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
