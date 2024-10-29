@@ -3,6 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # FIXME: while azure-cli fails to build
+    nixpkgs-c31898ad.url = "github:nixos/nixpkgs/c31898adf5a8ed202ce5bea9f347b1c6871f32d1";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     baywatch = {
@@ -47,24 +49,45 @@
   outputs =
     {
       self,
-      nixpkgs,
-      nixos-hardware,
       home-manager,
-      plasma-manager,
+      k0s,
       kolide-launcher,
       nix-index-database,
-      sops-nix,
-      k0s,
+      nixos-hardware,
       nixos-work-config,
+      nixpkgs,
+      nixpkgs-c31898ad,
+      plasma-manager,
+      sops-nix,
       ...
     }@inputs:
     let
       inherit (self) outputs;
       supportedSystems = [ "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+      pkgs = forAllSystems (
+        system:
+        nixpkgs.legacyPackages.${system} {
+          overlays = [
+            self.overlays.default
+            (_: _: {
+              inherit (nixpkgs-c31898ad) azure-cli;
+            })
+          ];
+        }
+      );
     in
     {
-      packages = import ./pkgs nixpkgs.legacyPackages.x86_64-linux;
+      packages = {
+        inherit (pkgs)
+          aws-sso-util
+          baywatch
+          google-chat-linux
+          guacamole
+          openfortivpn-webview
+          playground
+          ;
+      };
       overlays = import ./overlays { inherit inputs; };
       checks = forAllSystems (system: {
         pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {

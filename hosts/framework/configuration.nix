@@ -81,6 +81,7 @@
     systemPackages =
       with pkgs;
       [
+        aws-sso-util
         aws-vault
         azure-cli
         bruno
@@ -89,7 +90,9 @@
         filezilla
         git-crypt
         glab
+        google-chat-linux
         google-chrome
+        guacamole
         k6
         kubent
         kubeshark
@@ -97,14 +100,16 @@
         networkmanager-openvpn
         networkmanager-vpnc
         openfortivpn
+        openfortivpn-webview
+        playground
         pre-commit
         python311Packages.boto3
         python311Packages.numpy
         redis
         slack
+        sq
         sshuttle
         ssm-session-manager-plugin
-        sq
         teams-for-linux
         tflint
         tflint-plugins.tflint-ruleset-aws
@@ -114,12 +119,7 @@
         yatas
       ]
       ++ [
-        aws-sso-util
         inputs.baywatch.packages.x86_64-linux.default
-        google-chat-linux
-        guacamole
-        openfortivpn-webview
-        playground
       ];
   };
 
