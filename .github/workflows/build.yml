@@ -66,7 +66,7 @@ jobs:
           PREV_FLAKE="github:${GITHUB_REPOSITORY}"
           NEXT_FLAKE="."
           DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
-          nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" | tee "$DIFF_OUTPUT"
+          nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" --access-tokens github.com=${{ secrets.GH_TOKEN_FOR_UPDATES }} | tee "$DIFF_OUTPUT"
           [[ -s "$DIFF_OUTPUT" ]] && sed -i 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
           echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Add job summary to PR
