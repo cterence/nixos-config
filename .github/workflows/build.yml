@@ -59,6 +59,9 @@ jobs:
       - name: Diff closures
         if: github.event_name == 'pull_request'
         run: |
+          sudo systemctl set-environment NIX_GITHUB_PRIVATE_USERNAME=${{ github.repository_owner }}
+          sudo systemctl set-environment NIX_GITHUB_PRIVATE_PASSWORD=${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          sudo systemctl daemon-reload && sudo systemctl restart nix-daemon
           HOST_DRV="nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel"
           PREV_FLAKE="github:${GITHUB_REPOSITORY}"
           NEXT_FLAKE="."
