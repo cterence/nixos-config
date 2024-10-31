@@ -20,7 +20,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     k0s = {
-      url = "github:cterence/k0s-nix/feat/k0s-1-31";
+      url = "github:cterence/k0s-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-index-database = {
