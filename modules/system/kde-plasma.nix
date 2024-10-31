@@ -38,10 +38,15 @@
     sessionVariables = {
       SSH_ASKPASS_REQUIRE = "prefer";
     };
-    systemPackages = with pkgs; [
-      kwallet-pam
-      kdePackages.ksshaskpass
-    ];
+    systemPackages =
+      with pkgs;
+      [
+        kwallet-pam
+      ]
+      ++ (with kdePackages; [
+        kalk
+        ksshaskpass
+      ]);
     plasma6.excludePackages = with pkgs.kdePackages; [
       plasma-browser-integration
       konsole
