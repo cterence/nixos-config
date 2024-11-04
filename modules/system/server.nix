@@ -4,6 +4,7 @@
   # Needed for Longhorn
   environment = {
     systemPackages = with pkgs; [
+      nfs-utils
       openiscsi
     ];
   };
