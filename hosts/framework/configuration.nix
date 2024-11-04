@@ -34,7 +34,7 @@
 
   nixpkgs.overlays = [
     outputs.overlays.additions
-    outputs.overlays.pkgs-c31898ad
+    # outputs.overlays.pkgs-c31898ad
   ];
 
   # Workaround for gdm
@@ -84,7 +84,8 @@
       [
         aws-sso-util
         aws-vault
-        c31898ad.azure-cli
+        # c31898ad.azure-cli
+        azure-cli
         bruno
         # checkov
         copilot-cli
