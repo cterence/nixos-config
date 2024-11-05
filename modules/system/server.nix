@@ -8,9 +8,12 @@
       openiscsi
     ];
   };
-  services.openiscsi = {
-    enable = true;
-    name = "iqn.2016-04.com.open-iscsi:" + config.networking.hostName;
+  services = {
+    rpcbind.enable = true;
+    openiscsi = {
+      enable = true;
+      name = "iqn.2016-04.com.open-iscsi:" + config.networking.hostName;
+    };
   };
   # https://github.com/longhorn/longhorn/issues/2166#issuecomment-1740179416
   systemd.tmpfiles.rules = [
