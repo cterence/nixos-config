@@ -105,6 +105,7 @@
         openfortivpn-webview
         playground
         pre-commit
+        pv-migrate
         python311Packages.boto3
         python311Packages.numpy
         redis

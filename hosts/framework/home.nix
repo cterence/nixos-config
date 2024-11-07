@@ -44,10 +44,17 @@ in
   ];
 
   # Overrides
-  programs.awscli.settings = lib.mkForce {
-    "default" = {
-      region = "eu-west-3";
-      output = "json";
+  programs = {
+    awscli.settings = lib.mkForce {
+      "default" = {
+        region = "eu-west-3";
+        output = "json";
+      };
+    };
+    zsh.shellAliases = {
+      b = "baywatch";
+      bo = "baywatch open";
+      bl = "baywatch login";
     };
   };
 
