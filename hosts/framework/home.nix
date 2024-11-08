@@ -58,28 +58,10 @@ in
     };
   };
 
-  dconf = {
-    settings = {
-      "org/gnome/shell" = {
-        favorite-apps = lib.mkForce [
-          "firefox.desktop"
-          "org.gnome.Nautilus.desktop"
-          "code.desktop"
-          "kitty.desktop"
-          "slack.desktop"
-          "thunderbird.desktop"
-          "typora.desktop"
-          "spotify.desktop"
-          "todoist.desktop"
-        ];
-      };
-    };
-  };
-
   autostartPrograms = with pkgs; [
     slack
     thunderbird
-    todoist
+    todoist-electron
   ];
 
   # Home Manager needs a bit of information about you and the paths it should
