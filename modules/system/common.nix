@@ -109,6 +109,7 @@
       python3Full
       sops
       statix
+      tfautomv
       tfswitch
       tgswitch
       tree
