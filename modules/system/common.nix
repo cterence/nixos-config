@@ -207,7 +207,13 @@
       enableSSHSupport = true;
     };
 
-    zsh.enable = true;
+    zsh = {
+      enable = true;
+      shellInit = ''
+        export GH_TOKEN="$(cat ${config.sops.secrets.gh-cli-token.path})"
+        export GITLAB_TOKEN="$(cat ${config.sops.secrets.glab-cli-token.path})"
+      '';
+    };
 
     # Check envfs comment
     nix-ld.enable = true;
@@ -218,6 +224,16 @@
     defaultSopsFile = ./secrets.yaml;
     defaultSopsFormat = "yaml";
     secrets = {
+      "gh-cli-token" = {
+        mode = "0440";
+        group = config.users.groups.keys.name;
+        owner = config.users.users.terence.name;
+      };
+      "glab-cli-token" = {
+        mode = "0440";
+        group = config.users.groups.keys.name;
+        owner = config.users.users.terence.name;
+      };
       "nixos-access-tokens" = {
         mode = "0440";
         group = config.users.groups.keys.name;
