@@ -25,9 +25,11 @@
             # Assume that it was made with makeDesktopEntry, which exposes a
             # text attribute with the contents of the .desktop file
             inherit (pkg.desktopItem) text;
-            # } else if pkg.pname == "nextcloud-client" then {
-            #   # Edge case for nextcloud-client, which has a different name for the .desktop file
-            #   source = (pkg + "/share/applications/com.nextcloud.desktopclient.nextcloud.desktop");
+          }
+        else if pkg.pname == "todoist-electron" then
+          {
+            # Edge case for nextcloud-client, which has a different name for the .desktop file
+            source = pkg + "/share/applications/todoist.desktop";
           }
         else
           {
