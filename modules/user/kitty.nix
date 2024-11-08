@@ -7,5 +7,8 @@
       hide_window_decorations = "no";
       enabled_layouts = "grid";
     };
+    keybindings = {
+      "ctrl+shift+enter" = "new_window_with_cwd";
+    };
   };
 }
