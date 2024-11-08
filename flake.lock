@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1730215959,
-        "narHash": "sha256-YNYDLGRGyZ+d+PyHds8q3nTPaM0+HCDgY10vFBNYkR4=",
+        "lastModified": 1731003163,
+        "narHash": "sha256-j/eEXBw3QJmpPE3UY4wMdUJ4MA93KnY6fxXLs9QeFrI=",
         "owner": "padok-team",
         "repo": "baywatch",
-        "rev": "3a6002f4727f6f443650e53d113621963ae8fbbe",
+        "rev": "fba3ea3144fafeb9c73d256f0173425ea5bb19c1",
         "type": "github"
       },
       "original": {
@@ -291,11 +291,11 @@
         "nixpkgs-stable": "nixpkgs-stable_2"
       },
       "locked": {
-        "lastModified": 1730883027,
-        "narHash": "sha256-pvXMOJIqRW0trsW+FzRMl6d5PbsM4rWfD5lcKCOrrwI=",
+        "lastModified": 1731008979,
+        "narHash": "sha256-yN1NxvmqV8UltLkqYBWTeZNgpD/eyh/7LM58caHiEfE=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "c5ae1e214ff935f2d3593187a131becb289ea639",
+        "rev": "fe63071416471abdab06caa234122932a7c4b980",
         "type": "github"
       },
       "original": {
