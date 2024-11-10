@@ -34,8 +34,10 @@
       gimp
       (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
       gpu-screen-recorder
+      graphviz
       kitty
       libguestfs
+      nfs-utils
       libreoffice-fresh
       nvtopPackages.amd
       qemu
