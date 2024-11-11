@@ -29,6 +29,7 @@
       avidemux
       chromium
       cobra-cli
+      delve
       discord
       filezilla
       gimp
