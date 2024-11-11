@@ -81,7 +81,6 @@
       ];
     };
     firefox.enable = true;
-    wireshark.enable = true;
   };
 
   hardware.graphics = {
