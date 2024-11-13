@@ -106,7 +106,7 @@
       pciutils
       postgresql
       pre-commit
-      python3Full
+      python312Full
       sops
       statix
       tfautomv
@@ -121,6 +121,7 @@
       yarn
       yq
       zig
+      zip
     ];
     pathsToLink = [ "/share/zsh" ];
   };

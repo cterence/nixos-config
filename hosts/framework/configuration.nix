@@ -103,9 +103,11 @@
         networkmanager-vpnc
         openfortivpn
         openfortivpn-webview
+        pipenv
         playground
         pre-commit
         pv-migrate
+        python310Full
         python311Packages.boto3
         python311Packages.numpy
         redis
@@ -121,6 +123,9 @@
         vault
         yatas
       ]
+      ++ (with pkgs.nodePackages; [
+        cdktf-cli
+      ])
       ++ [
         inputs.baywatch.packages.x86_64-linux.default
       ];
