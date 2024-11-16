@@ -65,7 +65,13 @@
   services = {
     fprintd.enable = true;
     kolide-launcher.enable = true;
-    printing.enable = true;
+    printing = {
+      enable = true;
+    };
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+    };
   };
   sops = {
     secrets = {
