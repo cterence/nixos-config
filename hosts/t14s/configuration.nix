@@ -36,9 +36,6 @@
     hostName = "t14s"; # Define your hostname.
   };
 
-  # For some reason, the brightness level is reset to 100% after resuming from suspend.
-  # The previous value is still stored in /sys/class/backlight/amdgpu_bl1/brightness.
-  # Applying a small modification to the value will reset the brightness level to the previous value.
   systemd = {
     services = {
       "tboi-backup" = {
@@ -64,6 +61,9 @@
           User = "terence";
         };
       };
+      # For some reason, the brightness level is reset to 100% after resuming from suspend.
+      # The previous value is still stored in /sys/class/backlight/amdgpu_bl1/brightness.
+      # Applying a small modification to the value will reset the brightness level to the previous value.
       "reset-screen-brightness" = {
         script = ''
           echo "Resetting screen brightness"

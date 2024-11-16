@@ -30,6 +30,7 @@
     };
     kernelModules = [ "kvm-amd" ];
     extraModulePackages = [ ];
+    blacklistedKernelModules = [ "hid_sensor_hub" ];
   };
 
   fileSystems = {

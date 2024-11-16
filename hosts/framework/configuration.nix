@@ -68,10 +68,17 @@
     printing = {
       enable = true;
     };
+    # Printer autodiscovery
     avahi = {
       enable = true;
       nssmdns4 = true;
     };
+    # https://community.frame.work/t/solved-guide-12th-gen-not-sending-xf86monbrightnessup-down/20605/24
+    udev.extraRules = ''
+      SUBSYSTEM=="backlight", ACTION=="add", \
+        RUN+="${pkgs.coreutils-full}/bin/chgrp video /sys/class/backlight/%k/brightness", \
+        RUN+="${pkgs.coreutils-full}/bin/chmod g+w /sys/class/backlight/%k/brightness",
+    '';
   };
   sops = {
     secrets = {
@@ -92,6 +99,7 @@
         aws-vault
         # c31898ad.azure-cli
         azure-cli
+        brightnessctl
         bruno
         # checkov
         copilot-cli
