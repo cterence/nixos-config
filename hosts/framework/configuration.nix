@@ -11,7 +11,6 @@
   plasma-manager,
   ...
 }:
-
 {
   imports = [
     # Include the results of the hardware scan.
@@ -98,7 +97,7 @@
         aws-sso-util
         aws-vault
         # c31898ad.azure-cli
-        azure-cli
+        (azure-cli.withExtensions (with azure-cli-extensions; [ automation ]))
         brightnessctl
         bruno
         # checkov
