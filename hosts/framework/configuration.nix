@@ -137,9 +137,6 @@
         vault
         yatas
       ]
-      ++ (with pkgs.nodePackages; [
-        cdktf-cli
-      ])
       ++ [
         inputs.baywatch.packages.x86_64-linux.default
       ];
