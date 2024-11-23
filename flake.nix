@@ -109,7 +109,7 @@
       nixosConfigurations = {
         stronghold = nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit inputs;
+            inherit inputs outputs;
           };
           modules = [
             ./hosts/stronghold/configuration.nix
