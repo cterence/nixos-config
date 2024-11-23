@@ -3,8 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # FIXME: while azure-cli fails to build
-    # nixpkgs-c31898ad.url = "github:nixos/nixpkgs/c31898adf5a8ed202ce5bea9f347b1c6871f32d1";
+    # FIXME: while libreoffice fails to build
+    nixpkgs-dc460ec7.url = "github:nixos/nixpkgs/dc460ec76cbff0e66e269457d7b728432263166c";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     baywatch = {

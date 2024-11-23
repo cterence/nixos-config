@@ -21,6 +21,7 @@
 
   nixpkgs.overlays = [
     outputs.overlays.additions
+    outputs.overlays.pkgs-dc460ec7
   ];
 
   home-manager = {

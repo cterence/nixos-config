@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ inputs, ... }:
+{ inputs, outputs, ... }:
 
 {
   imports = [
@@ -23,6 +23,11 @@
       "terence" = import ./home.nix;
     };
   };
+
+  nixpkgs.overlays = [
+    outputs.overlays.additions
+    outputs.overlays.pkgs-dc460ec7
+  ];
 
   networking = {
     hostName = "stronghold"; # Define your hostname.

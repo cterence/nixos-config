@@ -39,7 +39,7 @@
       kitty
       libguestfs
       nfs-utils
-      libreoffice-fresh
+      dc460ec7.libreoffice-fresh
       nvtopPackages.amd
       qemu
       spotify

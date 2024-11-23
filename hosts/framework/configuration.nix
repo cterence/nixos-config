@@ -33,7 +33,7 @@
 
   nixpkgs.overlays = [
     outputs.overlays.additions
-    # outputs.overlays.pkgs-c31898ad
+    outputs.overlays.pkgs-dc460ec7
   ];
 
   # Workaround for gdm

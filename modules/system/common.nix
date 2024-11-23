@@ -76,7 +76,6 @@
       bash
       code-server
       cryptsetup
-      deadnix
       dig
       efibootmgr
       ffmpeg
@@ -108,7 +107,6 @@
       pre-commit
       python312Full
       sops
-      statix
       tfautomv
       tfswitch
       tgswitch
