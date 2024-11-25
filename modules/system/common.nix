@@ -110,6 +110,7 @@
       tfautomv
       tfswitch
       tgswitch
+      tig
       tree
       unzip
       usbutils
