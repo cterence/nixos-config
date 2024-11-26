@@ -115,6 +115,7 @@
         netcat-gnu
         networkmanager-openvpn
         networkmanager-vpnc
+        obs-studio
         openfortivpn
         openfortivpn-webview
         pipenv

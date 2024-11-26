@@ -106,6 +106,7 @@
       postgresql
       pre-commit
       python312Full
+      socat
       sops
       tfautomv
       tfswitch
