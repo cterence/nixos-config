@@ -78,6 +78,7 @@
       cryptsetup
       dig
       efibootmgr
+      entr
       ffmpeg
       file
       gnumake
