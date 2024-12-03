@@ -97,7 +97,13 @@
         aws-sso-util
         aws-vault
         # c31898ad.azure-cli
-        (azure-cli.withExtensions (with azure-cli-extensions; [ automation ]))
+        (azure-cli.withExtensions (
+          with azure-cli-extensions;
+          [
+            automation
+            bastion
+          ]
+        ))
         brightnessctl
         bruno
         # checkov
