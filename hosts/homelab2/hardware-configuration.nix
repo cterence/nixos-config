@@ -27,6 +27,7 @@
     kernelModules = [
       "kvm-amd"
       "nfsd"
+      "cdc_acm"
     ];
     extraModulePackages = [ ];
     supportedFilesystems = [ "nfs" ];
