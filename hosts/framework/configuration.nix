@@ -94,6 +94,7 @@
     systemPackages =
       with pkgs;
       [
+        argocd
         aws-sso-util
         aws-vault
         # c31898ad.azure-cli
