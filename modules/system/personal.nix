@@ -17,7 +17,6 @@
       calibre
       mangohud
       nextcloud-client
-      obsidian
       picard
       qbittorrent
       signal-desktop

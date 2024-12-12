@@ -41,6 +41,7 @@
       nfs-utils
       dc460ec7.libreoffice-fresh
       nvtopPackages.amd
+      obsidian
       qemu
       spotify
       templ
