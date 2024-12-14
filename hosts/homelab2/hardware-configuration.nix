@@ -52,7 +52,6 @@
       options = [
         "users"
         "nofail"
-        "x-systemd.automount"
       ];
     };
     "/boot" = {
