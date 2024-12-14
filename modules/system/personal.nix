@@ -15,6 +15,7 @@
   environment = {
     systemPackages = with pkgs; [
       calibre
+      kopia
       mangohud
       nextcloud-client
       picard
