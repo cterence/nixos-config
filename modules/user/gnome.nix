@@ -32,6 +32,8 @@
           "org.gnome.Nautilus.desktop"
           "thunderbird.desktop"
           "spotify.desktop"
+          "obsidian.desktop"
+          "todoist.desktop"
         ];
       };
       "org/gnome/shell/extensions/dash-to-panel" = {

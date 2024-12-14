@@ -28,7 +28,7 @@
           }
         else if pkg.pname == "todoist-electron" then
           {
-            # Edge case for nextcloud-client, which has a different name for the .desktop file
+            # Edge case for todoist, which has a different name for the .desktop file
             source = pkg + "/share/applications/todoist.desktop";
           }
         else
