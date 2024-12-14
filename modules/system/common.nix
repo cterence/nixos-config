@@ -105,6 +105,7 @@
       openssl
       pciutils
       postgresql
+      powertop
       pre-commit
       python312Full
       socat
