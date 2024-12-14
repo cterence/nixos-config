@@ -27,6 +27,7 @@
   home-manager = {
     extraSpecialArgs = {
       inherit inputs;
+      inherit (config) sops fileSystems;
     };
     users = {
       "terence" = import ./home.nix;
@@ -70,6 +71,24 @@
       mode = "0440";
       sopsFile = ./secrets.yaml;
       group = config.users.groups.keys.name;
+    };
+    "b2-velero-backup-tch-key-id" = {
+      mode = "0440";
+      group = config.users.groups.keys.name;
+      owner = config.users.users.terence.name;
+      sopsFile = ./secrets.yaml;
+    };
+    "b2-velero-backup-tch-key" = {
+      mode = "0440";
+      group = config.users.groups.keys.name;
+      owner = config.users.users.terence.name;
+      sopsFile = ./secrets.yaml;
+    };
+    "kopia-password" = {
+      mode = "0440";
+      group = config.users.groups.keys.name;
+      owner = config.users.users.terence.name;
+      sopsFile = ./secrets.yaml;
     };
   };
 

@@ -24,8 +24,10 @@
       ];
       kernelModules = [ ];
       luks.devices = {
-        "luks-323ca694-6610-43ac-8301-12a6147b0b7d".device = "/dev/disk/by-uuid/323ca694-6610-43ac-8301-12a6147b0b7d";
-        "luks-f9c699d2-ebfa-4767-9eb5-e852889a08df".device = "/dev/disk/by-uuid/f9c699d2-ebfa-4767-9eb5-e852889a08df";
+        "luks-323ca694-6610-43ac-8301-12a6147b0b7d".device =
+          "/dev/disk/by-uuid/323ca694-6610-43ac-8301-12a6147b0b7d";
+        "luks-f9c699d2-ebfa-4767-9eb5-e852889a08df".device =
+          "/dev/disk/by-uuid/f9c699d2-ebfa-4767-9eb5-e852889a08df";
       };
     };
     kernelModules = [ "kvm-amd" ];

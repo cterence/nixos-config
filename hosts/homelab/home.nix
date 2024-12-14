@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ lib, ... }:
 let
   dotfilesPath = ../../dotfiles;
   userModulePath = ../../modules/user;
@@ -61,14 +61,6 @@ in
       # # You can also create simple shell scripts directly inside your
       # # configuration. For example, this adds a command 'my-hello' to your
       # # environment:
-      (pkgs.writeShellScriptBin "syncelem" ''
-        set -e
-        sudo cryptsetup luksOpen /dev/sdb1 elements
-        sudo mount /dev/mapper/elements /mnt/elements
-        sudo rsync -av --delete /mnt/mx500/k8s/openebs/local/ /mnt/elements
-        sudo umount /mnt/elements
-        sudo cryptsetup luksClose elements
-      '')
     ];
 
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
