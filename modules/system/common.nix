@@ -83,6 +83,7 @@
       file
       gnumake
       kind
+      kopia
       krew
       kubectl
       kubernetes-helm
