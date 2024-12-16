@@ -108,6 +108,7 @@
       postgresql
       powertop
       pre-commit
+      pv-migrate
       python312Full
       socat
       sops
