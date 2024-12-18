@@ -16,7 +16,10 @@
     };
   };
   # https://github.com/longhorn/longhorn/issues/2166#issuecomment-1740179416
-  systemd.tmpfiles.rules = [
-    "L+ /usr/local/bin - - - - /run/current-system/sw/bin/"
-  ];
+  systemd = {
+    tmpfiles.rules = [
+      "L+ /usr/local/bin - - - - /run/current-system/sw/bin/"
+    ];
+    services.systemd-timesyncd.serviceConfig.RuntimeMaxSec = "1h";
+  };
 }
