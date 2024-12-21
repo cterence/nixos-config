@@ -2,7 +2,6 @@
   pkgs,
   lib,
   sops,
-  fileSystems,
   ...
 }:
 let
@@ -125,7 +124,7 @@ in
         BUCKET="velero-backup-tch"
         PATH_PREFIX="v1/kopia/"
         ENDPOINT="https://s3.eu-central-003.backblazeb2.com"
-        LOCAL_BASE_DIR="${fileSystems."/mnt/elements".mountPoint}/kopia-sync/repositories"
+        LOCAL_BASE_DIR="/mnt/elements/kopia-sync/repositories"
         B2_KEY_ID="$(${pkgs.coreutils}/bin/cat ${sops.secrets.b2-velero-backup-tch-key-id.path})"
         B2_KEY="$(${pkgs.coreutils}/bin/cat ${sops.secrets.b2-velero-backup-tch-key.path})"
         KOPIA_PASSWORD="$(${pkgs.coreutils}/bin/cat ${sops.secrets.kopia-password.path})"
