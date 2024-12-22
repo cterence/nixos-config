@@ -20,6 +20,9 @@
     tmpfiles.rules = [
       "L+ /usr/local/bin - - - - /run/current-system/sw/bin/"
     ];
-    services.systemd-timesyncd.serviceConfig.RuntimeMaxSec = "1h";
+    services = {
+      systemd-timesyncd.serviceConfig.RuntimeMaxSec = "1h";
+      tailscaled.serviceConfig.RuntimeMaxSec = "4h";
+    };
   };
 }
