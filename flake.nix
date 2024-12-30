@@ -78,7 +78,6 @@
         inherit (pkgs)
           aws-sso-util
           baywatch
-          google-chat-linux
           guacamole
           openfortivpn-webview
           playground
