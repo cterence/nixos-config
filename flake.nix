@@ -8,8 +8,11 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     baywatch = {
-      url = "github:padok-team/baywatch";
+      url = "github:padok-team/baywatch/fix/sort-fzf";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ghostty = {
+      url = "github:ghostty-org/ghostty";
     };
     home-manager = {
       url = "github:nix-community/home-manager";
