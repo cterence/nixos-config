@@ -116,6 +116,7 @@
       tfswitch
       tgswitch
       tig
+      tmux
       tree
       unzip
       usbutils
