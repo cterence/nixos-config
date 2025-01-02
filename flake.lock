@@ -162,11 +162,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1733859160,
-        "narHash": "sha256-+zouljO+7IeyDOZo4I8xGe2oEqK+7IuHJNrj3YL3nWI=",
+        "lastModified": 1735823209,
+        "narHash": "sha256-NWpVXiTrTp8x/MVOhL0aNK69MJBEon3RpD25Ys08vio=",
         "owner": "cterence",
         "repo": "nixos-work-config",
-        "rev": "6daed64b3547303b16464742ebdbcc94fff5e7ec",
+        "rev": "a7f91a734fcf975a6541c54a3f295f9ad18026a9",
         "type": "github"
       },
       "original": {
