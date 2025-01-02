@@ -83,6 +83,12 @@
       ];
     };
     firefox.enable = true;
+    ssh = {
+      startAgent = true;
+      extraConfig = ''
+        AddKeysToAgent yes
+      '';
+    };
   };
 
   hardware.graphics = {
