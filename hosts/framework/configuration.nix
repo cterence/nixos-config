@@ -6,7 +6,6 @@
   inputs,
   outputs,
   pkgs,
-  lib,
   config,
   plasma-manager,
   ...
@@ -56,10 +55,6 @@
   #     session    optional                    ${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so auto_start
   #   '';
   # };
-
-  programs.gnupg.agent = {
-    enableSSHSupport = lib.mkForce false;
-  };
 
   services = {
     fprintd.enable = true;
