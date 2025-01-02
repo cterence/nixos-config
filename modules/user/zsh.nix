@@ -17,7 +17,6 @@
         nhup = "cd ~/nixos && git pull --rebase --autostash && nh os switch ~/nixos && cd -";
         nixup = "cd ~/nixos && git pull --rebase --autostash && nixos-rebuild switch --use-remote-sudo --flake ~/nixos && cd -";
         src = "source $HOME/.zshrc";
-        ssh = "kitty +kitten ssh";
         tf = "terraform fmt && terraform";
         tg = "terragrunt hclfmt && terragrunt";
         watch = "watch ";

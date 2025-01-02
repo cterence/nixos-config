@@ -28,7 +28,7 @@
         favorite-apps = [
           "firefox.desktop"
           "code.desktop"
-          "kitty.desktop"
+          "com.mitchellh.ghostty.desktop"
           "org.gnome.Nautilus.desktop"
           "thunderbird.desktop"
           "spotify.desktop"
@@ -58,8 +58,8 @@
 
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
         binding = "<Control><Alt>t";
-        command = "kitty";
-        name = "kitty";
+        command = "ghostty";
+        name = "ghostty";
       };
 
       "org/gnome/settings-daemon/plugins/media-keys" = {

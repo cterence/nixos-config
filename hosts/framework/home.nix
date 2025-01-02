@@ -55,7 +55,6 @@ in
       b = "baywatch";
       bo = "baywatch open";
       bl = "baywatch login";
-      ssh = lib.mkForce "ssh"; # No kitty ssh alias
     };
 
     # https://askubuntu.com/a/1503121
