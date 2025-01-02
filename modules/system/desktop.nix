@@ -1,5 +1,5 @@
 # Contains the common configurations across all my personal computers.
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
 {
   boot.initrd.kernelModules = [ "amdgpu" ];
@@ -24,40 +24,36 @@
   };
 
   environment = {
-    systemPackages =
-      with pkgs;
-      [
-        air
-        appimage-run
-        avidemux
-        chromium
-        cobra-cli
-        delve
-        discord
-        filezilla
-        gimp
-        (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
-        gpu-screen-recorder
-        graphviz
-        kitty
-        libguestfs
-        nfs-utils
-        dc460ec7.libreoffice-fresh
-        nvtopPackages.amd
-        obsidian
-        qemu
-        spotify
-        templ
-        todoist-electron
-        virt-manager
-        vlc
-        wireshark
-        wl-clipboard
-        zed-editor
-      ]
-      ++ [
-        inputs.ghostty.packages.x86_64-linux.default
-      ];
+    systemPackages = with pkgs; [
+      air
+      appimage-run
+      avidemux
+      chromium
+      cobra-cli
+      delve
+      discord
+      filezilla
+      ghostty
+      gimp
+      (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
+      gpu-screen-recorder
+      graphviz
+      kitty
+      libguestfs
+      nfs-utils
+      dc460ec7.libreoffice-fresh
+      nvtopPackages.amd
+      obsidian
+      qemu
+      spotify
+      templ
+      todoist-electron
+      virt-manager
+      vlc
+      wireshark
+      wl-clipboard
+      zed-editor
+    ];
   };
 
   fonts.packages =
