@@ -22,6 +22,7 @@ let
     "awscli"
     "direnv"
     "fzf"
+    "ghostty"
     "git"
     "go"
     "htop"
