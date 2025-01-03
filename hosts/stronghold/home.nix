@@ -24,6 +24,7 @@ let
     "kitty"
     "mangohud"
     "nextcloud-client"
+    "ssh"
     "thunderbird"
     "vscode"
     "yt-dlp"

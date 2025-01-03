@@ -20,6 +20,7 @@ let
     "htop"
     "jq"
     "k9s"
+    "ssh"
     "zsh"
   ];
   # Create a list of all the file paths in the userModulePath
