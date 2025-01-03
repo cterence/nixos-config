@@ -14,7 +14,7 @@
         kns = "kubectl ns";
         ll = "ls -l";
         nfu = "nix flake update";
-        nhup = "cd ~/nixos && git pull --rebase --autostash && nh os switch ~/nixos && cd -";
+        nhup = "cd ~/nixos && git pull --rebase --autostash && nh os switch ~/nixos -- --show-trace && cd -";
         nixup = "cd ~/nixos && git pull --rebase --autostash && nixos-rebuild switch --use-remote-sudo --flake ~/nixos && cd -";
         src = "source $HOME/.zshrc";
         tf = "terraform fmt && terraform";
