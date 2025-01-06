@@ -76,10 +76,8 @@
     {
       packages = {
         inherit (pkgs)
-          aws-sso-util
           baywatch
           guacamole
-          openfortivpn-webview
           playground
           ;
       };
