@@ -29,7 +29,6 @@
   };
 
   hardware = {
-    pulseaudio.enable = false;
     bluetooth.enable = true;
   };
   security.rtkit.enable = true;
@@ -156,6 +155,7 @@
   };
 
   services = {
+    pulseaudio.enable = false;
     openssh.enable = true;
     tailscale = {
       enable = true;
