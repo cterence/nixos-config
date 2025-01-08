@@ -12,16 +12,18 @@
         ExecStart = "${pkgs.writeShellScript "add-ssh-keys" ''
           #!/run/current-system/sw/bin/bash
 
+          set -euo pipefail
+
           # Start the ssh-agent if not already running
-          if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+          if ! ${pkgs.procps}/bin/pgrep -u "$USER" ssh-agent > /dev/null; then
               eval "$(ssh-agent -s)"
               echo "Started agent because it was not running"
           fi
 
           # Add all valid private keys to the agent
           for key in ~/.ssh/*; do
-              if [[ -f "$key" && "$key" != *.pub && "$(head -c 5 "$key")" == "-----" ]]; then
-                  ssh-add "$key" 2>/dev/null
+              if [[ -f "$key" && "$key" != *.pub && "$(${pkgs.coreutils}/bin/head -c 5 "$key")" == "-----" ]]; then
+                  ${pkgs.openssh}/bin/ssh-add "$key" 2>/dev/null
                   echo "Added $key to SSH agent"
               fi
           done
