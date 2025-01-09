@@ -16,7 +16,7 @@
 
           # Start the ssh-agent if not already running
           if ! ${pkgs.procps}/bin/pgrep -u "$USER" ssh-agent > /dev/null; then
-              eval "$(ssh-agent -s)"
+              eval "$(${pkgs.openssh}/bin/ssh-agent -s)"
               echo "Started agent because it was not running"
           fi
 
