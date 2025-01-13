@@ -57,6 +57,10 @@
           echo $inputs | xargs nix flake lock
           unset inputs
         }
+
+        argodiff () {
+          argocd app diff $1 --grpc-web --local-repo-root $(git rev-parse --show-toplevel) --local $PWD --loglevel warn
+        }
       '';
       plugins = [
         {
