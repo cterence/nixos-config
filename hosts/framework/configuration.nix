@@ -111,6 +111,7 @@
         google-chat-linux
         google-chrome
         guacamole
+        har-to-k6
         k6
         kubent
         kubeshark

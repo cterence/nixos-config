@@ -78,6 +78,7 @@
         inherit (pkgs)
           baywatch
           guacamole
+          har-to-k6
           playground
           ;
       };
