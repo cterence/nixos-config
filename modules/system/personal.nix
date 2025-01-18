@@ -16,6 +16,7 @@
     systemPackages = with pkgs; [
       calibre
       mangohud
+      mp3gain
       nextcloud-client
       picard
       qbittorrent
