@@ -85,11 +85,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1730383855,
-        "narHash": "sha256-iopEFyQwlg7Rj9Sza8y6i3EPPnAIw/2T7iIOiajCHXA=",
+        "lastModified": 1737209375,
+        "narHash": "sha256-NBbbLCbLPUzwHir+IsjXvxi1QubylU6TpzXPbBm9D/E=",
         "owner": "cterence",
         "repo": "k0s-nix",
-        "rev": "4173b4c2018691c416dce4b68aef7c9ff0831c73",
+        "rev": "bd989ea9e8872a8160a9c97a5d5b48e560a50db9",
         "type": "github"
       },
       "original": {
