@@ -22,7 +22,10 @@
     ];
     services = {
       systemd-timesyncd.serviceConfig.RuntimeMaxSec = "1h";
-      tailscaled.serviceConfig.RuntimeMaxSec = "4h";
+      tailscaled.serviceConfig = {
+        RestartSec = "15s";
+        RuntimeMaxSec = "4h";
+      };
     };
   };
 }
