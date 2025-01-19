@@ -26,6 +26,7 @@ let
     "jq"
     "k9s"
     "ssh"
+    "tmux"
     "zsh"
   ];
   # Create a list of all the file paths in the userModulePath
