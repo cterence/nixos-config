@@ -71,6 +71,7 @@
 
   environment = {
     systemPackages = with pkgs; [
+      argocd
       awscli2
       bash
       code-server
