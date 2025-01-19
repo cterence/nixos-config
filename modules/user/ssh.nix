@@ -1,7 +1,15 @@
-{ pkgs, ... }:
 {
-  systemd.user = {
-    services.add-ssh-keys = {
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+
+{
+  options.enableSshAddKeys = lib.mkEnableOption "Automatically add all SSH keys to the SSH agent on boot";
+
+  config.systemd.user = {
+    services.add-ssh-keys = lib.mkIf config.enableSshAddKeys {
       Unit = {
         Description = "Add all SSH keys to the SSH agent";
       };

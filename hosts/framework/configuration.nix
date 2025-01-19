@@ -155,6 +155,8 @@
     };
   };
 
+  enableSshAddKeys = true;
+
   networking = {
     hostName = "framework"; # Define your hostname.
   };
