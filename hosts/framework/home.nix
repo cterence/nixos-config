@@ -138,6 +138,8 @@ in
     };
   };
 
+  enableSshAddKeys = true;
+
   nixpkgs.config.allowUnfree = true;
 
   # Let Home Manager install and manage itself.
