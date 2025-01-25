@@ -258,15 +258,18 @@
   nix = {
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     gc = {
-      automatic = false;
+      automatic = true;
       dates = "weekly";
       options = "--delete-older-than 30d";
       randomizedDelaySec = "1 hour";
     };
-    settings.experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+    settings = {
+      auto-optimise-store = true;
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+    };
     extraOptions = ''
       !include ${config.sops.secrets.nixos-access-tokens.path}
     '';
