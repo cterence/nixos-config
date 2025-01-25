@@ -73,16 +73,10 @@
           echo $((BR - 1)) > /sys/class/backlight/amdgpu_bl1/brightness
         '';
         after = [
-          "suspend.target"
-          "hibernate.target"
-          "hybrid-sleep.target"
-          "suspend-then-hibernate.target"
+          "systemd-suspend.target"
         ];
         wantedBy = [
-          "suspend.target"
-          "hibernate.target"
-          "hybrid-sleep.target"
-          "suspend-then-hibernate.target"
+          "systemd-suspend.target"
         ];
         serviceConfig = {
           User = "root";
