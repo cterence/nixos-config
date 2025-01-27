@@ -114,6 +114,7 @@
         k6
         kubent
         kubeshark
+        mysql-shell
         netcat-gnu
         networkmanager-openvpn
         networkmanager-vpnc
