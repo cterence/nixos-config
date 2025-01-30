@@ -27,7 +27,6 @@
     systemPackages = with pkgs; [
       air
       appimage-run
-      avidemux
       chromium
       cobra-cli
       delve

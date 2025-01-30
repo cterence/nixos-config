@@ -14,6 +14,7 @@
 
   environment = {
     systemPackages = with pkgs; [
+      avidemux
       calibre
       mangohud
       mp3gain
