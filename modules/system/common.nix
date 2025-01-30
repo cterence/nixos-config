@@ -257,12 +257,6 @@
 
   nix = {
     nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-      randomizedDelaySec = "1 hour";
-    };
     settings = {
       auto-optimise-store = true;
       experimental-features = [
