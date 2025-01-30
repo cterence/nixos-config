@@ -47,6 +47,7 @@
       spotify
       templ
       todoist-electron
+      undollar
       virt-manager
       vlc
       wireshark
