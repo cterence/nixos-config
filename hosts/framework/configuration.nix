@@ -32,7 +32,7 @@
 
   nixpkgs.overlays = [
     outputs.overlays.additions
-    outputs.overlays.pkgs-dc460ec7
+    outputs.overlays.pkgs-vlc3-0-20
   ];
 
   # Workaround for gdm

@@ -40,7 +40,7 @@
       kitty
       libguestfs
       nfs-utils
-      dc460ec7.libreoffice-fresh
+      libreoffice-fresh
       nvtopPackages.amd
       obsidian
       qemu
@@ -49,7 +49,7 @@
       todoist-electron
       undollar
       virt-manager
-      vlc
+      vlc3-0-20.vlc
       wireshark
       wl-clipboard
       zed-editor

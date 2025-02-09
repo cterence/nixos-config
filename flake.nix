@@ -3,9 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # FIXME: while libreoffice fails to build
-    nixpkgs-dc460ec7.url = "github:nixos/nixpkgs/dc460ec76cbff0e66e269457d7b728432263166c";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
+    # FIXME: https://www.reddit.com/r/VLC/comments/1dexl6y/some_opus_audio_tracks_to_videos_not_playing_in/
+    nixpkgs-vlc3-0-20.url = "github:nixos/nixpkgs/62b3c73a4e0e9ddc92de1c165492fce00c5027c4";
 
     baywatch = {
       url = "github:padok-team/baywatch/fix/sort-fzf";

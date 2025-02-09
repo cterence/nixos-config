@@ -15,8 +15,8 @@
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will
   # be accessible through 'pkgs.unstable'
-  pkgs-dc460ec7 = final: _prev: {
-    dc460ec7 = import inputs.nixpkgs-dc460ec7 {
+  pkgs-vlc3-0-20 = final: _prev: {
+    vlc3-0-20 = import inputs.nixpkgs-vlc3-0-20 {
       inherit (final) system;
       config.allowUnfree = true;
     };
