@@ -124,9 +124,8 @@
         pipenv
         playground
         pre-commit
-        python310Full
-        python311Packages.boto3
-        python311Packages.numpy
+        python313Packages.boto3
+        python313Packages.numpy
         redis
         slack
         sq

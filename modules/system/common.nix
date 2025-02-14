@@ -82,6 +82,7 @@
       ffmpeg
       file
       gnumake
+      ipcalc
       kind
       kopia
       krew
@@ -109,7 +110,7 @@
       powertop
       pre-commit
       pv-migrate
-      python312Full
+      python313Full
       socat
       sops
       tfautomv
