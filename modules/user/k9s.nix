@@ -22,13 +22,13 @@
         noExitOnCtrlC = false;
         ui = {
           enableMouse = false;
-          headless = false;
-          logoless = false;
+          headless = true;
+          logoless = true;
           crumbsless = false;
           reactive = false;
           noIcons = false;
         };
-        skipLatestRevCheck = false;
+        skipLatestRevCheck = true;
         disablePodCounting = false;
         shellPod = {
           image = "busybox";
@@ -49,9 +49,9 @@
         logger = {
           tail = 100;
           buffer = 5000;
-          sinceSeconds = -1;
+          sinceSeconds = 300;
           fullScreen = false;
-          textWrap = false;
+          textWrap = true;
           showTime = false;
         };
         thresholds = {
