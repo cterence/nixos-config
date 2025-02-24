@@ -9,7 +9,7 @@
     nixpkgs-vlc3-0-20.url = "github:nixos/nixpkgs/62b3c73a4e0e9ddc92de1c165492fce00c5027c4";
 
     baywatch = {
-      url = "github:padok-team/baywatch/fix/sort-fzf";
+      url = "github:padok-team/baywatch";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
