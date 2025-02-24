@@ -52,7 +52,6 @@
       vlc3-0-20.vlc
       wireshark
       wl-clipboard
-      zed-editor
     ];
   };
 
