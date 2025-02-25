@@ -18,8 +18,8 @@
       services = {
         sddm = {
           text = ''
-            auth            optional        ${pkgs.kwallet-pam}/lib/security/pam_kwallet5.so
-            session         optional        ${pkgs.kwallet-pam}/lib/security/pam_kwallet5.so auto_start
+            auth            optional        ${pkgs.kdePackages.kwallet-pam}/lib/security/pam_kwallet5.so
+            session         optional        ${pkgs.kdePackages.kwallet-pam}/lib/security/pam_kwallet5.so auto_start
           '';
         };
       };
@@ -37,15 +37,11 @@
     sessionVariables = {
       SSH_ASKPASS_REQUIRE = "prefer";
     };
-    systemPackages =
-      with pkgs;
-      [
-        kwallet-pam
-      ]
-      ++ (with kdePackages; [
-        kalk
-        ksshaskpass
-      ]);
+    systemPackages = with pkgs.kdePackages; [
+      kwallet-pam
+      kalk
+      ksshaskpass
+    ];
     plasma6.excludePackages = with pkgs.kdePackages; [
       elisa
       plasma-browser-integration
