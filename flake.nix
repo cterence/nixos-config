@@ -21,7 +21,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     k0s = {
-      url = "github:cterence/k0s-nix";
+      url = "github:johbo/k0s-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-index-database = {
