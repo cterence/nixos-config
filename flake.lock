@@ -64,11 +64,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1740432748,
-        "narHash": "sha256-BCeFtoJ/+LrZc03viRJWHfzAqqG8gPu/ikZeurv05xs=",
+        "lastModified": 1740494361,
+        "narHash": "sha256-Dd/GhJ9qKmUwuhgt/PAROG8J6YdU2ZjtJI9SQX5sVQI=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "c12dcc9b61429b2ad437a7d4974399ad8f910319",
+        "rev": "74f0a8546e3f2458c870cf90fc4b38ac1f498b17",
         "type": "github"
       },
       "original": {
@@ -84,15 +84,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1737209375,
-        "narHash": "sha256-NBbbLCbLPUzwHir+IsjXvxi1QubylU6TpzXPbBm9D/E=",
-        "owner": "cterence",
+        "lastModified": 1739731635,
+        "narHash": "sha256-fVNvxSrJgBQwlckf/OYJ70qc0HN9kWCFeNaOL+9Pj/U=",
+        "owner": "johbo",
         "repo": "k0s-nix",
-        "rev": "bd989ea9e8872a8160a9c97a5d5b48e560a50db9",
+        "rev": "9551750282b42820067889849ae6b271af25e5fb",
         "type": "github"
       },
       "original": {
-        "owner": "cterence",
+        "owner": "johbo",
         "repo": "k0s-nix",
         "type": "github"
       }
@@ -216,11 +216,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1739557722,
-        "narHash": "sha256-XikzLpPUDYiNyJ4w2SfRShdbSkIgE3btYdxCGInmtc4=",
+        "lastModified": 1740569341,
+        "narHash": "sha256-WV8nY2IOfWdzBF5syVgCcgOchg/qQtpYh6LECYS9XkY=",
         "owner": "nix-community",
         "repo": "plasma-manager",
-        "rev": "1f3e1f38dedbbb8aad77e184fb54ec518e2d9522",
+        "rev": "5eeb0172fb74392053b66a8149e61b5e191b2845",
         "type": "github"
       },
       "original": {
