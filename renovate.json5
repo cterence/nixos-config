@@ -1,0 +1,15 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "config:best-practices",
+    ":timezone(Europe/Paris)",
+    ":label(renovate)",
+    ":semanticPrefixFix",
+    ":separateMultipleMajorReleases",
+    ":automergeBranch",
+    ":automergeStableNonMajor",
+    ":automergeDigest",
+    ":rebaseStalePrs",
+    ":semanticCommits",
+  ],
+}
