@@ -136,7 +136,6 @@
         tflint-plugins.tflint-ruleset-aws
         tflint-plugins.tflint-ruleset-google
         typora
-        vault
         yatas
       ]
       ++ [
