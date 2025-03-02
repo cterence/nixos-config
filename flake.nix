@@ -78,6 +78,7 @@
       packages = {
         inherit (pkgs)
           baywatch
+          gowebly
           guacamole
           har-to-k6
           playground

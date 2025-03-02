@@ -15,7 +15,9 @@
   environment = {
     systemPackages = with pkgs; [
       # avidemux # failing to build and not often used: https://github.com/NixOS/nixpkgs/pull/376912
+      bun
       calibre
+      gowebly
       mangohud
       mp3gain
       nextcloud-client
