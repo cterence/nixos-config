@@ -29,6 +29,7 @@
       appimage-run
       chromium
       cobra-cli
+      code-cursor
       delve
       discord
       filezilla
