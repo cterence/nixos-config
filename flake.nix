@@ -80,7 +80,6 @@
           baywatch
           gowebly
           guacamole
-          har-to-k6
           playground
           ;
       };

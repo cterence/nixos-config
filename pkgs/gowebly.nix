@@ -2,22 +2,23 @@
   lib,
   buildGoModule,
   fetchFromGitHub,
+  go_1_24,
   versionCheckHook,
   nix-update-script,
 }:
 
-buildGoModule rec {
+buildGoModule.override { go = go_1_24; } rec {
   pname = "gowebly";
-  version = "2.7.2";
+  version = "3.0.0";
 
   src = fetchFromGitHub {
     owner = "gowebly";
     repo = "gowebly";
     tag = "v${version}";
-    hash = "sha256-T0JiyTa/ouM/ldd1Hr2dAePA8cqHfHMzq1njr8sEH0Q=";
+    hash = "sha256-t4TcUhHo3QLvgGfiKg/tbmmDZb3mI5AlTr1PB0ru1rU=";
   };
 
-  vendorHash = "sha256-2/jibPP6XE6e8aHE9vwJ4UiQ8fPsnLifCOaz3fZuakU=";
+  vendorHash = "sha256-N5L1oCVRM6GQipew8N9CL85jWY8Or/TQi8Z0rOWbyzQ=";
 
   env.CGO_ENABLED = 0;
 
