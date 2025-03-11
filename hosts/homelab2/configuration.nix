@@ -106,4 +106,10 @@
   virtualisation.containerd = {
     enable = true;
   };
+
+  environment = {
+    systemPackages = [
+      k0s.packages.x86_64-linux.k0s
+    ];
+  };
 }
