@@ -6,6 +6,7 @@
   inputs,
   outputs,
   k0s,
+  config,
   ...
 }:
 
@@ -26,6 +27,7 @@
   home-manager = {
     extraSpecialArgs = {
       inherit inputs;
+      inherit (config) sops fileSystems;
     };
     users = {
       "terence" = import ./home.nix;
@@ -63,47 +65,25 @@
 
   systemd.extraConfig = "DefaultLimitNOFILE=16384";
 
+  sops.secrets = {
+    "k0s-token" = {
+      path = "/etc/k0s/k0stoken";
+      mode = "0440";
+      sopsFile = ./secrets.yaml;
+      group = config.users.groups.keys.name;
+    };
+  };
+
   services.k0s = {
     enable = true;
-    role = "controller+worker";
-    isLeader = true;
+    role = "worker";
     spec = {
       api = {
-        address = "192.168.1.31";
+        address = "192.168.1.54";
         sans = [
-          "192.168.1.31"
-          "172.18.0.1"
-          "172.19.0.1"
-          "172.22.0.1"
-          "172.20.0.1"
-          "172.17.0.1"
-          "100.75.180.13"
-          "fe80::987c:cf64:426a:4e6"
-          "fe80::42:35ff:fec5:670a"
-          "fe80::42:41ff:fec9:8efd"
-          "fe80::42:dff:fe9d:22fb"
-          "fe80::42:6aff:feb5:37f5"
-          "fe80::d07e:2ff:fe4b:db1b"
-          "fe80::8c3a:a5ff:fe93:d39c"
-          "fe80::209f:deff:fec4:213c"
-          "fe80::5027:ccff:fed2:517"
-          "fe80::9480:bfff:fe15:ebeb"
-          "fe80::6c4e:18ff:fead:f736"
-          "fe80::bc34:f7ff:fed4:aad9"
-          "fe80::4865:fff:fe0d:b5c0"
-          "fe80::e859:5fff:fed3:5f25"
-          "fe80::6ceb:9cff:fe6a:b3b3"
-          "fe80::f850:30ff:fe9f:de90"
-          "fe80::8ce7:4aff:fe9d:1088"
-          "fe80::f0eb:8bff:fea2:1905"
-          "fe80::48d8:5ff:fe29:d7f4"
-          "fe80::e4ed:d9ff:fed2:50d3"
-          "fd7a:115c:a1e0::a501:b40d"
-          "fe80::ceef:d0ff:eae1:f67d"
+          "192.168.1.54"
         ];
       };
-      network.kuberouter.metricsPort = 8081;
-      storage.etcd.peerAddress = "192.168.1.31";
     };
   };
 
