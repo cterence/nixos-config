@@ -66,12 +66,6 @@
   systemd.extraConfig = "DefaultLimitNOFILE=16384";
 
   sops.secrets = {
-    "k0s-token" = {
-      path = "/etc/k0s/k0stoken";
-      mode = "0440";
-      sopsFile = ./secrets.yaml;
-      group = config.users.groups.keys.name;
-    };
     "b2-velero-backup-tch-key-id" = {
       mode = "0440";
       group = config.users.groups.keys.name;
@@ -94,12 +88,17 @@
 
   services.k0s = {
     enable = true;
-    role = "worker";
-    spec.api = {
-      address = "192.168.1.31";
-      sans = [
-        "192.168.1.31"
-      ];
+    role = "controller+worker";
+    isLeader = true;
+    spec = {
+      api = {
+        address = "192.168.1.54";
+        sans = [
+          "192.168.1.54"
+        ];
+      };
+      network.kuberouter.metricsPort = 8081;
+      storage.etcd.peerAddress = "192.168.1.54";
     };
   };
 
