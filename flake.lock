@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1740673858,
-        "narHash": "sha256-OYKBExCSltpWqk0lUBs4Zo7mofRYcACHOUaMGN7szhU=",
+        "lastModified": 1741812408,
+        "narHash": "sha256-os1VfjartLoodjGoeyYai98Kl5Qd/RDOnDU+QfWAy1o=",
         "owner": "padok-team",
         "repo": "baywatch",
-        "rev": "cb456621c85f5e32add972c8892380fd44d69e4d",
+        "rev": "eb6428e0e8968d136924f7846b596144f65b6e26",
         "type": "github"
       },
       "original": {
@@ -64,11 +64,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1741701235,
-        "narHash": "sha256-gBlb8R9gnjUAT5XabJeel3C2iEUiBHx3+91651y3Sqo=",
+        "lastModified": 1741791118,
+        "narHash": "sha256-4Y427uj0eql4yRU5rely3EcOlB9q457UDbG9omPtXiA=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "c630dfa8abcc65984cc1e47fb25d4552c81dd37e",
+        "rev": "18780912345970e5b546b1b085385789b6935a83",
         "type": "github"
       },
       "original": {
@@ -140,11 +140,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1741325094,
-        "narHash": "sha256-RUAdT8dZ6k/486vnu3tiNRrNW6+Q8uSD2Mq7gTX4jlo=",
+        "lastModified": 1741792691,
+        "narHash": "sha256-f0BVt1/cvA0DQ/q3rB+HY4g4tKksd03ZkzI4xehC2Ew=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "b48cc4dab0f9711af296fc367b6108cf7b8ccb16",
+        "rev": "e1f12151258b12c567f456d8248e4694e9390613",
         "type": "github"
       },
       "original": {
