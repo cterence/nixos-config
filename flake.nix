@@ -67,22 +67,59 @@
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       pkgs = forAllSystems (
         system:
-        nixpkgs.legacyPackages.${system} {
+        import nixpkgs {
+          inherit system;
           overlays = [
             self.overlays.default
           ];
         }
       );
+
+      # Common modules used across configurations
+      commonModules = [
+        home-manager.nixosModules.default
+        nix-index-database.nixosModules.nix-index
+        sops-nix.nixosModules.sops
+      ];
+
+      # Common special arguments
+      commonSpecialArgs = {
+        inherit inputs outputs;
+      };
+
+      mkSystem =
+        {
+          hostName,
+          extraModules ? [ ],
+          extraArgs ? { },
+        }:
+        nixpkgs.lib.nixosSystem {
+          specialArgs = commonSpecialArgs // extraArgs;
+          modules =
+            [
+              ./hosts/${hostName}/configuration.nix
+            ]
+            ++ commonModules
+            ++ extraModules;
+        };
+
+      mkHomelabSystem =
+        name:
+        mkSystem {
+          hostName = name;
+          extraModules = [ k0s.nixosModules.default ];
+          extraArgs = { inherit k0s; };
+        };
     in
     {
-      packages = {
-        inherit (pkgs)
+      packages = forAllSystems (system: {
+        inherit (pkgs.${system})
           baywatch
           gowebly
           guacamole
           playground
           ;
-      };
+      });
       overlays = import ./overlays { inherit inputs; };
       checks = forAllSystems (system: {
         pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
@@ -102,70 +139,27 @@
           buildInputs = self.checks.${system}.pre-commit-check.enabledPackages;
         };
       });
-      formatter = forAllSystems (system: {
-        ${system} = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
-      });
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
       nixosConfigurations = {
-        stronghold = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs;
-          };
-          modules = [
-            ./hosts/stronghold/configuration.nix
-            home-manager.nixosModules.default
-            nix-index-database.nixosModules.nix-index
-            sops-nix.nixosModules.sops
-          ];
+        stronghold = mkSystem {
+          hostName = "stronghold";
         };
-        t14s = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs;
-          };
-          modules = [
-            ./hosts/t14s/configuration.nix
-            home-manager.nixosModules.default
-            nix-index-database.nixosModules.nix-index
+        t14s = mkSystem {
+          hostName = "t14s";
+          extraModules = [
             nixos-hardware.nixosModules.lenovo-thinkpad-t14s-amd-gen1
-            sops-nix.nixosModules.sops
           ];
         };
-        homelab = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs k0s;
-          };
-          modules = [
-            ./hosts/homelab/configuration.nix
-            home-manager.nixosModules.default
-            k0s.nixosModules.default
-            nix-index-database.nixosModules.nix-index
-            sops-nix.nixosModules.sops
-          ];
-        };
-        homelab2 = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs k0s;
-          };
-          modules = [
-            ./hosts/homelab2/configuration.nix
-            home-manager.nixosModules.default
-            k0s.nixosModules.default
-            nix-index-database.nixosModules.nix-index
-            sops-nix.nixosModules.sops
-          ];
-        };
-        framework = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs plasma-manager;
-          };
-          modules = [
-            ./hosts/framework/configuration.nix
-            home-manager.nixosModules.default
+        homelab = mkHomelabSystem "homelab";
+        homelab2 = mkHomelabSystem "homelab2";
+        framework = mkSystem {
+          hostName = "framework";
+          extraModules = [
             kolide-launcher.nixosModules.kolide-launcher
             nixos-hardware.nixosModules.framework-13-7040-amd
-            nix-index-database.nixosModules.nix-index
             nixos-work-config.nixosModules.system
-            sops-nix.nixosModules.sops
           ];
+          extraArgs = { inherit plasma-manager; };
         };
       };
     };

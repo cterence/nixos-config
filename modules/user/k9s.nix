@@ -71,29 +71,39 @@ in
       };
     };
     plugin =
-      lib.attrsets.recursiveUpdate
-        (readYAML (
-          builtins.fetchurl {
+      let
+        pluginUrls = [
+          {
             url = "https://raw.githubusercontent.com/derailed/k9s/refs/heads/master/plugins/argocd.yaml";
             sha256 = "sha256:0176a2fvz6rck77hbgyii4d8v3sm32kmbp3y829d0grfxri6dq5s";
           }
-        ))
-        (
-          lib.attrsets.recursiveUpdate
-            (readYAML (
-              builtins.fetchurl {
-                url = "https://cloudnative-pg.io/documentation/current/samples/k9s/plugins.yml";
-                sha256 = "sha256:048r0nip3xggrgikplk117r0ffmz57mh211mcnj1grw6vjp93c5g";
-              }
-            ))
-            (
-              readYAML (
-                builtins.fetchurl {
-                  url = "https://raw.githubusercontent.com/derailed/k9s/refs/heads/master/plugins/blame.yaml";
-                  sha256 = "sha256:0rzxzxvp8brgh1xjainpk2dq269ak6xpmb5h7ibzx4wahcnrkgc3";
-                }
-              )
-            )
-        );
+          {
+            url = "https://cloudnative-pg.io/documentation/current/samples/k9s/plugins.yml";
+            sha256 = "sha256:048r0nip3xggrgikplk117r0ffmz57mh211mcnj1grw6vjp93c5g";
+          }
+          {
+            url = "https://raw.githubusercontent.com/derailed/k9s/refs/heads/master/plugins/blame.yaml";
+            sha256 = "sha256:0rzxzxvp8brgh1xjainpk2dq269ak6xpmb5h7ibzx4wahcnrkgc3";
+          }
+          {
+            url = "https://raw.githubusercontent.com/derailed/k9s/refs/heads/master/plugins/cert-manager.yaml";
+            sha256 = "sha256:1ak5cks7r6s21y55ljy7c7v0y8nyid4kxrxiiqd6vq1p774izj6g";
+          }
+          {
+            url = "https://raw.githubusercontent.com/derailed/k9s/refs/heads/master/plugins/external-secrets.yaml";
+            sha256 = "sha256:1mmpdinkjav323igfms1hy1aprlzngf6vls95ml4p7z72nlhkksx";
+          }
+          {
+            url = "https://raw.githubusercontent.com/derailed/k9s/refs/heads/master/plugins/remove-finalizers.yaml";
+            sha256 = "sha256:0ppqrsxs65fab7n0nr3jsq3rgnz88ynfw90wyrl2j138hjix0f5f";
+          }
+          {
+            url = "https://raw.githubusercontent.com/derailed/k9s/refs/heads/master/plugins/watch-events.yaml";
+            sha256 = "sha256:145disab0290vy59a0h6lmh0qa1kv10swdn5hxcqczgcrbxplbqx";
+          }
+        ];
+        fetchAndParsePlugin = urlInfo: readYAML (builtins.fetchurl urlInfo);
+      in
+      builtins.foldl' lib.attrsets.recursiveUpdate { } (map fetchAndParsePlugin pluginUrls);
   };
 }
