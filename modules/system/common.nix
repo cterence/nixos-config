@@ -111,6 +111,7 @@
       pre-commit
       pv-migrate
       python313Full
+      rclone
       socat
       sops
       tfautomv
