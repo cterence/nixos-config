@@ -41,6 +41,7 @@
       kwallet-pam
       kalk
       ksshaskpass
+      partitionmanager
     ];
     plasma6.excludePackages = with pkgs.kdePackages; [
       elisa
