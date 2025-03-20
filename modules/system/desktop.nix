@@ -56,24 +56,27 @@
     ];
   };
 
-  fonts.packages =
-    with pkgs;
-    [
-      noto-fonts
-      noto-fonts-cjk-sans
-      noto-fonts-emoji
-      liberation_ttf
-      fira-code-symbols
-      mplus-outline-fonts.githubRelease
-      dina-font
-      proggyfonts
-    ]
-    ++ (with pkgs.nerd-fonts; [
-      fira-code
-      jetbrains-mono
-      droid-sans-mono
-      meslo-lg
-    ]);
+  fonts = {
+    packages =
+      with pkgs;
+      [
+        noto-fonts
+        noto-fonts-cjk-sans
+        noto-fonts-emoji
+        liberation_ttf
+        fira-code-symbols
+        mplus-outline-fonts.githubRelease
+        dina-font
+        proggyfonts
+      ]
+      ++ (with pkgs.nerd-fonts; [
+        fira-code
+        jetbrains-mono
+        droid-sans-mono
+        meslo-lg
+      ]);
+    fontconfig.useEmbeddedBitmaps = true; # https://discourse.nixos.org/t/firefox-doesnt-render-noto-color-emojis/51202
+  };
 
   programs = {
     chromium = {
