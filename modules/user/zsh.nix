@@ -24,6 +24,7 @@
 
       localVariables = {
         PATH = "$PATH:$HOME/.local/bin:$HOME/.krew/bin";
+        TG_PROVIDER_CACHE = "1";
       };
 
       oh-my-zsh = {
