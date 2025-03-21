@@ -152,6 +152,7 @@
         };
         homelab = mkHomelabSystem "homelab";
         homelab2 = mkHomelabSystem "homelab2";
+        homelab3 = mkHomelabSystem "homelab3";
         framework = mkSystem {
           hostName = "framework";
           extraModules = [
