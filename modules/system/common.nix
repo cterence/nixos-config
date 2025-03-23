@@ -86,7 +86,6 @@
       kind
       kopia
       krew
-      krr
       kubectl
       kubernetes-helm
       libva-utils
