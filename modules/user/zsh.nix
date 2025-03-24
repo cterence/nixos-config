@@ -24,7 +24,15 @@
 
       localVariables = {
         PATH = "$PATH:$HOME/.local/bin:$HOME/.krew/bin";
+      };
+
+      sessionVariables = {
+        AWS_PAGER = "jq";
+        BINDIR = "$HOME/.local/bin";
+        EDITOR = "nano";
         TG_PROVIDER_CACHE = "1";
+        FZF_BASE = "$HOME/.nix-profile/bin";
+        NIXD_FLAGS = "-log=error";
       };
 
       oh-my-zsh = {

@@ -89,13 +89,7 @@ in
     #
     #  /etc/profiles/per-user/terence/etc/profile.d/hm-session-vars.sh
     #
-    sessionVariables = {
-      AWS_PAGER = "jq";
-      BINDIR = "$HOME/.local/bin";
-      EDITOR = "nano";
-      KUBE_EDITOR = "code --wait";
-      FZF_BASE = "$HOME/.nix-profile/bin";
-    };
+    sessionVariables = { };
 
     sessionPath = [
       "$HOME/.local/bin"

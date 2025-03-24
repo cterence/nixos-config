@@ -40,13 +40,7 @@ in
     homeDirectory = "/home/terence";
     stateVersion = "24.05";
     file = dotfilesAttrs;
-    sessionVariables = {
-      AWS_PAGER = "jq";
-      BINDIR = "$HOME/.local/bin";
-      EDITOR = "nano";
-      KUBE_EDITOR = "code --wait";
-      FZF_BASE = "$HOME/.nix-profile/bin";
-    };
+    sessionVariables = { };
 
     sessionPath = [
       "$HOME/.local/bin"
