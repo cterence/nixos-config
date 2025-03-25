@@ -12,6 +12,7 @@
         kctx = "kubectl ctx";
         kdebug = ''kubectl run shell-terence-$(cat /proc/sys/kernel/random/uuid | sed "s/[ - ] // g " | head -c 8; echo;) --image=ghcr.io/cterence/pkgx-bash -i --tty --rm'';
         kns = "kubectl ns";
+        hdu = "helm dep update";
         ll = "ls -l";
         nfu = "nix flake update";
         nhup = "cd ~/nixos && git pull --rebase --autostash && nh os switch ~/nixos -- --show-trace && cd -";
