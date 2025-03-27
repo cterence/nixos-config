@@ -17,6 +17,12 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@e50d5f73bfe71c2dd0aa4218de8f4afa59f8f81d # v16
       # https://status.nixos.org shows the last update time
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@a2bbe0274e3a0c4194390a1e445f734c597ebc37 # v24
         id: update-flake-lock
@@ -33,12 +39,12 @@ jobs:
             dependencies
           pr-assignees: cterence
           nix-options: "--access-tokens github.com=${{ secrets.GH_TOKEN_FOR_UPDATES }}"
-          token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          token: ${{ steps.generate-token.outputs.token }}
       - name: Create compare URLs
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         if: steps.update-flake-lock.outputs.pull-request-operation == 'created' || steps.update-flake-lock.outputs.pull-request-operation == 'updated'
         with:
-          github-token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          github-token: ${{ steps.generate-token.outputs.token }}
           script: |
             const comment = require('.github/scripts/comment')
             const compare = require('.github/scripts/compare')
