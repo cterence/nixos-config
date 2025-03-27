@@ -37,7 +37,6 @@ jobs:
             automated
             automerge
             dependencies
-          pr-assignees: cterence
           nix-options: "--access-tokens github.com=${{ secrets.GH_TOKEN_FOR_UPDATES }}"
           token: ${{ steps.generate-token.outputs.token }}
       - name: Create compare URLs
