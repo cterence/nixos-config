@@ -109,6 +109,7 @@
         glab
         google-chat-linux
         google-chrome
+        greenmask
         guacamole
         har-to-k6
         k6
