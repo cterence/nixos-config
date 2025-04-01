@@ -18,6 +18,7 @@
         "usb_storage"
         "usbhid"
         "sd_mod"
+        "dm_crypt"
       ];
       kernelModules = [ ];
     };
@@ -30,8 +31,8 @@
       device = "/dev/disk/by-uuid/c8afe7e6-3dcc-4b98-baac-1698ddeea155";
       fsType = "ext4";
     };
-    "/mnt/mx500" = {
-      device = "/dev/disk/by-uuid/eaebd5a8-f20c-4c56-a035-a8cdb23c3cb6";
+    "/mnt/mx500-02" = {
+      device = "/dev/disk/by-uuid/c1b5d2dc-c0c6-4dab-ba17-3ac7425e2a34";
       fsType = "ext4";
       options = [
         "users"

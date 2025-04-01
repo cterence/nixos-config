@@ -21,6 +21,7 @@
         "usbhid"
         "usb_storage"
         "sd_mod"
+        "dm_crypt"
       ];
       kernelModules = [ ];
     };
@@ -38,8 +39,8 @@
       device = "/dev/disk/by-uuid/71306661-b21b-4dc6-8981-a5972dfb7904";
       fsType = "ext4";
     };
-    "/mnt/870evo" = {
-      device = "/dev/disk/by-uuid/ac2a68b8-7f0e-4db9-939f-f9fb0ca1d66e";
+    "/mnt/mx500-01" = {
+      device = "/dev/disk/by-uuid/b5d27e7f-3fb0-4f22-98bc-f0a3fe77a7d7";
       fsType = "ext4";
       options = [
         "users"
