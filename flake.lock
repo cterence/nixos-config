@@ -190,6 +190,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-gcloud-511": {
+      "locked": {
+        "lastModified": 1740060455,
+        "narHash": "sha256-20+cGyvpuu9ojP3qbXbxKklEbR7CsPNewTGpZ0VsMPc=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "7d1a1590911cb3a8a1d3a906f78235d63b910d62",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "7d1a1590911cb3a8a1d3a906f78235d63b910d62",
+        "type": "github"
+      }
+    },
     "nixpkgs-vlc3-0-20": {
       "locked": {
         "lastModified": 1718176989,
@@ -261,6 +277,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixos-work-config": "nixos-work-config",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-gcloud-511": "nixpkgs-gcloud-511",
         "nixpkgs-vlc3-0-20": "nixpkgs-vlc3-0-20",
         "plasma-manager": "plasma-manager",
         "pre-commit-hooks": "pre-commit-hooks",

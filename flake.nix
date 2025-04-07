@@ -8,6 +8,10 @@
     # FIXME: https://www.reddit.com/r/VLC/comments/1dexl6y/some_opus_audio_tracks_to_videos_not_playing_in/
     nixpkgs-vlc3-0-20.url = "github:nixos/nixpkgs/62b3c73a4e0e9ddc92de1c165492fce00c5027c4";
 
+    # FIXME: gcloud beta compute ssh yields an error
+    # INVALID_ARGUMENT: This region is not supported by the OS Login Sign API at this time.
+    nixpkgs-gcloud-511.url = "github:nixos/nixpkgs/7d1a1590911cb3a8a1d3a906f78235d63b910d62";
+
     baywatch = {
       url = "github:padok-team/baywatch";
       inputs.nixpkgs.follows = "nixpkgs";

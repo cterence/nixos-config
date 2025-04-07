@@ -35,7 +35,9 @@
       filezilla
       ghostty
       gimp
-      (google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.gke-gcloud-auth-plugin ])
+      (gcloud-494.google-cloud-sdk.withExtraComponents [
+        gcloud-494.google-cloud-sdk.components.gke-gcloud-auth-plugin
+      ])
       gpu-screen-recorder
       graphviz
       kitty
