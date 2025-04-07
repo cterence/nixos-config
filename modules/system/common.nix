@@ -51,6 +51,8 @@
       "::1"
     ];
     networkmanager.dns = "none";
+    # Use dnsmasq as a DNS server when trying to connect to a captive portal (remove nameservers and disable dnscrypt-proxy2 as well)
+    # networkmanager.dns = "dnsmasq";
 
     firewall.enable = false;
   };
