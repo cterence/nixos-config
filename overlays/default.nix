@@ -22,8 +22,8 @@
     };
   };
 
-  pkgs-gcloud-494 = final: _prev: {
-    gcloud-494 = import inputs.nixpkgs-gcloud-511 {
+  pkgs-gcloud-511 = final: _prev: {
+    gcloud-511 = import inputs.nixpkgs-gcloud-511 {
       inherit (final) system;
       config.allowUnfree = true;
     };
