@@ -49,7 +49,7 @@
       obsidian
       qemu
       spotify
-      supersonic-wayland
+      supersonic
       templ
       todoist-electron
       undollar
