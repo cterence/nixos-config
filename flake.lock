@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1744989400,
-        "narHash": "sha256-ZQ6NPSnMbXtWFpS7V1luSqnr32Xd9ytUDzbtLFJIFF0=",
+        "lastModified": 1745038194,
+        "narHash": "sha256-LMWpFFv5Curcqtbr3GthgWfhq4Yvl//OjU3J6isBSlc=",
         "owner": "padok-team",
         "repo": "baywatch",
-        "rev": "2b81b7c132cfaf209aff8cf5ba98f048f31a9f83",
+        "rev": "a5eb6c855fa90f88765c22292691af8fe658f6dd",
         "type": "github"
       },
       "original": {
@@ -64,11 +64,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1745033012,
-        "narHash": "sha256-KjBMsjCzIOWgDqTZMYIriPFmHiQcCb2RhuDh5JF0VVc=",
+        "lastModified": 1745071558,
+        "narHash": "sha256-bvcatss0xodcdxXm0LUSLPd2jjrhqO3yFSu3stOfQXg=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "ae84885d9b6b62dc58ccd300e9ab321a3fd9f9c7",
+        "rev": "9676e8a52a177d80c8a42f66566362a6d74ecf78",
         "type": "github"
       },
       "original": {
@@ -125,11 +125,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1744518957,
-        "narHash": "sha256-RLBSWQfTL0v+7uyskC5kP6slLK1jvIuhaAh8QvB75m4=",
+        "lastModified": 1745120797,
+        "narHash": "sha256-owQ0VQ+7cSanTVPxaZMWEzI22Q4bGnuvhVjLAJBNQ3E=",
         "owner": "nix-community",
         "repo": "nix-index-database",
-        "rev": "4fc9ea78c962904f4ea11046f3db37c62e8a02fd",
+        "rev": "69716041f881a2af935021c1182ed5b0cc04d40e",
         "type": "github"
       },
       "original": {
