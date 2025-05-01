@@ -53,7 +53,7 @@
       history.size = 10000;
       history.path = "${config.xdg.dataHome}/zsh/history";
 
-      initExtra = ''
+      initContent = ''
         source ~/.p10k.zsh
 
         nb () {
