@@ -154,7 +154,6 @@
             nixos-hardware.nixosModules.lenovo-thinkpad-t14s-amd-gen1
           ];
         };
-        homelab = mkHomelabSystem "homelab";
         homelab2 = mkHomelabSystem "homelab2";
         homelab3 = mkHomelabSystem "homelab3";
         framework = mkSystem {
