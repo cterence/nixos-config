@@ -21,6 +21,7 @@
       mangohud
       mp3gain
       nextcloud-client
+      nicotine-plus
       picard
       qbittorrent
       signal-desktop
