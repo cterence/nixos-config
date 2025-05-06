@@ -98,6 +98,7 @@
           [
             automation
             bastion
+            ssh
           ]
         ))
         brightnessctl
