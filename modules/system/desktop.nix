@@ -41,7 +41,6 @@
       gpu-screen-recorder
       graphviz
       kdiskmark
-      kitty
       libguestfs
       nfs-utils
       libreoffice-fresh

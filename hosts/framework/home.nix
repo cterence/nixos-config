@@ -29,7 +29,6 @@ let
     "jq"
     "k9s"
     "kde-plasma"
-    "kitty"
     "ssh"
     "thunderbird"
     "vscode"

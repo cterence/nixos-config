@@ -27,7 +27,6 @@ let
     "htop"
     "jq"
     "k9s"
-    "kitty"
     "mangohud"
     "nextcloud-client"
     "ssh"
