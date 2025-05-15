@@ -37,12 +37,17 @@
     sessionVariables = {
       SSH_ASKPASS_REQUIRE = "prefer";
     };
-    systemPackages = with pkgs.kdePackages; [
-      kwallet-pam
-      kalk
-      ksshaskpass
-      partitionmanager
-    ];
+    systemPackages =
+      with pkgs.kdePackages;
+      [
+        kwallet-pam
+        kalk
+        ksshaskpass
+        partitionmanager
+      ]
+      ++ [
+        pkgs.ktailctl
+      ];
     plasma6.excludePackages = with pkgs.kdePackages; [
       elisa
       plasma-browser-integration
