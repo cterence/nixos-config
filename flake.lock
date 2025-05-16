@@ -1,25 +1,5 @@
 {
   "nodes": {
-    "baywatch": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1746714603,
-        "narHash": "sha256-cHNfL7KNdak6iHtizDjt/RJzHVgBs9TwxojW1TQDDgU=",
-        "owner": "padok-team",
-        "repo": "baywatch",
-        "rev": "ad5a0e0e2763bb83d42cfb4dfa27ca0c318ca022",
-        "type": "github"
-      },
-      "original": {
-        "owner": "padok-team",
-        "repo": "baywatch",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -98,27 +78,6 @@
         "type": "github"
       }
     },
-    "kolide-launcher": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1746473343,
-        "narHash": "sha256-F0YpvaRbAjh4qKrBGip+CxvAkCIY3yKVKGitK1gsqkk=",
-        "owner": "kolide",
-        "repo": "nix-agent",
-        "rev": "73d5caa7acefdf77d77fcee5ef4e482dbcaf8e47",
-        "type": "github"
-      },
-      "original": {
-        "owner": "kolide",
-        "ref": "main",
-        "repo": "nix-agent",
-        "type": "github"
-      }
-    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -152,26 +111,6 @@
         "owner": "NixOS",
         "ref": "master",
         "repo": "nixos-hardware",
-        "type": "github"
-      }
-    },
-    "nixos-work-config": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1742832358,
-        "narHash": "sha256-ljTdVKjjwzEZOn7A4Li6ih61hiDzswXdq/9Zhs4A+DE=",
-        "owner": "cterence",
-        "repo": "nixos-work-config",
-        "rev": "47bc0776cd5b3708cad2408c38ef014d98a8edc8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "cterence",
-        "repo": "nixos-work-config",
         "type": "github"
       }
     },
@@ -270,13 +209,10 @@
     },
     "root": {
       "inputs": {
-        "baywatch": "baywatch",
         "home-manager": "home-manager",
         "k0s": "k0s",
-        "kolide-launcher": "kolide-launcher",
         "nix-index-database": "nix-index-database",
         "nixos-hardware": "nixos-hardware",
-        "nixos-work-config": "nixos-work-config",
         "nixpkgs": "nixpkgs",
         "nixpkgs-gcloud-511": "nixpkgs-gcloud-511",
         "nixpkgs-vlc3-0-20": "nixpkgs-vlc3-0-20",

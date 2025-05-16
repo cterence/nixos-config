@@ -24,10 +24,9 @@
       ];
       kernelModules = [ ];
       luks.devices = {
-        "luks-323ca694-6610-43ac-8301-12a6147b0b7d".device =
-          "/dev/disk/by-uuid/323ca694-6610-43ac-8301-12a6147b0b7d";
-        "luks-f9c699d2-ebfa-4767-9eb5-e852889a08df".device =
-          "/dev/disk/by-uuid/f9c699d2-ebfa-4767-9eb5-e852889a08df";
+        "luks-4b590ea4-74aa-406d-b325-e6f38292b109".device =
+          "/dev/disk/by-uuid/4b590ea4-74aa-406d-b325-e6f38292b109";
+        "luks-swap".device = "/dev/disk/by-uuid/b7c92962-97e1-476b-af1f-24603487f6c0";
       };
     };
     kernelModules = [ "kvm-amd" ];
@@ -37,11 +36,11 @@
 
   fileSystems = {
     "/" = {
-      device = "/dev/disk/by-uuid/479b8eaf-bbd2-4664-93e9-35a5c5048916";
+      device = "/dev/disk/by-uuid/4ff41aa5-dbf3-4c42-b085-1565cc1ee4e1";
       fsType = "ext4";
     };
     "/boot" = {
-      device = "/dev/disk/by-uuid/A2CD-2965";
+      device = "/dev/disk/by-uuid/A3FE-1A71";
       fsType = "vfat";
       options = [
         "fmask=0077"
@@ -52,7 +51,7 @@
 
   swapDevices = [
     {
-      device = "/dev/mapper/luks-f9c699d2-ebfa-4767-9eb5-e852889a08df";
+      device = "/dev/disk/by-uuid/cd15c08d-21ee-4630-955f-e14a453e828d";
     }
   ];
 

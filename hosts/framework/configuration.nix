@@ -6,7 +6,6 @@
   inputs,
   outputs,
   pkgs,
-  config,
   plasma-manager,
   ...
 }:
@@ -59,7 +58,6 @@
 
   services = {
     fprintd.enable = true;
-    kolide-launcher.enable = true;
     printing = {
       enable = true;
     };
@@ -77,73 +75,60 @@
   };
   sops = {
     secrets = {
-      "kolide-k2-secret" = {
-        path = "/etc/kolide-k2/secret";
-        mode = "0440";
-        group = config.users.groups.keys.name;
-        sopsFile = ./secrets.yaml;
-      };
     };
   };
 
   environment = {
-    systemPackages =
-      with pkgs;
-      [
-        aws-sso-util
-        aws-vault
-        # c31898ad.azure-cli
-        (azure-cli.withExtensions (
-          with azure-cli-extensions;
-          [
-            automation
-            bastion
-            ssh
-          ]
-        ))
-        brightnessctl
-        bruno
-        # checkov
-        copilot-cli
-        filezilla
-        git-crypt
-        git-filter-repo
-        glab
-        google-chat-linux
-        google-chrome
-        greenmask
-        guacamole
-        har-to-k6
-        k6
-        kubent
-        kubeshark
-        mysql-shell
-        netcat-gnu
-        networkmanager-openvpn
-        networkmanager-vpnc
-        obs-studio
-        openfortivpn
-        openfortivpn-webview
-        pipenv
-        playground
-        pre-commit
-        python313Packages.boto3
-        python313Packages.numpy
-        redis
-        slack
-        sq
-        sshuttle
-        ssm-session-manager-plugin
-        teams-for-linux
-        tflint
-        tflint-plugins.tflint-ruleset-aws
-        tflint-plugins.tflint-ruleset-google
-        typora
-        yatas
-      ]
-      ++ [
-        inputs.baywatch.packages.x86_64-linux.default
-      ];
+    systemPackages = with pkgs; [
+      aws-sso-util
+      aws-vault
+      # c31898ad.azure-cli
+      (azure-cli.withExtensions (
+        with azure-cli-extensions;
+        [
+          automation
+          bastion
+          ssh
+        ]
+      ))
+      brightnessctl
+      bruno
+      # checkov
+      copilot-cli
+      filezilla
+      git-crypt
+      git-filter-repo
+      glab
+      google-chat-linux
+      google-chrome
+      greenmask
+      har-to-k6
+      k6
+      kubent
+      kubeshark
+      mysql-shell
+      netcat-gnu
+      networkmanager-openvpn
+      networkmanager-vpnc
+      obs-studio
+      openfortivpn
+      openfortivpn-webview
+      pipenv
+      pre-commit
+      python313Packages.boto3
+      python313Packages.numpy
+      redis
+      slack
+      sq
+      sshuttle
+      ssm-session-manager-plugin
+      teams-for-linux
+      tflint
+      tflint-plugins.tflint-ruleset-aws
+      tflint-plugins.tflint-ruleset-google
+      typora
+      yatas
+    ];
   };
 
   home-manager = {
@@ -177,6 +162,6 @@
     # and migrated your data accordingly.
     #
     # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-    stateVersion = "24.05"; # Did you read the comment?
+    stateVersion = "24.11"; # Did you read the comment?
   };
 }

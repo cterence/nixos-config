@@ -267,6 +267,7 @@
         "nix-command"
         "flakes"
       ];
+      download-buffer-size = 524288000; # 500MB
     };
     extraOptions = ''
       !include ${config.sops.secrets.nixos-access-tokens.path}

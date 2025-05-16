@@ -12,16 +12,8 @@
     # INVALID_ARGUMENT: This region is not supported by the OS Login Sign API at this time.
     nixpkgs-gcloud-511.url = "github:nixos/nixpkgs/7d1a1590911cb3a8a1d3a906f78235d63b910d62";
 
-    baywatch = {
-      url = "github:padok-team/baywatch";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    kolide-launcher = {
-      url = "github:/kolide/nix-agent/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     k0s = {
@@ -30,10 +22,6 @@
     };
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixos-work-config = {
-      url = "github:cterence/nixos-work-config";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     plasma-manager = {
@@ -56,10 +44,8 @@
       self,
       home-manager,
       k0s,
-      kolide-launcher,
       nix-index-database,
       nixos-hardware,
-      nixos-work-config,
       nixpkgs,
       plasma-manager,
       sops-nix,
@@ -118,10 +104,6 @@
     {
       packages = forAllSystems (system: {
         inherit (pkgs.${system})
-          baywatch
-          gowebly
-          guacamole
-          playground
           ;
       });
       overlays = import ./overlays { inherit inputs; };
@@ -159,9 +141,7 @@
         framework = mkSystem {
           hostName = "framework";
           extraModules = [
-            kolide-launcher.nixosModules.kolide-launcher
             nixos-hardware.nixosModules.framework-13-7040-amd
-            nixos-work-config.nixosModules.system
           ];
           extraArgs = { inherit plasma-manager; };
         };
