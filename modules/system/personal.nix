@@ -22,6 +22,7 @@
       mp3gain
       nextcloud-client
       nicotine-plus
+      opencloud-desktop
       picard
       qbittorrent
       signal-desktop
