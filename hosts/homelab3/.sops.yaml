@@ -1,5 +1,5 @@
 keys:
-  - &homelab3: age1can73zkeq8v9r4a8egrmrnx753jdd2fss9l08jmc8pvh3jyptf2spz20nu
+  - &homelab3 age1can73zkeq8v9r4a8egrmrnx753jdd2fss9l08jmc8pvh3jyptf2spz20nu
 creation_rules:
   - path_regex: secrets.yaml
     key_groups:

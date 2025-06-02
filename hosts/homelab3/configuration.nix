@@ -56,8 +56,7 @@
 
   services.k0s = {
     enable = true;
-    role = "controller+worker";
-    isLeader = true;
+    role = "worker";
     spec = {
       api = {
         address = "192.168.1.54";
@@ -65,8 +64,6 @@
           "192.168.1.54"
         ];
       };
-      network.kuberouter.metricsPort = 8081;
-      storage.etcd.peerAddress = "192.168.1.54";
     };
   };
 
