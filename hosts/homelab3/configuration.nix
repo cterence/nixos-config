@@ -17,6 +17,7 @@
   nixpkgs.overlays = [
     outputs.overlays.additions
     k0s.overlays.default
+    outputs.overlays.pkgs-util-linux-2-40
   ];
 
   home-manager = {
@@ -44,30 +45,30 @@
 
   systemd.extraConfig = "DefaultLimitNOFILE=16384";
 
-  # sops.secrets = {
-  #   "k0s-token" = {
-  #     path = "/etc/k0s/k0stoken";
-  #     mode = "0440";
-  #     sopsFile = ./secrets.yaml;
-  #     group = config.users.groups.keys.name;
-  #   };
-  # };
+  sops.secrets = {
+    "k0s-token" = {
+      path = "/etc/k0s/k0stoken";
+      mode = "0440";
+      sopsFile = ./secrets.yaml;
+      group = config.users.groups.keys.name;
+    };
+  };
 
-  # services.k0s = {
-  #   enable = true;
-  #   role = "controller+worker";
-  #   isLeader = true;
-  #   spec = {
-  #     api = {
-  #       address = "192.168.1.54";
-  #       sans = [
-  #         "192.168.1.54"
-  #       ];
-  #     };
-  #     network.kuberouter.metricsPort = 8081;
-  #     storage.etcd.peerAddress = "192.168.1.54";
-  #   };
-  # };
+  services.k0s = {
+    enable = true;
+    role = "controller+worker";
+    isLeader = true;
+    spec = {
+      api = {
+        address = "192.168.1.54";
+        sans = [
+          "192.168.1.54"
+        ];
+      };
+      network.kuberouter.metricsPort = 8081;
+      storage.etcd.peerAddress = "192.168.1.54";
+    };
+  };
 
   virtualisation.containerd = {
     enable = true;
@@ -76,6 +77,7 @@
   environment = {
     systemPackages = [
       k0s.packages.x86_64-linux.k0s
+      util-linux-2-40.util-linux
     ];
   };
 }

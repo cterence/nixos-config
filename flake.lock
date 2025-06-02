@@ -130,19 +130,19 @@
         "type": "github"
       }
     },
-    "nixpkgs-gcloud-511": {
+    "nixpkgs-util-linux-2-40": {
       "locked": {
-        "lastModified": 1740060455,
-        "narHash": "sha256-20+cGyvpuu9ojP3qbXbxKklEbR7CsPNewTGpZ0VsMPc=",
+        "lastModified": 1742537590,
+        "narHash": "sha256-qOE4wUJ4yPjMzFd0BYmbDvbDUTDdheJ7kg7NRasmn4k=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "7d1a1590911cb3a8a1d3a906f78235d63b910d62",
+        "rev": "d5d2bf0bfde75a08d3b04f93ceaed88291b8593e",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "7d1a1590911cb3a8a1d3a906f78235d63b910d62",
+        "rev": "d5d2bf0bfde75a08d3b04f93ceaed88291b8593e",
         "type": "github"
       }
     },
@@ -214,7 +214,7 @@
         "nix-index-database": "nix-index-database",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-gcloud-511": "nixpkgs-gcloud-511",
+        "nixpkgs-util-linux-2-40": "nixpkgs-util-linux-2-40",
         "nixpkgs-vlc3-0-20": "nixpkgs-vlc3-0-20",
         "plasma-manager": "plasma-manager",
         "pre-commit-hooks": "pre-commit-hooks",

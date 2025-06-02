@@ -27,7 +27,7 @@
   nixpkgs.overlays = [
     outputs.overlays.additions
     outputs.overlays.pkgs-vlc3-0-20
-    outputs.overlays.pkgs-gcloud-511
+    outputs.overlays.pkgs-util-linux-2-40
   ];
 
   networking = {

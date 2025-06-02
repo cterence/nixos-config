@@ -8,9 +8,8 @@
     # FIXME: https://www.reddit.com/r/VLC/comments/1dexl6y/some_opus_audio_tracks_to_videos_not_playing_in/
     nixpkgs-vlc3-0-20.url = "github:nixos/nixpkgs/62b3c73a4e0e9ddc92de1c165492fce00c5027c4";
 
-    # FIXME: gcloud beta compute ssh yields an error
-    # INVALID_ARGUMENT: This region is not supported by the OS Login Sign API at this time.
-    nixpkgs-gcloud-511.url = "github:nixos/nixpkgs/7d1a1590911cb3a8a1d3a906f78235d63b910d62";
+    # FIXME: https://github.com/util-linux/util-linux/issues/3474
+    nixpkgs-util-linux-2-40.url = "github:nixos/nixpkgs/d5d2bf0bfde75a08d3b04f93ceaed88291b8593e";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -103,8 +102,7 @@
     in
     {
       packages = forAllSystems (system: {
-        inherit (pkgs.${system})
-          ;
+        inherit (pkgs.${system}) ;
       });
       overlays = import ./overlays { inherit inputs; };
       checks = forAllSystems (system: {
