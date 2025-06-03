@@ -48,7 +48,7 @@
       ];
     };
     "/mnt/elements" = {
-      device = "/dev/disk/by-uuid/59c35643-ee1a-42ef-ab04-18965d910d61";
+      device = "/dev/disk/by-uuid/fd25a6c7-4e9d-4838-9375-ca13460b05b";
       fsType = "ext4";
       options = [
         "users"
