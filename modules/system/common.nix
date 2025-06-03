@@ -74,6 +74,7 @@
   environment = {
     systemPackages = with pkgs; [
       argocd
+      attic-client
       awscli2
       bash
       code-server
@@ -268,6 +269,10 @@
         "flakes"
       ];
       download-buffer-size = 524288000; # 500MB
+      trusted-users = [
+        "root"
+        "terence"
+      ];
     };
     extraOptions = ''
       !include ${config.sops.secrets.nixos-access-tokens.path}
