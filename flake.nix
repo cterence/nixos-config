@@ -9,7 +9,7 @@
     nixpkgs-vlc3-0-20.url = "github:nixos/nixpkgs/62b3c73a4e0e9ddc92de1c165492fce00c5027c4";
 
     # FIXME: https://github.com/util-linux/util-linux/issues/3474
-    nixpkgs-util-linux-2-40.url = "github:nixos/nixpkgs/d5d2bf0bfde75a08d3b04f93ceaed88291b8593e";
+    nixpkgs-util-linux-with-patches.url = "github:nixos/nixpkgs/79aa28e0c752fb3dbc9b2cf3c618402be4846083";
 
     home-manager = {
       url = "github:nix-community/home-manager";

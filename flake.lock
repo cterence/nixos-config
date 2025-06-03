@@ -146,6 +146,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-util-linux-with-patches": {
+      "locked": {
+        "lastModified": 1748497371,
+        "narHash": "sha256-8G5oQboJ1CbWqPTwSgsZMrSvANZ01uleySktIa7CNm4=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "79aa28e0c752fb3dbc9b2cf3c618402be4846083",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "79aa28e0c752fb3dbc9b2cf3c618402be4846083",
+        "type": "github"
+      }
+    },
     "nixpkgs-vlc3-0-20": {
       "locked": {
         "lastModified": 1718176989,
@@ -214,7 +230,7 @@
         "nix-index-database": "nix-index-database",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-util-linux-2-40": "nixpkgs-util-linux-2-40",
+        "nixpkgs-util-linux-with-patches": "nixpkgs-util-linux-with-patches",
         "nixpkgs-vlc3-0-20": "nixpkgs-vlc3-0-20",
         "plasma-manager": "plasma-manager",
         "pre-commit-hooks": "pre-commit-hooks",

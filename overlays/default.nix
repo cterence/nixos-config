@@ -28,4 +28,11 @@
       config.allowUnfree = true;
     };
   };
+
+  pkgs-util-linux-with-patches = final: _prev: {
+    util-linux-with-patches = import inputs.nixpkgs-util-linux-with-patches {
+      inherit (final) system;
+      config.allowUnfree = true;
+    };
+  };
 }

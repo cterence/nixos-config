@@ -7,6 +7,8 @@
   outputs,
   k0s,
   config,
+  pkgs,
+  lib,
   ...
 }:
 
@@ -22,6 +24,7 @@
   nixpkgs.overlays = [
     outputs.overlays.additions
     k0s.overlays.default
+    outputs.overlays.pkgs-util-linux-with-patches
   ];
 
   home-manager = {
@@ -85,6 +88,19 @@
       sopsFile = ./secrets.yaml;
     };
   };
+
+  systemd.services.k0scontroller.path = lib.mkForce (
+    with pkgs;
+    [
+      coreutils
+      findutils
+      gnugrep
+      gnused
+      kmod
+      systemd
+      util-linux-with-patches.util-linux.withPatches
+    ]
+  );
 
   services.k0s = {
     enable = true;

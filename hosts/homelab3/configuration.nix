@@ -3,6 +3,8 @@
   outputs,
   k0s,
   config,
+  pkgs,
+  lib,
   ...
 }:
 
@@ -17,7 +19,7 @@
   nixpkgs.overlays = [
     outputs.overlays.additions
     k0s.overlays.default
-    outputs.overlays.pkgs-util-linux-2-40
+    outputs.overlays.pkgs-util-linux-with-patches
   ];
 
   home-manager = {
@@ -54,6 +56,19 @@
     };
   };
 
+  systemd.services.k0sworker.path = lib.mkForce (
+    with pkgs;
+    [
+      coreutils
+      findutils
+      gnugrep
+      gnused
+      kmod
+      systemd
+      util-linux-with-patches.util-linux.withPatches
+    ]
+  );
+
   services.k0s = {
     enable = true;
     role = "worker";
@@ -74,7 +89,6 @@
   environment = {
     systemPackages = [
       k0s.packages.x86_64-linux.k0s
-      util-linux-2-40.util-linux
     ];
   };
 }
