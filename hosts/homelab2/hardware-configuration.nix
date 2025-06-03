@@ -47,14 +47,14 @@
         "nofail"
       ];
     };
-    "/mnt/elements" = {
-      device = "/dev/disk/by-uuid/fd25a6c7-4e9d-4838-9375-ca13460b05b";
-      fsType = "ext4";
-      options = [
-        "users"
-        "nofail"
-      ];
-    };
+    # "/mnt/elements" = {
+    #   device = "/dev/disk/by-uuid/fd25a6c7-4e9d-4838-9375-ca13460b05b";
+    #   fsType = "ext4";
+    #   options = [
+    #     "users"
+    #     "nofail"
+    #   ];
+    # };
     "/boot" = {
       device = "/dev/disk/by-uuid/C8AD-CF95";
       fsType = "vfat";
