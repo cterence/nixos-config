@@ -24,6 +24,7 @@ jobs:
         host:
           - framework
           - t14s
+          - homelab2
       fail-fast: false
     steps:
       - name: Free up disk space
@@ -41,11 +42,12 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@21a544727d0c62386e78b4befe52d19ad12692e3 # v17
-      - name: Set up public cache
-        uses: cachix/cachix-action@0fc020193b5a1fa3ac4575aa3a7d3aa6a35435ad # v16
+      - name: Setup Attic cache
+        uses: ryanccn/attic-action@f6b7e98e9ba10c6db4841e4996cd3fe4bdb3f3ed # v0
         with:
-          name: cterence-nixfiles
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          endpoint: https://attic.terence.cloud
+          cache: homelab
+          token: ${{ secrets.ATTIC_TOKEN }}
       - name: Build
         run: |
           sudo systemctl set-environment NIX_GITHUB_PRIVATE_USERNAME=${{ github.repository_owner }}
