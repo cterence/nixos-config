@@ -18,7 +18,6 @@
         variant = "intl";
       };
     };
-
     kbfs.enable = true;
     flatpak.enable = true;
   };

@@ -15,7 +15,8 @@
         hdu = "helm dep update";
         ll = "ls -l";
         nfu = "nix flake update";
-        nhup = "cd ~/nixos && git pull --rebase --autostash && nh os switch ~/nixos -- --show-trace && cd - && attic push homelab /run/current-system";
+        atticpush = "nix path-info --all --json | jq -r 'keys[]' | egrep -v '.drv|.drv.chroot|.check|.lock' | attic push homelab --stdin";
+        nhup = "cd ~/nixos && git pull --rebase --autostash && nh os switch ~/nixos -- --show-trace && cd - && atticpush";
         nixup = "cd ~/nixos && git pull --rebase --autostash && nixos-rebuild switch --use-remote-sudo --flake ~/nixos && cd -";
         src = "source $HOME/.zshrc";
         tf = "terraform fmt && terraform";
