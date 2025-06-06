@@ -20,6 +20,7 @@
   ];
 
   nixpkgs.overlays = [
+    inputs.nix-alien.overlays.default
     outputs.overlays.additions
     outputs.overlays.pkgs-vlc3-0-20
   ];
