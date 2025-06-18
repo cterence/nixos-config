@@ -11,6 +11,7 @@
       };
     };
     xserver.enable = false;
+    gnome.gcr-ssh-agent.enable = false;
   };
 
   security = {
