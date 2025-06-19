@@ -20,6 +20,7 @@
     };
     kbfs.enable = true;
     flatpak.enable = true;
+    gnome.gcr-ssh-agent.enable = false;
   };
 
   environment = {
