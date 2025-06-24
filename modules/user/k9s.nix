@@ -70,7 +70,7 @@ in
         };
       };
     };
-    plugin =
+    plugins =
       let
         pluginUrls = [
           {
