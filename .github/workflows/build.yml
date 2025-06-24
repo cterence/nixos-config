@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         host:
-          - framework
+          - p14s
           - t14s
           - homelab2
       fail-fast: false
