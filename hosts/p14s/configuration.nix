@@ -80,6 +80,7 @@
       k6
       kubent
       kubeshark
+      linear
       mysql-shell
       netcat-gnu
       networkmanager-openvpn
