@@ -147,6 +147,13 @@
           ];
           extraArgs = { inherit plasma-manager; };
         };
+        p14s = mkSystem {
+          hostName = "p14s";
+          extraModules = [
+            nixos-hardware.nixosModules.lenovo-thinkpad-p14s-amd-gen5
+          ];
+          extraArgs = { inherit plasma-manager; };
+        };
       };
     };
 }
