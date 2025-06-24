@@ -7,6 +7,7 @@
   outputs,
   pkgs,
   plasma-manager,
+  config,
   ...
 }:
 {
@@ -113,6 +114,8 @@
       "terence" = import ./home.nix;
     };
   };
+
+  environment.etc.timezone.text = config.time.timeZone;
 
   networking = {
     hostName = "p14s"; # Define your hostname.
