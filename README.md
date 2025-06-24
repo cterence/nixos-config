@@ -26,11 +26,12 @@ I'm still new to the nix ecosystem, so you might see some slop, but it works for
   - Generate a new `age` key:
     ```shell
     nix-shell -p age
+    mkdir -p ~/.config/sops/age
     age-keygen -o ~/.config/sops/age/keys.txt
     ```
   - Update the `modules/system/.sops.yaml` file with the new key directly in GitHub
 - On an existing host
-  - Run `sops updatekeys modules/system/secrets.yaml`
+  - Run `cd nixos/modules/system && sops updatekeys secrets.yaml`
   - Commit & push
 - On the new host
   - Pull the repo
