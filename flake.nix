@@ -27,6 +27,10 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-work-config = {
+      url = "github:cterence/nixos-work-config";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     plasma-manager = {
       url = "github:nix-community/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -49,6 +53,7 @@
       k0s,
       nix-index-database,
       nixos-hardware,
+      nixos-work-config,
       nixpkgs,
       plasma-manager,
       sops-nix,
@@ -151,6 +156,7 @@
           hostName = "p14s";
           extraModules = [
             nixos-hardware.nixosModules.lenovo-thinkpad-p14s-amd-gen5
+            nixos-work-config.nixosModules.system
           ];
           extraArgs = { inherit plasma-manager; };
         };

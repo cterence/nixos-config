@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  inputs,
   ...
 }:
 
@@ -39,8 +40,9 @@ let
   ) userModuleNames;
 in
 {
-  imports = userModules;
-
+  imports = userModules ++ [
+    inputs.nixos-work-config.nixosModules.home-manager
+  ];
   # Overrides
   programs = {
     awscli.settings = lib.mkForce {

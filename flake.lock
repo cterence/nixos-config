@@ -171,6 +171,26 @@
         "type": "github"
       }
     },
+    "nixos-work-config": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1750838112,
+        "narHash": "sha256-RzGBWHCMX3Y7/q63Y17v5Nu9McGAYjgezpJhuQIO8YA=",
+        "owner": "cterence",
+        "repo": "nixos-work-config",
+        "rev": "011ce995c189ea4a1c39b56ea7f5fbbdd844e148",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cterence",
+        "repo": "nixos-work-config",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1750506804,
@@ -271,6 +291,7 @@
         "nix-alien": "nix-alien",
         "nix-index-database": "nix-index-database_2",
         "nixos-hardware": "nixos-hardware",
+        "nixos-work-config": "nixos-work-config",
         "nixpkgs": "nixpkgs",
         "nixpkgs-util-linux-with-patches": "nixpkgs-util-linux-with-patches",
         "nixpkgs-vlc3-0-20": "nixpkgs-vlc3-0-20",
