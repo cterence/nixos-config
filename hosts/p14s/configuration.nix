@@ -6,6 +6,7 @@
   inputs,
   outputs,
   pkgs,
+  lib,
   plasma-manager,
   config,
   ...
@@ -47,6 +48,10 @@
   #   '';
   # };
 
+  boot = {
+    kernelPackages = lib.mkForce pkgs.linuxPackages;
+  };
+
   services = {
     fprintd.enable = true;
     printing = {
@@ -66,41 +71,22 @@
 
   environment = {
     systemPackages = with pkgs; [
-      aws-sso-util
-      aws-vault
       bruno
-      copilot-cli
+      cockroachdb
       filezilla
       git-crypt
       git-filter-repo
-      glab
-      google-chat-linux
       google-chrome
-      greenmask
-      har-to-k6
-      k6
       kubent
       kubeshark
       linear
-      mysql-shell
       netcat-gnu
-      networkmanager-openvpn
-      networkmanager-vpnc
-      obs-studio
-      openfortivpn
-      openfortivpn-webview
       pipenv
       pre-commit
-      python313Packages.boto3
-      python313Packages.numpy
       redis
       slack
       sq
       sshuttle
-      ssm-session-manager-plugin
-      tflint
-      tflint-plugins.tflint-ruleset-aws
-      tflint-plugins.tflint-ruleset-google
       typora
     ];
   };
