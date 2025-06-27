@@ -6,7 +6,6 @@
   inputs,
   outputs,
   pkgs,
-  lib,
   plasma-manager,
   config,
   ...
@@ -48,10 +47,6 @@
   #   '';
   # };
 
-  boot = {
-    kernelPackages = lib.mkForce pkgs.linuxPackages;
-  };
-
   services = {
     fprintd.enable = true;
     printing = {
@@ -74,15 +69,11 @@
       bruno
       cockroachdb
       filezilla
-      git-crypt
-      git-filter-repo
       google-chrome
       kubent
       kubeshark
       linear
       netcat-gnu
-      pipenv
-      pre-commit
       redis
       slack
       sq
