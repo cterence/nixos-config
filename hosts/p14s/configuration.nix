@@ -66,6 +66,7 @@
 
   environment = {
     systemPackages = with pkgs; [
+      act
       bruno
       cockroachdb
       filezilla
