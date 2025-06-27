@@ -86,6 +86,7 @@
       file
       gnumake
       ipcalc
+      killall
       kind
       kopia
       krew
