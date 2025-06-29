@@ -20,7 +20,7 @@
     };
     kbfs.enable = true;
     flatpak.enable = true;
-    gnome.gcr-ssh-agent.enable = false;
+    gnome.gcr-ssh-agent.enable = true;
   };
 
   environment = {
@@ -123,12 +123,6 @@
       ];
     };
     firefox.enable = true;
-    ssh = {
-      startAgent = true;
-      extraConfig = ''
-        AddKeysToAgent yes
-      '';
-    };
   };
 
   hardware.graphics = {
