@@ -104,6 +104,6 @@ in
         ];
         fetchAndParsePlugin = urlInfo: readYAML (builtins.fetchurl urlInfo);
       in
-      builtins.foldl' lib.attrsets.recursiveUpdate { } (map fetchAndParsePlugin pluginUrls);
+      (builtins.foldl' lib.attrsets.recursiveUpdate { } (map fetchAndParsePlugin pluginUrls)).plugins;
   };
 }
