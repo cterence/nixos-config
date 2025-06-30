@@ -68,6 +68,7 @@
     systemPackages = with pkgs; [
       act
       bruno
+      buf
       cockroachdb
       filezilla
       google-chrome
