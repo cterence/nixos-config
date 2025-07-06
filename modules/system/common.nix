@@ -84,6 +84,7 @@
       entr
       ffmpeg
       file
+      glab
       gnumake
       ipcalc
       killall

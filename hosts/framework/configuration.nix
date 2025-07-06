@@ -98,7 +98,6 @@
       filezilla
       git-crypt
       git-filter-repo
-      glab
       google-chat-linux
       google-chrome
       greenmask
