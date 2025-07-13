@@ -77,6 +77,7 @@
       attic-client
       awscli2
       bash
+      cmctl
       code-server
       cryptsetup
       dig
