@@ -81,6 +81,9 @@
       sq
       sshuttle
       typora
+      wine
+      winetricks
+      samba
     ];
   };
 
