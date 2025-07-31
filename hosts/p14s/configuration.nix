@@ -69,6 +69,7 @@
       act
       bruno
       buf
+      claude-code
       cockroachdb
       filezilla
       google-chrome
