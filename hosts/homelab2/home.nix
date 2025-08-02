@@ -118,7 +118,7 @@ in
 
         # Configuration
         BUCKET="velero-backup-tch"
-        PATH_PREFIX="v1/kopia/"
+        PATH_PREFIX="v2/kopia/"
         ENDPOINT="https://s3.eu-central-003.backblazeb2.com"
         LOCAL_BASE_DIR="/mnt/elements/kopia-sync/repositories"
         B2_KEY_ID="$(${pkgs.coreutils}/bin/cat ${sops.secrets.b2-velero-backup-tch-key-id.path})"
