@@ -27,7 +27,7 @@ jobs:
           - homelab2
       fail-fast: false
     concurrency:
-      group: build
+      group: ${{ github.workflow }}-${{ github.ref }}-${{ matrix.host }}
       cancel-in-progress: true
     steps:
       - name: Free up disk space
