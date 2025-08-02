@@ -66,7 +66,7 @@
     stateVersion = "23.11"; # Did you read the comment?
   };
 
-  systemd.extraConfig = "DefaultLimitNOFILE=16384";
+  systemd.settings.Manager = "DefaultLimitNOFILE=16384";
 
   sops.secrets = {
     "b2-velero-backup-tch-key-id" = {

@@ -26,6 +26,9 @@ jobs:
           - t14s
           - homelab2
       fail-fast: false
+    concurrency:
+      group: build
+      cancel-in-progress: true
     steps:
       - name: Free up disk space
         uses: AdityaGarg8/remove-unwanted-software@90e01b21170618765a73370fcc3abbd1684a7793

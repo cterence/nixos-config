@@ -45,7 +45,7 @@
     stateVersion = "24.05"; # Did you read the comment?
   };
 
-  systemd.extraConfig = "DefaultLimitNOFILE=16384";
+  systemd.settings.Manager = "DefaultLimitNOFILE=16384";
 
   sops.secrets = {
     "k0s-token" = {
