@@ -30,11 +30,9 @@
       chromium
       cobra-cli
       (code-cursor.overrideAttrs (previousAttrs: {
-        postFixup =
-          previousAttrs.postFixup
-          + ''
-            sed -i -e "s|StartupWMClass=.*|StartupWMClass=cursor-url-handler|" $out/share/applications/cursor-url-handler.desktop
-          '';
+        postFixup = previousAttrs.postFixup + ''
+          sed -i -e "s|StartupWMClass=.*|StartupWMClass=cursor-url-handler|" $out/share/applications/cursor-url-handler.desktop
+        '';
       }))
       delve
       discord

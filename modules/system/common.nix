@@ -77,12 +77,16 @@
       attic-client
       awscli2
       bash
+      bat
       cmctl
       code-server
       cryptsetup
       dig
+      du-dust
       efibootmgr
       entr
+      eza
+      fd
       ffmpeg
       file
       glab

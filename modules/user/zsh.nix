@@ -8,20 +8,24 @@
       syntaxHighlighting.enable = true;
 
       shellAliases = {
+        atticpush = "nix path-info --all --json | jq -r 'keys[]' | egrep -v '.drv|.drv.chroot|.check|.lock' | attic push homelab --stdin";
+        cat = "bat";
+        du = "dust";
+        hdu = "helm dep update";
         k = "kubectl";
         kctx = "kubectl ctx";
         kdebug = ''kubectl run shell-terence-$(cat /proc/sys/kernel/random/uuid | sed "s/[ - ] // g " | head -c 8; echo;) --image=ghcr.io/cterence/pkgx-bash -i --tty --rm'';
         kns = "kubectl ns";
-        hdu = "helm dep update";
+        ls = "eza";
         ll = "ls -l";
         nfu = "nix flake update";
-        atticpush = "nix path-info --all --json | jq -r 'keys[]' | egrep -v '.drv|.drv.chroot|.check|.lock' | attic push homelab --stdin";
         nhup = "cd ~/nixos && git pull --rebase --autostash && nh os switch ~/nixos -- --show-trace && cd - && atticpush";
         nixup = "cd ~/nixos && git pull --rebase --autostash && nixos-rebuild switch --use-remote-sudo --flake ~/nixos && cd -";
         src = "source $HOME/.zshrc";
         tf = "terraform";
         tg = "terragrunt";
         watch = "watch ";
+        find = "fd";
       };
 
       localVariables = {
