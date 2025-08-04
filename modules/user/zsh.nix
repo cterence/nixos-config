@@ -25,7 +25,6 @@
         tf = "terraform";
         tg = "terragrunt";
         watch = "watch ";
-        find = "fd";
       };
 
       localVariables = {
