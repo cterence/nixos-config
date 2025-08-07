@@ -19,6 +19,10 @@
       url = "github:johbo/k0s-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-ai-tools = {
+      url = "github:numtide/nix-ai-tools";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-alien = {
       url = "github:thiagokokada/nix-alien";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -57,6 +61,7 @@
       nixpkgs,
       plasma-manager,
       sops-nix,
+      nix-ai-tools,
       ...
     }@inputs:
     let
@@ -93,12 +98,11 @@
         }:
         nixpkgs.lib.nixosSystem {
           specialArgs = commonSpecialArgs // extraArgs;
-          modules =
-            [
-              ./hosts/${hostName}/configuration.nix
-            ]
-            ++ commonModules
-            ++ extraModules;
+          modules = [
+            ./hosts/${hostName}/configuration.nix
+          ]
+          ++ commonModules
+          ++ extraModules;
         };
 
       mkHomelabSystem =
@@ -158,7 +162,7 @@
             nixos-hardware.nixosModules.lenovo-thinkpad-p14s-amd-gen5
             nixos-work-config.nixosModules.system
           ];
-          extraArgs = { inherit plasma-manager; };
+          extraArgs = { inherit plasma-manager nix-ai-tools; };
         };
       };
     };

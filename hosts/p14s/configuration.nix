@@ -7,6 +7,7 @@
   outputs,
   pkgs,
   plasma-manager,
+  nix-ai-tools,
   config,
   ...
 }:
@@ -65,27 +66,33 @@
   };
 
   environment = {
-    systemPackages = with pkgs; [
-      act
-      bruno
-      buf
-      claude-code
-      cockroachdb
-      filezilla
-      google-chrome
-      kubent
-      kubeshark
-      linear
-      netcat-gnu
-      redis
-      slack
-      sq
-      sshuttle
-      typora
-      wine
-      winetricks
-      samba
-    ];
+    systemPackages =
+      with pkgs;
+      [
+        act
+        bruno
+        buf
+        claude-code
+        cockroachdb
+        filezilla
+        google-chrome
+        kubent
+        kubeshark
+        linear
+        netcat-gnu
+        redis
+        slack
+        sq
+        sshuttle
+        typora
+        wine
+        winetricks
+        samba
+      ]
+      ++ (with nix-ai-tools.packages.${pkgs.system}; [
+        claude-desktop
+        crush
+      ]);
   };
 
   home-manager = {
