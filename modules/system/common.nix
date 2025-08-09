@@ -103,6 +103,7 @@
       manix
       mariadb-client
       mlocate
+      net-tools
       neofetch
       neovim
       nil
@@ -124,6 +125,7 @@
       rclone
       socat
       sops
+      tcpdump
       tfautomv
       tfswitch
       tgswitch
