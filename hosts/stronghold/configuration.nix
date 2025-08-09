@@ -2,7 +2,12 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ inputs, outputs, ... }:
+{
+  inputs,
+  outputs,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -30,6 +35,12 @@
     outputs.overlays.pkgs-vlc3-0-20
     outputs.overlays.pkgs-util-linux-2-40
   ];
+
+  environment = {
+    systemPackages = with pkgs; [
+      rpcs3
+    ];
+  };
 
   networking = {
     hostName = "stronghold"; # Define your hostname.
