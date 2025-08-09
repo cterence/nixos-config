@@ -3,6 +3,7 @@
   inputs,
   pkgs,
   config,
+  lib,
   ...
 }:
 
@@ -47,14 +48,33 @@
   networking = {
     networkmanager.enable = true;
     nameservers = [
-      "127.0.0.1"
+      "127.0.0.1" # Remove if using dnscrypt-proxy2
       "::1"
     ];
-    networkmanager.dns = "none";
+    # networkmanager.dns = "none";
     # Use dnsmasq as a DNS server when trying to connect to a captive portal (remove nameservers and disable dnscrypt-proxy2 as well)
-    # networkmanager.dns = "dnsmasq";
+    networkmanager.dns = "dnsmasq";
 
-    firewall.enable = false;
+    firewall = {
+      enable = false;
+      allowedTCPPorts = [
+        80
+        443
+        6443
+        9443
+      ];
+      allowedUDPPorts = [
+        53
+      ];
+      extraCommands = ''
+        ip6tables --table nat --flush OUTPUT
+        ${lib.flip (lib.concatMapStringsSep "\n") [ "udp" "tcp" ] (proto: ''
+          ip6tables --table nat --append OUTPUT \
+            --protocol ${proto} --destination ::1 --destination-port 53 \
+            --jump REDIRECT --to-ports 51
+        '')}
+      '';
+    };
   };
 
   # Fix for https://github.com/NixOS/nixpkgs/issues/180175#issuecomment-1658731959
@@ -182,10 +202,11 @@
     envfs.enable = true;
 
     dnscrypt-proxy2 = {
-      enable = true;
+      enable = false;
       settings = {
         ipv6_servers = true;
         require_dnssec = true;
+        listen_addresses = [ "[::1]:51" ];
 
         sources.public-resolvers = {
           urls = [
