@@ -98,6 +98,7 @@
       awscli2
       bash
       bat
+      btop
       cmctl
       code-server
       cryptsetup
