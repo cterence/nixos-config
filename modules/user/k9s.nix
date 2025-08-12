@@ -79,7 +79,7 @@ in
           }
           {
             url = "https://cloudnative-pg.io/documentation/current/samples/k9s/plugins.yml";
-            sha256 = "sha256:1jj75adq5szp0rap5gpsfmqv12wb6xm7z40x1saiikmcwyajxxqw";
+            sha256 = "sha256:1ry763515dd28wivzxya2a1dcdh9awj020mvszmrzz52zwxjvaf5";
           }
           {
             url = "https://raw.githubusercontent.com/derailed/k9s/refs/heads/master/plugins/blame.yaml";
