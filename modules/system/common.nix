@@ -103,6 +103,7 @@
       code-server
       cryptsetup
       dig
+      docker-buildx
       du-dust
       efibootmgr
       entr
