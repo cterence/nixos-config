@@ -121,6 +121,7 @@
       kubectl
       kubernetes-helm
       libva-utils
+      lm_sensors
       lsof
       manix
       mariadb-client
