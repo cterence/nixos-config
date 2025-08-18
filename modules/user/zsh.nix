@@ -9,7 +9,6 @@
 
       shellAliases = {
         atticpush = "nix path-info --all --json | jq -r 'keys[]' | egrep -v '.drv|.drv.chroot|.check|.lock' | attic push homelab --stdin";
-        cat = "bat";
         du = "dust";
         hdu = "helm dep update";
         k = "kubectl";
