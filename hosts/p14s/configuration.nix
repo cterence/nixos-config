@@ -84,6 +84,7 @@
         slack
         sq
         sshuttle
+        temporal-cli
         typora
         wine
         winetricks
