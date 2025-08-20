@@ -72,7 +72,6 @@
         act
         bruno
         buf
-        claude-code
         cockroachdb
         filezilla
         google-chrome
@@ -91,7 +90,7 @@
         samba
       ]
       ++ (with nix-ai-tools.packages.${pkgs.system}; [
-        claude-desktop
+        claude-code
         crush
       ]);
   };
