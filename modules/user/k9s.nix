@@ -99,7 +99,7 @@ in
           }
           {
             url = "https://raw.githubusercontent.com/derailed/k9s/refs/heads/master/plugins/watch-events.yaml";
-            sha256 = "sha256:145disab0290vy59a0h6lmh0qa1kv10swdn5hxcqczgcrbxplbqx";
+            sha256 = "sha256:1sxdykap7kqqjfcrsz9fb6m7573vnglzcah007kn2vcshr3qn26r";
           }
         ];
         fetchAndParsePlugin = urlInfo: readYAML (builtins.fetchurl urlInfo);

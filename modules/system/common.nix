@@ -98,6 +98,7 @@
       awscli2
       bash
       bat
+      bc
       btop
       cmctl
       code-server
