@@ -99,7 +99,7 @@
     extraSpecialArgs = {
       inherit inputs;
     };
-    sharedModules = [ plasma-manager.homeManagerModules.plasma-manager ];
+    sharedModules = [ plasma-manager.homeModules.plasma-manager ];
     users = {
       "terence" = import ./home.nix;
     };
