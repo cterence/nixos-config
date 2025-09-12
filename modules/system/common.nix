@@ -145,7 +145,7 @@
       powertop
       pre-commit
       pv-migrate
-      python313Full
+      python313
       rclone
       socat
       sops
