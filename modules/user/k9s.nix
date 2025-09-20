@@ -91,7 +91,7 @@ in
           }
           {
             url = "https://raw.githubusercontent.com/derailed/k9s/refs/heads/master/plugins/external-secrets.yaml";
-            sha256 = "sha256:1mmpdinkjav323igfms1hy1aprlzngf6vls95ml4p7z72nlhkksx";
+            sha256 = "sha256:17g5mdzgf1v7lwy5v2viahcfdcfn8l6i6q20b9r6r5iwls8nmkgx";
           }
           {
             url = "https://raw.githubusercontent.com/derailed/k9s/refs/heads/master/plugins/remove-finalizers.yaml";
