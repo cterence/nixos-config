@@ -205,7 +205,7 @@
     # https://discourse.nixos.org/t/add-bin-bash-to-avoid-unnecessary-pain/5673/63
     envfs.enable = true;
 
-    dnscrypt-proxy2 = {
+    dnscrypt-proxy = {
       enable = true;
       settings = {
         ipv6_servers = true;
