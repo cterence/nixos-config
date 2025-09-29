@@ -115,6 +115,7 @@
       glab
       gnumake
       ipcalc
+      jqp
       killall
       kind
       kopia
