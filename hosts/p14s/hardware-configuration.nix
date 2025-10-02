@@ -29,6 +29,9 @@
     };
     kernelModules = [ "kvm-amd" ];
     extraModulePackages = [ ];
+    kernelParams = [
+      "mt7925e.disable_aspm=1" # Disable specifically for mt7925
+    ];
   };
 
   fileSystems."/" = {
