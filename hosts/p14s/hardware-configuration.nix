@@ -30,6 +30,7 @@
     kernelModules = [ "kvm-amd" ];
     extraModulePackages = [ ];
     kernelParams = [
+      "pcie_aspm=off"
       "mt7925e.disable_aspm=1" # Disable specifically for mt7925
     ];
   };
