@@ -47,6 +47,7 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@786fff0690178f1234e4e1fe9b536e94f5433196 # v20
       - name: Setup Attic cache
         uses: ryanccn/attic-action@7fbafba3978e86e585cb68a82c08b30f3672b62d # v0
+        continue-on-error: true
         with:
           endpoint: https://attic.terence.cloud
           cache: homelab
