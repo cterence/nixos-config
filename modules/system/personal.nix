@@ -15,7 +15,7 @@
 
   environment = {
     systemPackages = with pkgs; [
-      avidemux
+      # avidemux # https://github.com/NixOS/nixpkgs/issues/445447
       audacity
       calibre
       mangohud
