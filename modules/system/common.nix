@@ -112,6 +112,7 @@
       fd
       ffmpeg
       file
+      gcc
       glab
       gnumake
       ipcalc
