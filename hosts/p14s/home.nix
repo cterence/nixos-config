@@ -29,6 +29,7 @@ let
     "jq"
     "k9s"
     "kde-plasma"
+    "nssdb"
     "ssh"
     "thunderbird"
     "vscode"

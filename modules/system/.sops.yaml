@@ -16,3 +16,12 @@ creation_rules:
           - *stronghold
           - *t14s
           - *p14s
+  - path_regex: .*client\.p12$
+    key_groups:
+      - age:
+          - *framework
+          - *homelab2
+          - *homelab3
+          - *stronghold
+          - *t14s
+          - *p14s

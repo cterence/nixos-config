@@ -139,6 +139,7 @@
       nixfmt-rfc-style
       nmap
       nodejs_20
+      nssTools
       nurl
       openssl
       pciutils
@@ -287,6 +288,20 @@
       };
       "nix-daemon-environment" = {
         path = "/etc/nixos/nix-daemon-environment";
+        mode = "0440";
+        group = config.users.groups.keys.name;
+        owner = config.users.users.terence.name;
+      };
+      "mtls-homelab-client-cert-password" = {
+        mode = "0440";
+        group = config.users.groups.keys.name;
+        owner = config.users.users.terence.name;
+      };
+      # sops --input-type binary --output-type binary -e path/to/client.p12 > mtls-homelab-client-cert.json
+      "mtls-homelab-client-cert" = {
+        sopsFile = ./mtls-homelab-client-cert.json;
+        format = "binary";
+        path = "/etc/ssl/private/mtls-homelab-client-cert.p12";
         mode = "0440";
         group = config.users.groups.keys.name;
         owner = config.users.users.terence.name;
