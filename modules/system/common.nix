@@ -293,16 +293,16 @@
         group = config.users.groups.keys.name;
         owner = config.users.users.terence.name;
       };
-      "mtls-homelab-client-cert-password" = {
+      "homelab-client-cert-password" = {
         mode = "0440";
         group = config.users.groups.keys.name;
         owner = config.users.users.terence.name;
       };
-      # sops --input-type binary --output-type binary -e path/to/client.p12 > mtls-homelab-client-cert.json
-      "mtls-homelab-client-cert" = {
-        sopsFile = ./mtls-homelab-client-cert.json;
+      # sops --input-type binary --output-type binary -e path/to/client.p12 > homelab-client-cert.json
+      "homelab-client-cert" = {
+        sopsFile = ./homelab-client-cert.json;
         format = "binary";
-        path = "/etc/ssl/private/mtls-homelab-client-cert.p12";
+        path = "/etc/ssl/private/homelab-client-cert.p12";
         mode = "0440";
         group = config.users.groups.keys.name;
         owner = config.users.users.terence.name;
