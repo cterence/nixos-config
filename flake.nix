@@ -11,6 +11,10 @@
     # FIXME: https://github.com/util-linux/util-linux/issues/3474
     nixpkgs-util-linux-with-patches.url = "github:nixos/nixpkgs/79aa28e0c752fb3dbc9b2cf3c618402be4846083";
 
+    claude-desktop = {
+      url = "github:k3d3/claude-desktop-linux-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -62,6 +66,7 @@
       plasma-manager,
       sops-nix,
       nix-ai-tools,
+      claude-desktop,
       ...
     }@inputs:
     let
@@ -162,7 +167,7 @@
             nixos-hardware.nixosModules.lenovo-thinkpad-p14s-amd-gen5
             nixos-work-config.nixosModules.system
           ];
-          extraArgs = { inherit plasma-manager nix-ai-tools; };
+          extraArgs = { inherit plasma-manager nix-ai-tools claude-desktop; };
         };
       };
     };

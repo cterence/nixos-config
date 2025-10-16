@@ -8,6 +8,7 @@
   pkgs,
   plasma-manager,
   nix-ai-tools,
+  claude-desktop,
   config,
   ...
 }:
@@ -92,7 +93,10 @@
       ++ (with nix-ai-tools.packages.${pkgs.system}; [
         claude-code
         crush
-      ]);
+      ])
+      ++ [
+        claude-desktop.packages.${pkgs.system}.claude-desktop-with-fhs
+      ];
   };
 
   home-manager = {
