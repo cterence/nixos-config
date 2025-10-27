@@ -74,10 +74,10 @@
           echo $((BR - 1)) > /sys/class/backlight/amdgpu_bl1/brightness
         '';
         after = [
-          "systemd-suspend.target"
+          "suspend.target"
         ];
         wantedBy = [
-          "systemd-suspend.target"
+          "suspend.target"
         ];
         serviceConfig = {
           User = "root";
