@@ -4,9 +4,11 @@
   programs = {
     git = {
       enable = true;
-      userName = "Térence Chateigné";
-      userEmail = lib.mkDefault "terence.chateigne@posteo.net";
-      extraConfig = {
+      settings = {
+        user = {
+          name = "Térence Chateigné";
+          email = lib.mkDefault "terence.chateigne@posteo.net";
+        };
         init.defaultBranch = "main";
         core.editor = "code --wait";
         credential.helper = "store";
