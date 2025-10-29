@@ -63,6 +63,18 @@
           nix-build -E "(import <nixpkgs> { }).callPackage ./$1 { }"
         }
 
+        nr () {
+          nix run nixpkgs#$1
+        }
+
+        nru () {
+          NIXPKGS_ALLOW_UNFREE=1 nix run --impure nixpkgs#$1
+        }
+
+        nrui () {
+          NIXPKGS_ALLOW_UNFREE=1 NIXPKGS_ALLOW_INSECURE=1 nix run --impure nixpkgs#$1
+        }
+
         nfi () {
           for input in $@; do
           inputs="$inputs --update-input $input";

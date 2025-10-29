@@ -240,7 +240,6 @@
 
   programs = {
     mtr.enable = true;
-    nix-index-database.comma.enable = true;
 
     nh = {
       enable = true;
