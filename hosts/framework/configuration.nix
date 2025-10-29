@@ -122,9 +122,6 @@
       sshuttle
       ssm-session-manager-plugin
       teams-for-linux
-      tflint
-      tflint-plugins.tflint-ruleset-aws
-      tflint-plugins.tflint-ruleset-google
       typora
       yatas
     ];
