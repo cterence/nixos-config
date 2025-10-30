@@ -103,7 +103,7 @@ in
   # Let Home Manager install and manage itself.
   programs = {
     home-manager.enable = true;
-    git.extraConfig.core.editor = lib.mkForce "nano";
+    git.settings.core.editor = lib.mkForce "nano";
   };
 
   systemd.user.services.kopia-sync = {

@@ -53,6 +53,6 @@ in
 
   programs = {
     home-manager.enable = true;
-    git.extraConfig.core.editor = lib.mkForce "nano";
+    git.settings.core.editor = lib.mkForce "nano";
   };
 }

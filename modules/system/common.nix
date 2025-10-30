@@ -105,7 +105,7 @@
       cryptsetup
       dig
       docker-buildx
-      du-dust
+      dust
       efibootmgr
       entr
       eza
@@ -127,7 +127,6 @@
       lm_sensors
       lsof
       manix
-      mariadb-client
       mlocate
       net-tools
       neofetch
