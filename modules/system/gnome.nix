@@ -28,4 +28,12 @@
       totem
     ];
   };
+
+  # programs.hyprland = {
+  #   enable = true;
+  #   xwayland.enable = true; # if you need legacy X apps
+  #   withUWSM = true;
+  # };
+
+  # services.displayManager.sessionPackages = [ pkgs.hyprland ];
 }
