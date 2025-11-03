@@ -64,15 +64,15 @@
         }
 
         nr () {
-          nix run nixpkgs#$1
+          nix run nixpkgs#"$@"
         }
 
         nru () {
-          NIXPKGS_ALLOW_UNFREE=1 nix run --impure nixpkgs#$1
+          NIXPKGS_ALLOW_UNFREE=1 nix run --impure nixpkgs#"$@"
         }
 
         nrui () {
-          NIXPKGS_ALLOW_UNFREE=1 NIXPKGS_ALLOW_INSECURE=1 nix run --impure nixpkgs#$1
+          NIXPKGS_ALLOW_UNFREE=1 NIXPKGS_ALLOW_INSECURE=1 nix run --impure nixpkgs#"$@"
         }
 
         nfi () {
