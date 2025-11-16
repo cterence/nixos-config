@@ -31,10 +31,6 @@
       url = "github:thiagokokada/nix-alien";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-index-database = {
-      url = "github:nix-community/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixos-work-config = {
       url = "github:cterence/nixos-work-config";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -59,7 +55,6 @@
       self,
       home-manager,
       k0s,
-      nix-index-database,
       nixos-hardware,
       nixos-work-config,
       nixpkgs,
@@ -86,7 +81,6 @@
       # Common modules used across configurations
       commonModules = [
         home-manager.nixosModules.default
-        nix-index-database.nixosModules.nix-index
         sops-nix.nixosModules.sops
       ];
 
