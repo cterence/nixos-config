@@ -20,6 +20,7 @@
       calibre
       mangohud
       mp3gain
+      mupen64plus
       nextcloud-client
       nicotine-plus
       opencloud-desktop
