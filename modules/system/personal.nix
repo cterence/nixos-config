@@ -18,6 +18,7 @@
       # avidemux # https://github.com/NixOS/nixpkgs/issues/445447
       audacity
       calibre
+      mame
       mangohud
       mp3gain
       mupen64plus
