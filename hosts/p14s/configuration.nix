@@ -90,12 +90,12 @@
         winetricks
         samba
       ]
-      ++ (with nix-ai-tools.packages.${pkgs.system}; [
+      ++ (with nix-ai-tools.packages.${pkgs.stdenv.hostPlatform.system}; [
         claude-code
         crush
       ])
       ++ [
-        claude-desktop.packages.${pkgs.system}.claude-desktop-with-fhs
+        claude-desktop.packages.${pkgs.stdenv.hostPlatform.system}.claude-desktop-with-fhs
       ];
   };
 

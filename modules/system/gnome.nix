@@ -12,6 +12,7 @@
   environment = {
     systemPackages = with pkgs; [
       gnome-tweaks
+      ibus
     ];
 
     gnome.excludePackages = with pkgs; [
