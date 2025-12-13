@@ -23,6 +23,7 @@
           "sound-output-device-chooser@kgshank.net"
           "appindicatorsupport@rgcjonas.gmail.com"
           "tailscale-status@maxgallup.github.com"
+          "display-brightness-ddcutil@themightydeity.github.com"
         ];
 
         favorite-apps = [

@@ -181,6 +181,7 @@
 
   users = {
     defaultUserShell = pkgs.zsh;
+    groups.i2c = { };
     users.terence = {
       isNormalUser = true;
       home = "/home/terence";
@@ -191,6 +192,7 @@
         "docker"
         "input"
         "kvm"
+        "i2c"
       ];
     };
   };

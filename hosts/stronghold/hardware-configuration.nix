@@ -23,7 +23,11 @@
       ];
       kernelModules = [ ];
     };
-    kernelModules = [ "kvm-amd" ];
+    kernelModules = [
+      "kvm-amd"
+      "i2c-dev"
+    ];
+    kernelParams = [ "acpi_backlight=video" ];
     extraModulePackages = [ ];
   };
 

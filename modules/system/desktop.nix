@@ -34,6 +34,7 @@
           sed -i -e "s|StartupWMClass=.*|StartupWMClass=cursor-url-handler|" $out/share/applications/cursor-url-handler.desktop
         '';
       }))
+      ddcutil
       delve
       discord
       filezilla

@@ -48,6 +48,13 @@
     };
   };
 
+  services = {
+    udev.extraRules = ''
+      SUBSYSTEM=="i2c-dev", KERNEL=="i2c-[0-9]*", ATTRS{class}=="0x030000", TAG+="uaccess"
+      KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
+    '';
+  };
+
   systemd.services."tboi-backup" = {
     script = ''
       # Take a backup of the save directory for The Binding of Isaac: Rebirth
