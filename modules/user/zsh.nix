@@ -33,6 +33,7 @@
       sessionVariables = {
         AWS_PAGER = "jq";
         BINDIR = "$HOME/.local/bin";
+        BROWSER = "firefox";
         EDITOR = "nano";
         TG_PROVIDER_CACHE = "1";
         FZF_BASE = "$HOME/.nix-profile/bin";
