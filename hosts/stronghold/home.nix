@@ -23,7 +23,6 @@ let
     "jq"
     "k9s"
     "mangohud"
-    "nextcloud-client"
     "nssdb"
     "ssh"
     "thunderbird"

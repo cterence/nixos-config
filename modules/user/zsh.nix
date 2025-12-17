@@ -18,7 +18,7 @@
         ls = "eza";
         ll = "ls -l";
         nfu = "nix flake update";
-        nhup = "cd ~/nixos && git pull --rebase --autostash && nh os switch ~/nixos -- --show-trace && cd - && atticpush";
+        nhup = "cd ~/nixos && git pull --rebase --autostash && nh os switch ~/nixos -- --show-trace && cd -";
         nixup = "cd ~/nixos && git pull --rebase --autostash && nixos-rebuild switch --sudo --flake ~/nixos && cd -";
         src = "source $HOME/.zshrc";
         tf = "terraform";
