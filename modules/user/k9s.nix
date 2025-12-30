@@ -78,7 +78,7 @@ in
             sha256 = "sha256:0176a2fvz6rck77hbgyii4d8v3sm32kmbp3y829d0grfxri6dq5s";
           }
           {
-            url = "https://cloudnative-pg.io/documentation/current/samples/k9s/plugins.yml";
+            url = "https://cloudnative-pg.io/docs/assets/files/plugins-27c6a80c5a835b4a893b11dfba3a87f5.yml";
             sha256 = "sha256:1ry763515dd28wivzxya2a1dcdh9awj020mvszmrzz52zwxjvaf5";
           }
           {
