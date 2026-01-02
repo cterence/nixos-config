@@ -92,7 +92,6 @@
         ]
       ))
       brightnessctl
-      bruno
       # checkov
       copilot-cli
       filezilla

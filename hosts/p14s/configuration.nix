@@ -71,7 +71,6 @@
       with pkgs;
       [
         act
-        bruno
         buf
         cockroachdb
         filezilla
