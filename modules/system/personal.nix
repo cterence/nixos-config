@@ -3,7 +3,6 @@
 
 {
   programs = {
-    adb.enable = true;
     gamemode.enable = true;
     steam = {
       enable = true;
@@ -15,7 +14,7 @@
 
   environment = {
     systemPackages = with pkgs; [
-      # avidemux # https://github.com/NixOS/nixpkgs/issues/445447
+      android-tools
       audacity
       calibre
       mame
