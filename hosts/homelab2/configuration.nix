@@ -107,7 +107,7 @@
   services.k0s = {
     enable = true;
     role = "controller+worker";
-    isLeader = true;
+    controller.isLeader = true;
     spec = {
       api = {
         address = "192.168.1.54";
