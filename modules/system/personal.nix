@@ -17,6 +17,7 @@
       android-tools
       audacity
       calibre
+      heroic
       mame
       mangohud
       mp3gain

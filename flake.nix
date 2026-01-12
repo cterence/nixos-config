@@ -135,7 +135,7 @@
           buildInputs = self.checks.${system}.pre-commit-check.enabledPackages;
         };
       });
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
       nixosConfigurations = {
         stronghold = mkSystem {
           hostName = "stronghold";

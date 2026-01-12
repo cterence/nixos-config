@@ -136,7 +136,7 @@
       nix-prefetch
       nix-update
       nixd
-      nixfmt-rfc-style
+      nixfmt
       nmap
       nodejs_20
       nssTools
