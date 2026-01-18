@@ -115,6 +115,7 @@
       gcc
       glab
       gnumake
+      gptfdisk
       ipcalc
       jqp
       killall
