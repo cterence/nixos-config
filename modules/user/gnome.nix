@@ -32,7 +32,6 @@
           "com.mitchellh.ghostty.desktop"
           "org.gnome.Nautilus.desktop"
           "thunderbird.desktop"
-          "spotify.desktop"
           "supersonic.desktop"
           "obsidian.desktop"
           "todoist.desktop"
