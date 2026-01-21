@@ -45,7 +45,7 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@c5a866b6ab867e88becbed4467b93592bce69f8a # v21
       - name: Setup Attic cache
-        uses: ryanccn/attic-action@7fbafba3978e86e585cb68a82c08b30f3672b62d # v0
+        uses: ryanccn/attic-action@1887fd507f03327c96c64cca30118c96eb17fdad # v0
         continue-on-error: true
         with:
           endpoint: https://attic.terence.cloud
