@@ -121,6 +121,7 @@
       ];
     };
     firefox.enable = true;
+    gpu-screen-recorder.enable = true;
   };
 
   hardware.graphics = {

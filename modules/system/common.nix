@@ -143,6 +143,7 @@
       nssTools
       nurl
       openssl
+      p7zip
       pciutils
       postgresql
       powertop

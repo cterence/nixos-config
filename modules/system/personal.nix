@@ -18,6 +18,7 @@
       audacity
       calibre
       heroic
+      lutris
       mame
       mangohud
       mp3gain
@@ -26,6 +27,7 @@
       nicotine-plus
       opencloud-desktop
       picard
+      protonup-rs
       qbittorrent
       signal-desktop
       velero
