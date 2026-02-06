@@ -58,7 +58,7 @@
       todoist-electron
       undollar
       virt-manager
-      vlc3-0-20.vlc
+      vlc
       wireshark
       wl-clipboard
       (

@@ -28,11 +28,14 @@
       opencloud-desktop
       picard
       protonup-rs
+      retroarch-free
+      retroarch-joypad-autoconfig
       qbittorrent
       signal-desktop
       velero
       winetricks
       wineWowPackages.stable
+      emulationstation-de-fixed
     ];
   };
 }

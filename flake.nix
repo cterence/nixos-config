@@ -5,11 +5,8 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
-    # FIXME: https://www.reddit.com/r/VLC/comments/1dexl6y/some_opus_audio_tracks_to_videos_not_playing_in/
-    nixpkgs-vlc3-0-20.url = "github:nixos/nixpkgs/62b3c73a4e0e9ddc92de1c165492fce00c5027c4";
-
-    # FIXME: https://github.com/util-linux/util-linux/issues/3474
-    nixpkgs-util-linux-with-patches.url = "github:nixos/nixpkgs/79aa28e0c752fb3dbc9b2cf3c618402be4846083";
+    # Commit preceding https://github.com/NixOS/nixpkgs/commit/608422bd4ba434d02278602bc74c46d10bfde2ba
+    nixpkgs-emulationstation.url = "github:nixos/nixpkgs/845134719941b3a2087842eae23e521d67e35ad5";
 
     claude-desktop = {
       url = "github:k3d3/claude-desktop-linux-flake";

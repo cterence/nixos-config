@@ -270,35 +270,19 @@
         "type": "github"
       }
     },
-    "nixpkgs-util-linux-with-patches": {
+    "nixpkgs-emulationstation": {
       "locked": {
-        "lastModified": 1748497371,
-        "narHash": "sha256-8G5oQboJ1CbWqPTwSgsZMrSvANZ01uleySktIa7CNm4=",
+        "lastModified": 1747902034,
+        "narHash": "sha256-1Lv0rPsfQ8gHRl0iIVDZKKSo2FsXHJp/+okDcSXgGmE=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "79aa28e0c752fb3dbc9b2cf3c618402be4846083",
+        "rev": "845134719941b3a2087842eae23e521d67e35ad5",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "79aa28e0c752fb3dbc9b2cf3c618402be4846083",
-        "type": "github"
-      }
-    },
-    "nixpkgs-vlc3-0-20": {
-      "locked": {
-        "lastModified": 1718176989,
-        "narHash": "sha256-fr3i5FygdK5wHK2uFKy6zz60rAtCRWcSivX5ujw+GbQ=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "62b3c73a4e0e9ddc92de1c165492fce00c5027c4",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "62b3c73a4e0e9ddc92de1c165492fce00c5027c4",
+        "rev": "845134719941b3a2087842eae23e521d67e35ad5",
         "type": "github"
       }
     },
@@ -357,8 +341,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixos-work-config": "nixos-work-config",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-util-linux-with-patches": "nixpkgs-util-linux-with-patches",
-        "nixpkgs-vlc3-0-20": "nixpkgs-vlc3-0-20",
+        "nixpkgs-emulationstation": "nixpkgs-emulationstation",
         "plasma-manager": "plasma-manager",
         "pre-commit-hooks": "pre-commit-hooks",
         "sops-nix": "sops-nix"
