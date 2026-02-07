@@ -28,14 +28,29 @@
       opencloud-desktop
       picard
       protonup-rs
-      retroarch-free
+      (retroarch.withCores (
+        cores: with cores; [
+          genesis-plus-gx
+          snes9x
+          pcsx-rearmed
+          ppsspp
+          dolphin
+          fceumm
+          gambatte
+          melonds
+          mupen64plus
+          stella
+          mgba
+          desmume
+        ]
+      ))
       retroarch-joypad-autoconfig
       qbittorrent
       signal-desktop
       velero
       winetricks
       wineWowPackages.stable
-      emulationstation-de-fixed
+      emulationstation-de-wrapped
     ];
   };
 }
