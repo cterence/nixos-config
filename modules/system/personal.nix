@@ -49,7 +49,7 @@
       signal-desktop
       velero
       winetricks
-      wineWowPackages.stable
+      wineWow64Packages.stable
       emulationstation-de-wrapped
     ];
   };
