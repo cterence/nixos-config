@@ -32,6 +32,7 @@
     inputs.nix-alien.overlays.default
     outputs.overlays.additions
     outputs.overlays.pkgs-emulationstation
+    outputs.overlays.pkgs-calibre
   ];
 
   networking = {

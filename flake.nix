@@ -7,6 +7,8 @@
 
     # Commit preceding https://github.com/NixOS/nixpkgs/commit/608422bd4ba434d02278602bc74c46d10bfde2ba
     nixpkgs-emulationstation.url = "github:nixos/nixpkgs/845134719941b3a2087842eae23e521d67e35ad5";
+    # https://github.com/NixOS/nixpkgs/issues/493843
+    nixpkgs-calibre.url = "github:nixos/nixpkgs/0182a361324364ae3f436a63005877674cf45efb";
 
     claude-desktop = {
       url = "github:k3d3/claude-desktop-linux-flake";

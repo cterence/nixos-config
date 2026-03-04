@@ -270,6 +270,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-calibre": {
+      "locked": {
+        "lastModified": 1771369470,
+        "narHash": "sha256-0NBlEBKkN3lufyvFegY4TYv5mCNHbi5OmBDrzihbBMQ=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "0182a361324364ae3f436a63005877674cf45efb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "0182a361324364ae3f436a63005877674cf45efb",
+        "type": "github"
+      }
+    },
     "nixpkgs-emulationstation": {
       "locked": {
         "lastModified": 1747902034,
@@ -341,6 +357,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixos-work-config": "nixos-work-config",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-calibre": "nixpkgs-calibre",
         "nixpkgs-emulationstation": "nixpkgs-emulationstation",
         "plasma-manager": "plasma-manager",
         "pre-commit-hooks": "pre-commit-hooks",

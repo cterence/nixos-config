@@ -44,4 +44,15 @@
       '';
     };
   };
+
+  pkgs-calibre = final: _: {
+    inherit
+      (
+        (import inputs.nixpkgs-calibre {
+          inherit (final.stdenv.hostPlatform) system;
+        })
+      )
+      calibre
+      ;
+  };
 }
