@@ -109,6 +109,7 @@
       efibootmgr
       entr
       eza
+      fastfetch
       fd
       ffmpeg
       file
@@ -130,7 +131,6 @@
       manix
       mlocate
       net-tools
-      neofetch
       neovim
       nil
       nix-init
