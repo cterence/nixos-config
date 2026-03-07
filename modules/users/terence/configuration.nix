@@ -7,7 +7,7 @@ let
 in
 {
   flake.modules.nixos.${username} =
-    { config, pkgs, ... }:
+    { pkgs, ... }:
     {
       users.users.${username} = {
         isNormalUser = true;

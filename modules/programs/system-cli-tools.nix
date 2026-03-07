@@ -1,6 +1,6 @@
 {
   flake.modules.nixos.cli-tools =
-    { pkgs, config, ... }:
+    { pkgs, ... }:
     {
       environment.systemPackages = with pkgs; [
         cryptsetup

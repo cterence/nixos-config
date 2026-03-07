@@ -7,9 +7,11 @@
         fonts
       ];
 
-      services.xserver.enable = false;
-      services.displayManager.sddm.enable = true;
-      services.desktopManager.plasma6.enable = true;
+      services = {
+        xserver.enable = false;
+        displayManager.sddm.enable = true;
+        desktopManager.plasma6.enable = true;
+      };
 
       environment.systemPackages = with pkgs.kdePackages; [
         kate
