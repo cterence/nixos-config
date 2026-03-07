@@ -18,11 +18,14 @@ in
         gitleaks = {
           name = "gitleaks";
           enable = true;
-          entry = inputs.nixpkgs.legacyPackages.${system}.gitleaks + "/bin/gitleaks git";
+          entry = inputs.nixpkgs.legacyPackages.${system}.gitleaks + "/bin/gitleaks dir";
           pass_filenames = false;
         };
         nil.enable = true;
-        nixfmt-rfc-style.enable = true;
+        nixfmt-rfc-style = {
+          package = inputs.nixpkgs.legacyPackages.${system}.nixfmt;
+          enable = true;
+        };
         statix.enable = true;
       };
     };
