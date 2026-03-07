@@ -59,7 +59,7 @@
           fi
 
           # Install to Firefox profiles
-          FIREFOX_DIR="$HOME/.mozilla/firefox"
+          FIREFOX_DIR="$HOME/.config/mozilla/firefox"
 
           if [ -d "$FIREFOX_DIR" ] && [ -f "$CERT_FILE" ]; then
             for profile in "$FIREFOX_DIR"/*.default*; do
