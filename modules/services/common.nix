@@ -10,5 +10,11 @@
       envfs.enable = true;
       fwupd.enable = true;
     };
+
+    systemd = {
+      services = {
+        nix-daemon.serviceConfig.EnvironmentFile = "/etc/nixos/nix-daemon-environment";
+      };
+    };
   };
 }

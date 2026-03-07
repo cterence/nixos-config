@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
   flake.modules.nixos.common-settings =
-    { pkgs, ... }:
+    { pkgs, config, ... }:
     {
       boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -35,6 +35,7 @@
         extraOptions = ''
           warn-dirty = false
           keep-outputs = true
+          !include ${config.sops.secrets.nixos-access-tokens.path}
         '';
       };
 
