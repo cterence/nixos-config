@@ -1,0 +1,55 @@
+{
+  flake.modules.homeManager.cli-tools =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [
+        age
+        appimage-run
+        argocd
+        awscli2
+        bat
+        btop
+        cmctl
+        docker-buildx
+        dust
+        entr
+        eza
+        fastfetch
+        fd
+        ffmpeg
+        glab
+        htop
+        ipcalc
+        jq
+        jqp
+        kind
+        kopia
+        krew
+        kubectl
+        kubernetes-helm
+        manix
+        nil
+        nix-init
+        nix-prefetch
+        nix-update
+        nixd
+        nixfmt
+        nmap
+        nurl
+        nvtopPackages.amd
+        p7zip
+        postgresql
+        pv-migrate
+        rclone
+        socat
+        sops
+        tenv
+        tfautomv
+        tig
+        unzip
+        velero
+        yq
+        zip
+      ];
+    };
+}
