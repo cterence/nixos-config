@@ -14,6 +14,7 @@ in
         [
           browser
           cli-tools
+          homelab-client-cert
           desktop-apps
           development
           plasma-manager

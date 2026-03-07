@@ -12,6 +12,7 @@
         docker
         games
         home-manager
+        homelab-client-cert
         kde
         printing
         systemd-boot

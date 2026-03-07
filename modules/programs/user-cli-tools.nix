@@ -49,6 +49,7 @@
         unzip
         velero
         yq
+        yt-dlp
         zip
       ];
     };

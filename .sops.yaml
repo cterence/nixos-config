@@ -9,3 +9,7 @@ creation_rules:
     key_groups:
     - age:
       - *framework13
+  - path_regex: cert.p12
+    key_groups:
+    - age:
+      - *framework13
