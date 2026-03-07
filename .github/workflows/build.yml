@@ -43,13 +43,6 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@c5a866b6ab867e88becbed4467b93592bce69f8a # v21
-      - name: Setup Attic cache
-        uses: ryanccn/attic-action@1887fd507f03327c96c64cca30118c96eb17fdad # v0
-        continue-on-error: true
-        with:
-          endpoint: https://attic.terence.cloud
-          cache: homelab
-          token: ${{ secrets.ATTIC_TOKEN }}
       - name: Build
         run: |
           sudo systemctl set-environment NIX_GITHUB_PRIVATE_USERNAME=${{ github.repository_owner }}
