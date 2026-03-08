@@ -25,5 +25,11 @@
     networking.hostName = "framework13";
 
     system.stateVersion = "25.11";
+
+    services.fprintd.enable = true;
+    security.pam.services = {
+      login.fprintAuth = false;
+      sddm.fprintAuth = true;
+    };
   };
 }
