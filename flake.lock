@@ -102,6 +102,26 @@
         "type": "github"
       }
     },
+    "k0s": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772949768,
+        "narHash": "sha256-yXW4MHlxVxc8ZzDoHcBKQpRrnB5E8Y8/1Ddn0KYvuek=",
+        "owner": "johbo",
+        "repo": "k0s-nix",
+        "rev": "a1736bb6f51471be265a036fc7fc88880018c64b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "johbo",
+        "repo": "k0s-nix",
+        "type": "github"
+      }
+    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1772972630,
@@ -243,6 +263,7 @@
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
+        "k0s": "k0s",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nixpkgs-emulationstation": "nixpkgs-emulationstation",
