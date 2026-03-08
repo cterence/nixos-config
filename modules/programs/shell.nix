@@ -30,6 +30,22 @@
             ];
           };
 
+          shellAliases = {
+            hdu = "helm dep update";
+            k = "kubectl";
+            kctx = "kubectl ctx";
+            kdebug = ''kubectl run shell-terence-$(cat /proc/sys/kernel/random/uuid | sed "s/[ - ] // g " | head -c 8; echo;) --image=ghcr.io/cterence/pkgx-bash -i --tty --rm'';
+            kns = "kubectl ns";
+            ll = "ls -l";
+            nfu = "nix flake update";
+            nhup = "cd ~/nixos && git pull --rebase --autostash && nh os switch ~/nixos -- --show-trace && cd -";
+            nixup = "cd ~/nixos && git pull --rebase --autostash && nixos-rebuild switch --sudo --flake ~/nixos && cd -";
+            src = "source $HOME/.zshrc";
+            tf = "terraform";
+            tg = "terragrunt";
+            watch = "watch ";
+          };
+
           history.size = 10000;
           history.path = "${config.xdg.dataHome}/zsh/history";
 

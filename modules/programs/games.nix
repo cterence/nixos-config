@@ -11,6 +11,23 @@
         lutris
         mangohud
         protonup-rs
+        (retroarch.withCores (
+          cores: with cores; [
+            genesis-plus-gx
+            snes9x
+            pcsx-rearmed
+            ppsspp
+            dolphin
+            fceumm
+            gambatte
+            melonds
+            mesen
+            mupen64plus
+            stella
+            mgba
+            desmume
+          ]
+        ))
         winetricks
         wineWow64Packages.stable
         emulationstation-de

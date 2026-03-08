@@ -13,14 +13,29 @@
         desktopManager.plasma6.enable = true;
       };
 
-      environment.systemPackages = with pkgs.kdePackages; [
-        kate
-      ];
+      environment = {
+        systemPackages = with pkgs.kdePackages; [
+          kate
+          kalk
+          ksshaskpass
+          kwallet-pam
+          partitionmanager
+        ];
 
-      environment.plasma6.excludePackages = with pkgs.kdePackages; [
-        elisa
-        plasma-browser-integration
-      ];
+        plasma6.excludePackages = with pkgs.kdePackages; [
+          elisa
+          plasma-browser-integration
+        ];
+
+        variables = {
+          SSH_ASKPASS_REQUIRE = "prefer";
+        };
+      };
+
+      programs.ssh = {
+        startAgent = true;
+        enableAskPassword = true;
+      };
     };
 
   flake.modules.homeManager.plasma-manager = {
