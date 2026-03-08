@@ -7,6 +7,7 @@
     }:
     {
       home.packages = with pkgs; [
+        appimage-run
         audacity
         calibre
         gpu-screen-recorder

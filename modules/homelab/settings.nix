@@ -23,6 +23,8 @@
         ];
       };
       services = {
+        pipewire.enable = false;
+        openssh.enable = true;
         rpcbind.enable = true;
         openiscsi = {
           enable = true;
@@ -38,6 +40,9 @@
           systemd-timesyncd.serviceConfig.RuntimeMaxSec = "1h";
           tailscaled.serviceConfig.RuntimeMaxSec = "4h";
         };
+      };
+      networking = {
+        firewall.enable = false;
       };
     };
 }

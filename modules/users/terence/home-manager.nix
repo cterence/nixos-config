@@ -15,16 +15,23 @@ in
       ]
       ++ (with inputs.self.modules.homeManager; [
         cli-tools
+        homelab-client-cert
         shell
       ])
       ++ (lib.optionals osConfig.services.desktopManager.plasma6.enable (
         with inputs.self.modules.homeManager;
         [
           browser
-          homelab-client-cert
           desktop-apps
           development
           plasma-manager
+        ]
+      ))
+      ++ (lib.optionals (osConfig.networking.hostName == "homelab2") (
+        with inputs.self.modules.homeManager;
+        [
+          kopia-sync
+          tmux
         ]
       ));
 

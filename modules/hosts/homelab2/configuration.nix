@@ -10,6 +10,7 @@
         cli-tools
         docker
         home-manager
+        homelab-client-cert
         k0s
         systemd-boot
         terence
