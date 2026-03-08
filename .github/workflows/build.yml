@@ -23,6 +23,7 @@ jobs:
       matrix:
         host:
           - framework13
+          - homelab2
       fail-fast: false
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-${{ matrix.host }}
