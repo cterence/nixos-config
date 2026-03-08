@@ -18,13 +18,19 @@ in
         gitleaks = {
           name = "gitleaks";
           enable = true;
-          entry = inputs.nixpkgs.legacyPackages.${system}.gitleaks + "/bin/gitleaks dir";
-          pass_filenames = false;
+          entry = "${inputs.nixpkgs.legacyPackages.${system}.gitleaks}/bin/gitleaks protect -v --staged";
         };
         nil.enable = true;
         nixfmt-rfc-style = {
           package = inputs.nixpkgs.legacyPackages.${system}.nixfmt;
           enable = true;
+        };
+        trufflehog = {
+          name = "trufflehog";
+          enable = true;
+          entry = "${
+            inputs.nixpkgs.legacyPackages.${system}.trufflehog
+          }/bin/trufflehog git file://. --since-commit HEAD --results=verified,unknown --fail";
         };
         statix.enable = true;
       };
