@@ -27,7 +27,7 @@ in
           plasma-manager
         ]
       ))
-      ++ (lib.optionals (osConfig.networking.hostName == "homelab2") (
+      ++ (lib.optionals (lib.hasPrefix "homelab" osConfig.networking.hostName) (
         with inputs.self.modules.homeManager;
         [
           kopia-sync

@@ -42,6 +42,7 @@
         };
       };
       networking = {
+        networkmanager.dns = "dnsmasq";
         firewall.enable = false;
       };
     };
