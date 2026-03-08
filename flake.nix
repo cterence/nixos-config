@@ -26,6 +26,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    dotfiles = {
+      flake = false;
+      url = "path:./dotfiles";
+    };
+
     secrets = {
       flake = false;
       url = "path:./secrets";

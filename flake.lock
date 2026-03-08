@@ -1,5 +1,17 @@
 {
   "nodes": {
+    "dotfiles": {
+      "flake": false,
+      "locked": {
+        "path": "./dotfiles",
+        "type": "path"
+      },
+      "original": {
+        "path": "./dotfiles",
+        "type": "path"
+      },
+      "parent": []
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -184,6 +196,7 @@
     },
     "root": {
       "inputs": {
+        "dotfiles": "dotfiles",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
         "import-tree": "import-tree",

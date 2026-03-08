@@ -1,0 +1,10 @@
+include "/%L"
+
+<dead_acute> <c>			          : "ç"
+<Multi_key> <acute> <c>			    : "ç"
+<Multi_key> <apostrophe> <c>		: "ç"
+<Multi_key> <c> <apostrophe>		: "ç"
+<dead_acute> <C>			          : "Ç"
+<Multi_key> <acute> <C>			    : "Ç"
+<Multi_key> <apostrophe> <C>		: "Ç"
+<Multi_key> <C> <apostrophe>		: "Ç"
