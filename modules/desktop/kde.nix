@@ -1,9 +1,9 @@
-{ inputs, ... }:
+{ self, ... }:
 {
   flake.modules.nixos.kde =
     { pkgs, ... }:
     {
-      imports = with inputs.self.modules.nixos; [
+      imports = with self.modules.nixos; [
         fonts
       ];
 

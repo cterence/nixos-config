@@ -62,5 +62,7 @@
       console.useXkbConfig = true;
 
       security.rtkit.enable = true;
+
+      programs.nix-ld.enable = true;
     };
 }

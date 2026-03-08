@@ -1,12 +1,17 @@
 {
   flake.modules.homeManager.desktop-apps =
-    { config, pkgs, ... }:
+    {
+      config,
+      pkgs,
+      ...
+    }:
     {
       home.packages = with pkgs; [
         audacity
         calibre
         gpu-screen-recorder
         libreoffice-fresh
+        local.linear-linux
         nextcloud-client
         obsidian
         picard

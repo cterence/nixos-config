@@ -6,6 +6,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -26,6 +27,11 @@
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    packages = {
+      flake = false;
+      url = "path:./packages";
     };
 
     dotfiles = {

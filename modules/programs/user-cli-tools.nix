@@ -29,6 +29,7 @@
         manix
         nil
         nix-init
+        nix-inspect
         nix-prefetch
         nix-update
         nixd

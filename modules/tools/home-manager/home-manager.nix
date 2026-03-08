@@ -3,16 +3,24 @@
   ...
 }:
 let
-  home-manager-config = {
-    home-manager = {
-      verbose = true;
-      useUserPackages = true;
-      useGlobalPkgs = true;
-      backupFileExtension = "backup";
-      backupCommand = "rm";
-      overwriteBackup = true;
+  home-manager-config =
+    { pkgs, ... }:
+    {
+      home-manager = {
+        verbose = true;
+        useUserPackages = true;
+        useGlobalPkgs = true;
+        backupFileExtension = "backup";
+        backupCommand = "rm";
+        overwriteBackup = true;
+      };
+
+      nixpkgs.overlays = [
+        (_: _: {
+          local = inputs.self.packages.${pkgs.stdenv.hostPlatform.system};
+        })
+      ];
     };
-  };
 in
 {
   flake.modules.nixos.home-manager = {
@@ -28,5 +36,4 @@ in
       home-manager-config
     ];
   };
-
 }
