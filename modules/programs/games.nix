@@ -1,7 +1,11 @@
+{ self, ... }:
 {
   flake.modules.nixos.games =
     { pkgs, ... }:
     {
+      nixpkgs.overlays = [
+        self.overlays.emulationstation-de
+      ];
       environment.systemPackages = with pkgs; [
         heroic
         lutris
@@ -9,6 +13,7 @@
         protonup-rs
         winetricks
         wineWow64Packages.stable
+        emulationstation-de
       ];
 
       programs = {
