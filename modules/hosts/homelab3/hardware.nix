@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.homelab2 = {
+  flake.modules.nixos.homelab3 = {
     boot = {
       kernelParams = [ ];
       kernelModules = [
@@ -24,11 +24,11 @@
 
     fileSystems = {
       "/" = {
-        device = "/dev/disk/by-uuid/71306661-b21b-4dc6-8981-a5972dfb7904";
+        device = "/dev/disk/by-uuid/c8afe7e6-3dcc-4b98-baac-1698ddeea155";
         fsType = "ext4";
       };
-      "/mnt/mx500-01" = {
-        device = "/dev/disk/by-uuid/b5d27e7f-3fb0-4f22-98bc-f0a3fe77a7d7";
+      "/mnt/mx500-02" = {
+        device = "/dev/disk/by-uuid/c1b5d2dc-c0c6-4dab-ba17-3ac7425e2a34";
         fsType = "ext4";
         options = [
           "users"
@@ -44,7 +44,7 @@
         ];
       };
       "/boot" = {
-        device = "/dev/disk/by-uuid/C8AD-CF95";
+        device = "/dev/disk/by-uuid/23D5-7E17";
         fsType = "vfat";
         options = [
           "fmask=0077"
@@ -54,7 +54,7 @@
     };
 
     swapDevices = [
-      { device = "/dev/disk/by-uuid/8cba34a6-305c-46e0-9aeb-4754a17dd7e5"; }
+      { device = "/dev/disk/by-uuid/04352eda-e976-48d1-822b-450cc6638d7a"; }
     ];
 
     nixpkgs.hostPlatform = "x86_64-linux";
