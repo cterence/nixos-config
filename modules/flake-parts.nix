@@ -16,6 +16,7 @@
   perSystem =
     { system, config, ... }:
     {
+      # Make custom packages available in pkgs with local prefix
       _module.args.pkgs = import inputs.nixpkgs {
         inherit system;
         overlays = [

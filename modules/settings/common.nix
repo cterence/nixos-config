@@ -54,9 +54,15 @@
         LC_TIME = "fr_FR.UTF-8";
       };
 
-      services.xserver.xkb = {
-        layout = "us";
-        variant = "alt-intl";
+      services = {
+        xserver.xkb = {
+          layout = "us";
+          variant = "alt-intl";
+        };
+        udev.extraRules = ''
+          # MonsGeek M1/M-series HID rule
+          KERNEL=="hidraw*", ATTRS{idVendor}=="fffe", ATTRS{idProduct}=="0005", MODE="0666", GROUP="users"
+        '';
       };
 
       console.useXkbConfig = true;

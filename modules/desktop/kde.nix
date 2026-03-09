@@ -1,4 +1,4 @@
-{ self, ... }:
+{ inputs, self, ... }:
 {
   flake.modules.nixos.kde =
     { pkgs, ... }:
@@ -14,13 +14,18 @@
       };
 
       environment = {
-        systemPackages = with pkgs.kdePackages; [
-          kate
-          kalk
-          ksshaskpass
-          kwallet-pam
-          partitionmanager
-        ];
+        systemPackages =
+          with pkgs.kdePackages;
+          [
+            kate
+            kalk
+            ksshaskpass
+            kwallet-pam
+            partitionmanager
+          ]
+          ++ [
+            inputs.plasma-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
+          ];
 
         plasma6.excludePackages = with pkgs.kdePackages; [
           elisa
