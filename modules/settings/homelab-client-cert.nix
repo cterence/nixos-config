@@ -11,13 +11,11 @@
             path = "/etc/ssl/private/homelab-client-cert.p12";
             mode = "0440";
             group = config.users.groups.keys.name;
-            owner = config.users.users.terence.name;
           };
           "homelab-client-cert-password" = {
             sopsFile = "${inputs.secrets}/homelab-client-cert-password.yaml";
             mode = "0440";
             group = config.users.groups.keys.name;
-            owner = config.users.users.terence.name;
           };
         };
       };
