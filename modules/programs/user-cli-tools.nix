@@ -47,7 +47,7 @@
         tig
         unzip
         velero
-        yq
+        yq-go
         yt-dlp
         zip
       ];

@@ -15,6 +15,7 @@ in
       ]
       ++ (with inputs.self.modules.homeManager; [
         cli-tools
+        gpg
         homelab-client-cert
         shell
       ])

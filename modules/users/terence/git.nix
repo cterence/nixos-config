@@ -10,7 +10,10 @@ in
           user = {
             name = "Térence Chateigné";
             email = "terence.chateigne@posteo.net";
+            signingkey = "FD05F9D023BE3DBA";
           };
+          commit.gpgsign = true;
+          tag.gpgsign = true;
           init.defaultBranch = "main";
           core.editor = "code --wait";
           credential.helper = "store";
