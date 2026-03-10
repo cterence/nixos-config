@@ -22,6 +22,7 @@
         openssl
         parted
         pciutils
+        ripgrep
         tcpdump
         tmux
         tree

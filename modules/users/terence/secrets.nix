@@ -15,12 +15,12 @@ in
           "nixos-access-tokens" = {
             mode = "0440";
             sopsFile = "${inputs.secrets}/settings.yaml";
-            path = config.systemd.services.nix-daemon.serviceConfig.EnvironmentFile;
             group = config.users.groups.keys.name;
             owner = config.users.users.terence.name;
           };
           "nix-daemon-environment" = {
             mode = "0440";
+            path = config.systemd.services.nix-daemon.serviceConfig.EnvironmentFile;
             sopsFile = "${inputs.secrets}/settings.yaml";
             group = config.users.groups.keys.name;
             owner = config.users.users.terence.name;
