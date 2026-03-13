@@ -1,5 +1,6 @@
 {
   inputs,
+  self,
   ...
 }:
 let
@@ -17,7 +18,7 @@ let
 
       nixpkgs.overlays = [
         (_: _: {
-          local = inputs.self.packages.${pkgs.stdenv.hostPlatform.system};
+          local = self.packages.${pkgs.stdenv.hostPlatform.system};
         })
       ];
     };

@@ -1,5 +1,6 @@
 {
   inputs,
+  self,
   lib,
   ...
 }:
@@ -13,14 +14,14 @@ in
       imports = [
         inputs.sops-nix.homeManagerModules.sops
       ]
-      ++ (with inputs.self.modules.homeManager; [
+      ++ (with self.modules.homeManager; [
         cli-tools
         gpg
         homelab-client-cert
         shell
       ])
       ++ (lib.optionals osConfig.services.desktopManager.plasma6.enable (
-        with inputs.self.modules.homeManager;
+        with self.modules.homeManager;
         [
           browser
           desktop-apps
@@ -30,7 +31,7 @@ in
         ]
       ))
       ++ (lib.optionals (lib.hasPrefix "homelab" osConfig.networking.hostName) (
-        with inputs.self.modules.homeManager;
+        with self.modules.homeManager;
         [
           kopia-sync
           tmux

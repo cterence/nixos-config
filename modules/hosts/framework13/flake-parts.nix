@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ self, ... }:
 {
-  flake.nixosConfigurations = inputs.self.lib.mkNixos "x86_64-linux" "framework13";
+  flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" "framework13";
 }

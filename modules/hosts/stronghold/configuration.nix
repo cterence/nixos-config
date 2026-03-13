@@ -1,8 +1,8 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
   flake.modules.nixos.stronghold = {
     imports =
-      with inputs.self.modules.nixos;
+      with self.modules.nixos;
       [
         audio
         bluetooth

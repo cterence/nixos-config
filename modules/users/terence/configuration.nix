@@ -1,5 +1,6 @@
 {
   inputs,
+  self,
   ...
 }:
 let
@@ -25,7 +26,7 @@ in
       home-manager = {
         users."${username}" = {
           imports = [
-            inputs.self.modules.homeManager."${username}"
+            self.modules.homeManager."${username}"
           ];
         };
 
