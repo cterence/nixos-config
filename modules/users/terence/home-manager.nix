@@ -26,6 +26,7 @@ in
           desktop-apps
           development
           plasma-manager
+          tailscale
         ]
       ))
       ++ (lib.optionals (lib.hasPrefix "homelab" osConfig.networking.hostName) (

@@ -66,5 +66,43 @@
           };
         };
       };
+
+      xdg.configFile = {
+        "autostart/Nextcloud.desktop".text = ''
+          [Desktop Entry]
+          Name=Nextcloud
+          GenericName=File Synchronizer
+          Exec=${pkgs.nextcloud-client}/bin/nextcloud --background
+          Terminal=false
+          Icon=Nextcloud
+          Categories=Network
+          Type=Application
+          StartupNotify=false
+          X-GNOME-Autostart-enabled=true
+          X-GNOME-Autostart-Delay=10
+        '';
+
+        "autostart/thunderbird.desktop".text = ''
+          [Desktop Entry]
+          Actions=profile-manager-window
+          Categories=Network;Chat;Email;Feed;GTK;News
+          Comment=Read and write e-mails or RSS feeds, or manage tasks on calendars.
+          Exec=${pkgs.thunderbird}/bin/thunderbird --name thunderbird %U
+          GenericName=Email Client
+          Icon=thunderbird
+          Keywords=mail;email;e-mail;messages;rss;calendar;address book;addressbook;chat
+          MimeType=message/rfc822;x-scheme-handler/mailto;text/calendar;text/x-vcard
+          Name=Thunderbird
+          StartupNotify=true
+          StartupWMClass=thunderbird
+          Terminal=false
+          Type=Application
+          Version=1.5
+
+          [Desktop Action profile-manager-window]
+          Exec=${pkgs.thunderbird}/bin/thunderbird --ProfileManager
+          Name=Profile Manager
+        '';
+      };
     };
 }
