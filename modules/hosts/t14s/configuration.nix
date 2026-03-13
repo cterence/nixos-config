@@ -10,6 +10,7 @@
         common-services
         cli-tools
         docker
+        fingerprint
         games
         home-manager
         homelab-client-cert

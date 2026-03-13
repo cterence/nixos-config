@@ -10,6 +10,7 @@
         common-services
         cli-tools
         docker
+        fingerprint
         games
         home-manager
         homelab-client-cert
@@ -25,11 +26,5 @@
     networking.hostName = "framework13";
 
     system.stateVersion = "25.11";
-
-    services.fprintd.enable = true;
-    security.pam.services = {
-      login.fprintAuth = false;
-      sddm.fprintAuth = true;
-    };
   };
 }
