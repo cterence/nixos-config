@@ -1,25 +1,13 @@
-{ inputs, self, ... }:
+{ self, ... }:
 {
+  flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" "homelab2";
   flake.modules.nixos.homelab2 = {
-    imports =
-      with self.modules.nixos;
-      [
-        common-settings
-        homelab-settings
-        common-services
-        cli-tools
-        docker
-        home-manager
-        homelab-client-cert
-        k0s
-        systemd-boot
-        terence
-        tailscale
-      ]
-      ++ [
-        inputs.sops-nix.nixosModules.sops
-        inputs.k0s.nixosModules.default
-      ];
+    imports = with self.modules.nixos; [
+      system-server
+      systemd-boot
+      k0s
+      terence-server
+    ];
     networking.hostName = "homelab2";
 
     services.k0s = {

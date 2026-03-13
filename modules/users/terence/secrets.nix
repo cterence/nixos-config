@@ -6,7 +6,7 @@ let
   username = "terence";
 in
 {
-  flake.modules.nixos."${username}" =
+  flake.modules.nixos.${username} =
     { config, ... }:
     {
       sops = {
@@ -25,9 +25,19 @@ in
           };
         };
       };
+
+      nix.extraOptions = ''
+        !include ${config.sops.secrets.nixos-access-tokens.path}
+      '';
+
+      systemd = {
+        services = {
+          nix-daemon.serviceConfig.EnvironmentFile = "/etc/nixos/nix-daemon-environment";
+        };
+      };
     };
 
-  flake.modules.homeManager."${username}" =
+  flake.modules.homeManager.${username} =
     { config, ... }:
     {
       sops = {

@@ -1,6 +1,6 @@
 {
-  flake.modules.nixos.common-settings =
-    { pkgs, config, ... }:
+  flake.modules.nixos.system-minimal =
+    { pkgs, ... }:
     {
       boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -34,41 +34,39 @@
         extraOptions = ''
           warn-dirty = false
           keep-outputs = true
-          !include ${config.sops.secrets.nixos-access-tokens.path}
         '';
       };
+
+      networking.networkmanager.enable = true;
 
       time.timeZone = "Europe/Paris";
 
-      i18n.defaultLocale = "en_US.UTF-8";
-
-      i18n.extraLocaleSettings = {
-        LC_ADDRESS = "fr_FR.UTF-8";
-        LC_IDENTIFICATION = "fr_FR.UTF-8";
-        LC_MEASUREMENT = "fr_FR.UTF-8";
-        LC_MONETARY = "fr_FR.UTF-8";
-        LC_NAME = "fr_FR.UTF-8";
-        LC_NUMERIC = "fr_FR.UTF-8";
-        LC_PAPER = "fr_FR.UTF-8";
-        LC_TELEPHONE = "fr_FR.UTF-8";
-        LC_TIME = "fr_FR.UTF-8";
+      i18n = {
+        defaultLocale = "en_US.UTF-8";
+        extraLocaleSettings = {
+          LC_ADDRESS = "fr_FR.UTF-8";
+          LC_IDENTIFICATION = "fr_FR.UTF-8";
+          LC_MEASUREMENT = "fr_FR.UTF-8";
+          LC_MONETARY = "fr_FR.UTF-8";
+          LC_NAME = "fr_FR.UTF-8";
+          LC_NUMERIC = "fr_FR.UTF-8";
+          LC_PAPER = "fr_FR.UTF-8";
+          LC_TELEPHONE = "fr_FR.UTF-8";
+          LC_TIME = "fr_FR.UTF-8";
+        };
       };
 
-      services = {
-        xserver.xkb = {
-          layout = "us";
-          variant = "alt-intl";
-        };
-        udev.extraRules = ''
-          # MonsGeek M1/M-series HID rule
-          KERNEL=="hidraw*", ATTRS{idVendor}=="fffe", ATTRS{idProduct}=="0005", MODE="0666", GROUP="users"
-        '';
+      services.xserver.xkb = {
+        layout = "us";
+        variant = "alt-intl";
       };
 
       console.useXkbConfig = true;
-
-      security.rtkit.enable = true;
-
-      programs.nix-ld.enable = true;
     };
+
+  flake.modules.homeManager.system-minimal = {
+    home = {
+      stateVersion = "25.11";
+    };
+  };
 }

@@ -41,6 +41,8 @@
         startAgent = true;
         enableAskPassword = true;
       };
+
+      home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
     };
 
   flake.modules.homeManager.plasma-manager = {

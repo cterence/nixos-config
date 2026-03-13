@@ -3,6 +3,10 @@
   flake.modules.nixos.k0s =
     { pkgs, ... }:
     {
+      imports = [
+        inputs.k0s.nixosModules.default
+      ];
+
       nixpkgs.overlays = [
         inputs.k0s.overlays.default
       ];
