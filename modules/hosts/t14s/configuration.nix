@@ -6,6 +6,7 @@
     imports = with self.modules.nixos; [
       system-desktop
       system-personal
+      system-laptop
       systemd-boot
       fingerprint
       terence-desktop

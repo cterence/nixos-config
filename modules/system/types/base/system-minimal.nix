@@ -37,7 +37,10 @@
         '';
       };
 
-      networking.networkmanager.enable = true;
+      networking.networkmanager = {
+        enable = true;
+        dns = "dnsmasq";
+      };
 
       time.timeZone = "Europe/Paris";
 

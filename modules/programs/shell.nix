@@ -39,6 +39,7 @@
             ll = "ls -l";
             nfu = "nix flake update";
             nhup = "cd ~/nixos && git pull --rebase --autostash && nh os switch ~/nixos -- --show-trace && cd -";
+            nhs = "nh os switch ~/nixos -- --show-trace";
             nixup = "cd ~/nixos && git pull --rebase --autostash && nixos-rebuild switch --sudo --flake ~/nixos && cd -";
             src = "source $HOME/.zshrc";
             tf = "terraform";

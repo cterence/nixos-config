@@ -23,7 +23,6 @@
         ];
       };
       services = {
-        pipewire.enable = false;
         openssh.enable = true;
         rpcbind.enable = true;
         openiscsi = {
@@ -42,7 +41,6 @@
         };
       };
       networking = {
-        networkmanager.dns = "dnsmasq";
         firewall.enable = false;
       };
     };
