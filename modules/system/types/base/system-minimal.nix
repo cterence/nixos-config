@@ -37,11 +37,6 @@
         '';
       };
 
-      networking.networkmanager = {
-        enable = true;
-        dns = "dnsmasq";
-      };
-
       time.timeZone = "Europe/Paris";
 
       i18n = {

@@ -9,6 +9,7 @@
       [
         system-minimal
         home-manager
+        networking
         secrets
         qol
       ]

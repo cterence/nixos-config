@@ -6,7 +6,7 @@
         enable = true;
         useRoutingFeatures = "client";
         extraDaemonFlags = [ "--no-logs-no-support" ];
-
+        extraUpFlags = [ "--accept-dns=false" ];
       };
       environment.systemPackages = [ pkgs.tailscale ];
     };
