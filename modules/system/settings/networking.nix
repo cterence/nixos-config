@@ -8,6 +8,10 @@ in
         "127.0.0.1"
         "::1"
       ];
+      # Trying search domain only on domain with < 1 dot
+      resolvconf.extraOptions = [
+        "ndots:1"
+      ];
       search = [ "snow-delta.ts.net" ];
       networkmanager = {
         enable = true;
@@ -40,7 +44,6 @@ in
     environment.etc."dnscrypt-proxy/forwarding-rules.txt".text = ''
       # Forward Tailscale MagicDNS queries to the Tailscale internal IP
       snow-delta.ts.net 100.100.100.100
-      tailscale.net 100.100.100.100
     '';
 
     systemd.services.dnscrypt-proxy.serviceConfig.StateDirectory = StateDirectory;
