@@ -47,6 +47,10 @@
             watch = "watch ";
           };
 
+          localVariables = {
+            PATH = "$PATH:$HOME/.krew/bin";
+          };
+
           history.size = 10000;
           history.path = "${config.xdg.dataHome}/zsh/history";
 
