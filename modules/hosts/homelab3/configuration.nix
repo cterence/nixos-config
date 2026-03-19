@@ -22,7 +22,7 @@
       };
 
       services.k0s = {
-        enable = true;
+        enable = false;
         role = "worker";
         spec = {
           api = {
