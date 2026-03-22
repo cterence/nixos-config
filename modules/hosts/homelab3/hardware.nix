@@ -35,6 +35,11 @@
           "nofail"
         ];
       };
+      "/export/mx500-homelab3" = {
+        device = "/mnt/mx500-02/k8s-data";
+        options = [ "bind" ];
+        depends = [ "/mnt/mx500-02" ];
+      };
       "/mnt/elements" = {
         device = "/dev/disk/by-uuid/fd25a6c7-4e9d-4838-9375-ca13460b05b5";
         fsType = "ext4";
@@ -54,6 +59,10 @@
         ];
       };
     };
+
+    systemd.tmpfiles.rules = [
+      "d /mnt/mx500-02/k8s-data 0777 root root -"
+    ];
 
     swapDevices = [
       { device = "/dev/disk/by-uuid/04352eda-e976-48d1-822b-450cc6638d7a"; }
