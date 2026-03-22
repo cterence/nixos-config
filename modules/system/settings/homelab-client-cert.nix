@@ -5,14 +5,14 @@
     {
       sops = {
         secrets = {
-          "homelab-client-cert" = {
+          homelab-client-cert = {
             sopsFile = "${inputs.secrets}/homelab-client-cert.json";
             format = "binary";
             path = "/etc/ssl/private/homelab-client-cert.p12";
             mode = "0440";
             group = config.users.groups.keys.name;
           };
-          "homelab-client-cert-password" = {
+          homelab-client-cert-password = {
             sopsFile = "${inputs.secrets}/homelab-client-cert-password.yaml";
             mode = "0440";
             group = config.users.groups.keys.name;

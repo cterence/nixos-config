@@ -8,15 +8,15 @@
     }:
     {
       sops.secrets = {
-        "b2-velero-backup-tch-key-id" = {
+        b2-velero-backup-tch-key-id = {
           mode = "0440";
           sopsFile = "${inputs.secrets}/kopia-sync.yaml";
         };
-        "b2-velero-backup-tch-key" = {
+        b2-velero-backup-tch-key = {
           mode = "0440";
           sopsFile = "${inputs.secrets}/kopia-sync.yaml";
         };
-        "kopia-password" = {
+        kopia-password = {
           mode = "0440";
           sopsFile = "${inputs.secrets}/kopia-sync.yaml";
         };

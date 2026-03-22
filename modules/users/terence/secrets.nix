@@ -12,12 +12,12 @@ in
       sops = {
         age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
         secrets = {
-          "nixos-access-tokens" = {
+          nixos-access-tokens = {
             mode = "0440";
             sopsFile = "${inputs.secrets}/settings.yaml";
             group = config.users.groups.keys.name;
           };
-          "nix-daemon-environment" = {
+          nix-daemon-environment = {
             mode = "0440";
             path = config.systemd.services.nix-daemon.serviceConfig.EnvironmentFile;
             sopsFile = "${inputs.secrets}/settings.yaml";
@@ -43,9 +43,21 @@ in
       sops = {
         age.keyFile = config.home.homeDirectory + "/.config/sops/age/keys.txt";
         secrets = {
-          "gh-cli-token" = {
+          gh-cli-token = {
             mode = "0440";
             sopsFile = "${inputs.secrets}/gh-cli-token.yaml";
+          };
+          oracle-config = {
+            mode = "0440";
+            key = "config";
+            sopsFile = "${inputs.secrets}/oracle-cloud.yaml";
+            path = config.home.homeDirectory + "/.oci/config";
+          };
+          oracle-private-key = {
+            mode = "0440";
+            key = "private_key";
+            sopsFile = "${inputs.secrets}/oracle-cloud.yaml";
+            path = config.home.homeDirectory + "/.oci/private_key.pem";
           };
         };
       };
