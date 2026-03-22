@@ -113,7 +113,9 @@
             # Configuration
             BUCKET="velero"
             PATH_PREFIX="v2/kopia/"
-            ENDPOINT="http://localhost:7070"
+            ENDPOINT="localhost:7070"
+            ENDPOINT_URL="http://$ENDPOINT_DOMAIN"
+            REGION="eu-west-3"
             LOCAL_BASE_DIR="/mnt/elements/kopia-vgw-sync/repositories"
             VGW_KEY_ID="$(${pkgs.coreutils}/bin/cat ${config.sops.secrets.vgw-access-key.path})"
             VGW_KEY="$(${pkgs.coreutils}/bin/cat ${config.sops.secrets.vgw-secret-key.path})"
@@ -126,16 +128,20 @@
             export AWS_SECRET_ACCESS_KEY=$VGW_KEY
 
             echo "Creating port-forward to versity-gw..."
-            kubectl port-forward -n versity-gw svc/versity-gw-nfs 7070:7070 > /dev/null 2>&1 &
+            ${pkgs.kubectl}/bin/kubectl port-forward -n versity-gw svc/versity-gw-nfs 7070:7070 > /dev/null 2>&1 &
 
             KPID=$!
 
-            # 3. Use a 'trap' to kill the process when the script exits (even on error)
-            trap "echo 'Stopping port-forward (PID $KPID)...'; kill $KPID" EXIT
+            # Ensure cleanup on exit
+            trap "kill $KPID 2>/dev/null" EXIT
+
+            # --- NEW: Health Check Loop ---
+            echo "Waiting for port 7070 to become available..."
+            ${pkgs.coreutils}/bin/sleep 3
 
             # List all directories (repositories) in the bucket
             echo "Listing repositories in bucket..."
-            REPOSITORIES=$(${pkgs.awscli2}/bin/aws s3 ls "$BUCKET/$PATH_PREFIX" --endpoint-url "$ENDPOINT" | ${pkgs.gawk}/bin/awk '/PRE/ {print $2}' | ${pkgs.gnused}/bin/sed 's:/$::')
+            REPOSITORIES=$(${pkgs.awscli2}/bin/aws s3 ls "$BUCKET/$PATH_PREFIX" --endpoint-url "$ENDPOINT_URL" | ${pkgs.gawk}/bin/awk '/PRE/ {print $2}' | ${pkgs.gnused}/bin/sed 's:/$::')
 
             unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
 
@@ -152,11 +158,14 @@
 
                 # Connect Kopia to the repository
                 echo "Connecting Kopia to repository: $REPO_REMOTE_PATH"
-                ${pkgs.kopia}/bin/kopia repository connect b2 \
+                ${pkgs.kopia}/bin/kopia repository connect s3 \
                     --bucket="$BUCKET" \
-                    --key-id="$VGW_KEY_ID" \
-                    --key="$VGW_KEY" \
                     --password="$KOPIA_PASSWORD" \
+                    --disable-tls \
+                    --region $REGION \
+                    --access-key="$VGW_KEY_ID" \
+                    --secret-access-key="$VGW_KEY" \
+                    --endpoint $ENDPOINT \
                     --prefix="$PATH_PREFIX$REPO/" \
                     --no-check-for-updates
 
