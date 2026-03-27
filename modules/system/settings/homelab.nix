@@ -40,5 +40,10 @@
           tailscaled.serviceConfig.RuntimeMaxSec = "4h";
         };
       };
+      networking.firewall.allowedTCPPorts = [
+        80
+        443
+        2049
+      ];
     };
 }
