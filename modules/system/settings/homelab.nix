@@ -19,14 +19,14 @@
       environment = {
         systemPackages = with pkgs; [
           nfs-utils
-          openiscsi
+          # openiscsi
         ];
       };
       services = {
         openssh.enable = true;
         rpcbind.enable = true;
         openiscsi = {
-          enable = true;
+          enable = false;
           name = "iqn.2016-04.com.open-iscsi:" + config.networking.hostName;
         };
       };
@@ -39,9 +39,6 @@
           systemd-timesyncd.serviceConfig.RuntimeMaxSec = "1h";
           tailscaled.serviceConfig.RuntimeMaxSec = "4h";
         };
-      };
-      networking = {
-        firewall.enable = false;
       };
     };
 }

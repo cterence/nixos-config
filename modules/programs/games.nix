@@ -38,8 +38,8 @@
         steam = {
           enable = true;
           gamescopeSession.enable = true;
-          remotePlay.openFirewall = true;
-          dedicatedServer.openFirewall = true;
+          remotePlay.openFirewall = false;
+          dedicatedServer.openFirewall = false;
         };
       };
     };
