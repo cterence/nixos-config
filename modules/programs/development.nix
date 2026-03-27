@@ -115,6 +115,13 @@
           "direnv.restart.automatic" = true;
         };
       };
+
+      opencode = {
+        enable = true;
+        settings = {
+          enabled_providers = [ "mistral" ];
+        };
+      };
     };
   };
 }
