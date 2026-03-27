@@ -37,8 +37,8 @@
         nfs.server = {
           enable = true;
           exports = ''
-            /export                 192.168.1.0/24  (rw,fsid=0,no_subtree_check)
-            /export/mx500-homelab3  192.168.1.54/32 (rw,nohide,no_subtree_check,root_squash,all_squash,anonuid=1000,anongid=100)
+            /export                 192.168.1.54/32(rw,fsid=0,no_subtree_check,all_squash,anonuid=1000,anongid=100)
+            /export/mx500-homelab3  192.168.1.54/32(rw,nohide,no_subtree_check,all_squash,anonuid=1000,anongid=100)
           '';
         };
       };
