@@ -130,6 +130,16 @@
                 };
               };
             };
+            mcp = {
+              grafana = {
+                type = "remote";
+                url = "https://gmcp.terence.cloud/sse";
+                oauth = false;
+                headers = {
+                  Authorization = "Basic {file:${config.sops.secrets.grafana-mcp-auth.path}}";
+                };
+              };
+            };
             permission = {
               "*" = "allow";
               "bash" = {
@@ -186,6 +196,9 @@
         secrets = {
           mistral-api-key = {
             sopsFile = "${inputs.secrets}/mistral-api-key.yaml";
+          };
+          grafana-mcp-auth = {
+            sopsFile = "${inputs.secrets}/grafana-mcp-auth.yaml";
           };
         };
       };
