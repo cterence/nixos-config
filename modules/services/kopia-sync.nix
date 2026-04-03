@@ -115,7 +115,7 @@
             PATH_PREFIX="v2/kopia/"
             ENDPOINT="localhost:7070"
             ENDPOINT_URL="http://$ENDPOINT_DOMAIN"
-            REGION="eu-west-3"
+            REGION="us-east-1"
             LOCAL_BASE_DIR="/mnt/elements/kopia-vgw-sync/repositories"
             VGW_KEY_ID="$(${pkgs.coreutils}/bin/cat ${config.sops.secrets.vgw-access-key.path})"
             VGW_KEY="$(${pkgs.coreutils}/bin/cat ${config.sops.secrets.vgw-secret-key.path})"

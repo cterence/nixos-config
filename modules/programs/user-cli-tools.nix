@@ -81,7 +81,7 @@
               region = "eu-west-3";
             };
             "profile versitygw" = {
-              region = "eu-west-3";
+              region = "us-east-1";
               endpoint_url = "https://versity.terence.cloud";
             };
           };
