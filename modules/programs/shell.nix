@@ -9,6 +9,12 @@
     {
       home.file.".p10k.zsh".source = "${inputs.dotfiles}/.p10k.zsh";
 
+      sops.secrets = {
+        cachix-auth-token = {
+          sopsFile = "${inputs.secrets}/cachix.yaml";
+        };
+      };
+
       programs = {
         zsh = {
           enable = true;
@@ -92,6 +98,8 @@
             argodiff () {
               argocd app diff $1 --grpc-web --local-repo-root $(git rev-parse --show-toplevel) --local $PWD --loglevel warn
             }
+
+            export CACHIX_AUTH_TOKEN=$(cat ${config.sops.secrets.cachix-auth-token.path})
           '';
         };
 
