@@ -22,7 +22,8 @@ jobs:
     strategy:
       matrix:
         host:
-          - framework13
+          - t14s
+          - stronghold
           - homelab2
       fail-fast: false
     concurrency:
