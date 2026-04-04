@@ -12,7 +12,6 @@
         calibre
         gpu-screen-recorder
         libreoffice-fresh
-        local.linear-linux
         nextcloud-client
         obsidian
         picard
