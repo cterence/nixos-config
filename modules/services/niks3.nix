@@ -49,7 +49,9 @@
       };
 
       programs.zsh.initContent = ''
+        export NIKS3_SERVER_URL=https://niks3.terence.cloud
         export NIKS3_API_TOKEN=$(cat ${config.sops.secrets.niks3-api-token.path})
+        export NIKS3_AUTH_TOKEN_FILE=${config.sops.secrets.niks3-api-token.path}
       '';
     };
 
