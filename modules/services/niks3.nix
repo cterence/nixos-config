@@ -14,7 +14,7 @@
           "https://niks3.terence.cloud"
         ];
         trusted-public-keys = [
-          "niks3.terence.cloud-1:53rzTdh92LaMDYaqWsMNZS8Q2wy/eGqfzkbA5MppfyTdpw/TmNjf2WiofXUUkJk5jmvcj+DGv9JTEi4KXEvgUQ=="
+          "niks3.terence.cloud-1:YBjuY7HeSjKk5wmvw8N+vq/us2GxQPCHRn871lL7XL4="
         ];
       };
 
