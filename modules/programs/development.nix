@@ -194,6 +194,11 @@
 
       sops = {
         secrets = {
+          openbao-root-token = {
+            sopsFile = "${inputs.secrets}/openbao.yaml";
+            key = "root-token";
+            path = config.home.homeDirectory + "/.vault-token";
+          };
           mistral-api-key = {
             sopsFile = "${inputs.secrets}/mistral-api-key.yaml";
           };
