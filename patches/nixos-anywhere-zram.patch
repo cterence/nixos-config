@@ -1,0 +1,37 @@
+diff --git a/src/nixos-anywhere.sh b/src/nixos-anywhere.sh
+index bf62667..b0e8ca7 100755
+--- a/src/nixos-anywhere.sh
++++ b/src/nixos-anywhere.sh
+@@ -833,6 +833,24 @@ EOF
+   fi
+ }
+
++setupZram() {
++  step "Setting up zram swap for low-memory VPS"
++  runSsh bash <<'ZRAM'
++    modprobe zram 2>/dev/null || true
++    if [ -b /dev/zram0 ]; then
++      mem_total=$(grep MemTotal /proc/meminfo | awk '{print $2}')
++      zram_size=$((mem_total * 1024 / 2))
++      echo zstd > /sys/block/zram0/comp_algorithm 2>/dev/null || true
++      echo $zram_size > /sys/block/zram0/disksize
++      mkswap /dev/zram0
++      swapon /dev/zram0
++      echo "zram swap enabled: $(cat /proc/swaps | grep zram)"
++    else
++      echo "zram module not available, skipping"
++    fi
++ZRAM
++}
++
+ runDisko() {
+   local diskoScript=$1
+   for path in "${!diskEncryptionKeys[@]}"; do
+@@ -1001,6 +1019,7 @@ main() {
+
+   if [[ ${phases[kexec]} == 1 ]]; then
++    setupZram
+     runKexec
+   fi
+
+   if [[ ${hardwareConfigBackend} != "none" ]]; then

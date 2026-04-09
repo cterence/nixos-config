@@ -8,6 +8,16 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
 
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixos-anywhere = {
+      url = "github:nix-community/nixos-anywhere";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -52,6 +62,11 @@
     secrets = {
       flake = false;
       url = "path:./secrets";
+    };
+
+    patches = {
+      flake = false;
+      url = "path:./patches";
     };
   };
 
