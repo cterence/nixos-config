@@ -8,6 +8,7 @@ in
     imports = with self.modules.nixos; [
       system-oracle
       systemd-boot
+      terence-server
     ];
 
     networking.hostName = hostname;
