@@ -9,6 +9,7 @@
       system-cli
       audio
       bluetooth
+      networking
       kde
       keyboard
       printing

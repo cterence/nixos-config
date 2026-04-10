@@ -1,6 +1,9 @@
 { inputs, self, ... }:
+let
+  hostname = "homelab3";
+in
 {
-  flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" "homelab3";
+  flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" hostname;
   flake.modules.nixos.homelab3 =
     { config, ... }:
     {
@@ -10,7 +13,7 @@
         k0s
         terence-server
       ];
-      networking.hostName = "homelab3";
+      networking.hostName = hostname;
 
       sops.secrets = {
         k0s-token = {

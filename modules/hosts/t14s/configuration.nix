@@ -1,6 +1,9 @@
 { self, ... }:
+let
+  hostname = "t14s";
+in
 {
-  flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" "t14s";
+  flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" hostname;
 
   flake.modules.nixos.t14s = {
     imports = with self.modules.nixos; [
@@ -11,7 +14,7 @@
       fingerprint
       terence-desktop
     ];
-    networking.hostName = "t14s";
+    networking.hostName = hostname;
 
     system.stateVersion = "25.11";
   };

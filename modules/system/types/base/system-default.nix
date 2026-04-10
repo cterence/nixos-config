@@ -10,7 +10,6 @@
         system-minimal
         niks3
         home-manager
-        networking
         secrets
         qol
       ]

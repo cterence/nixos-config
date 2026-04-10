@@ -6,7 +6,8 @@
   flake.modules.nixos.system-server = {
     imports = with self.modules.nixos; [
       system-cli
-      homelab-settings
+      networking
+      settings-homelab
     ];
   };
 

@@ -1,6 +1,9 @@
 { self, ... }:
+let
+  hostname = "homelab2";
+in
 {
-  flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" "homelab2";
+  flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" hostname;
   flake.modules.nixos.homelab2 = {
     imports = with self.modules.nixos; [
       system-server
@@ -8,7 +11,7 @@
       k0s
       terence-server
     ];
-    networking.hostName = "homelab2";
+    networking.hostName = hostname;
 
     services.k0s = {
       enable = true;

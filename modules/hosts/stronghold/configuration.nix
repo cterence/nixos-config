@@ -1,6 +1,9 @@
 { self, ... }:
+let
+  hostname = "stronghold";
+in
 {
-  flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" "stronghold";
+  flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" hostname;
   flake.modules.nixos.stronghold = {
     imports = with self.modules.nixos; [
       system-desktop
@@ -9,7 +12,7 @@
       fingerprint
       terence-desktop
     ];
-    networking.hostName = "stronghold";
+    networking.hostName = hostname;
 
     system.stateVersion = "25.11";
   };
