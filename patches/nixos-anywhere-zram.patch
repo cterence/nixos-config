@@ -12,7 +12,7 @@ index bf62667..b0e8ca7 100755
 +    modprobe zram 2>/dev/null || true
 +    if [ -b /dev/zram0 ]; then
 +      mem_total=$(grep MemTotal /proc/meminfo | awk '{print $2}')
-+      zram_size=$((mem_total * 1024 / 2))
++      zram_size=$((mem_total * 1024))
 +      echo zstd > /sys/block/zram0/comp_algorithm 2>/dev/null || true
 +      echo $zram_size > /sys/block/zram0/disksize
 +      mkswap /dev/zram0
@@ -30,8 +30,8 @@ index bf62667..b0e8ca7 100755
 @@ -1001,6 +1019,7 @@ main() {
 
    if [[ ${phases[kexec]} == 1 ]]; then
-+    setupZram
      runKexec
++    setupZram
    fi
 
    if [[ ${hardwareConfigBackend} != "none" ]]; then

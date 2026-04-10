@@ -1,9 +1,24 @@
 { self, ... }:
 {
+  # How to be able to nixos-anywhere kexec without oomkill:
+  # ssh opc@_ip_
+  # sudo -i
+  # systemctl stop pmcd pmlogger pmproxy pmie
+  # pkill -9 pmda
+  # systemctl stop oracle-cloud-agent
+  # systemctl stop oracle-cloud-agent-updater
+  # pkill -u ocarun
+  # systemctl stop firewalld
+  # systemctl stop tuned
+  # sync; echo 3 > /proc/sys/vm/drop_caches
+  # echo 1 > /proc/sys/vm/compact_memory
+
+  # Then run:
+  # nixos-anywhere --flake .#free-amd-instance-1 --no-disko-deps opc@_ip_
+
   flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" "free-amd-instance-1";
   flake.modules.nixos.free-amd-instance-1 = {
     imports = with self.modules.nixos; [
-      disko
       system-minimal
       disko
       home-manager

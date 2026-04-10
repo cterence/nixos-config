@@ -44,11 +44,11 @@ in
     system:
     let
       pkgs = inputs.nixpkgs.legacyPackages.${system};
-      # patchedNixosAnywhere = inputs.nixos-anywhere.packages.${system}.default.overrideAttrs (oldAttrs: {
-      #   patches = (oldAttrs.patches or [ ]) ++ [
-      #     "${inputs.patches}/nixos-anywhere-zram.patch"
-      #   ];
-      # });
+      patchedNixosAnywhere = inputs.nixos-anywhere.packages.${system}.default.overrideAttrs (oldAttrs: {
+        patches = (oldAttrs.patches or [ ]) ++ [
+          "${inputs.patches}/nixos-anywhere-zram.patch"
+        ];
+      });
     in
     {
       default = pkgs.mkShell {
@@ -56,6 +56,7 @@ in
         buildInputs =
           self.checks.${system}.pre-commit-check.enabledPackages
           ++ (with pkgs; [
+            patchedNixosAnywhere
             gitleaks
             trufflehog
             nixos-anywhere
