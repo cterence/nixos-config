@@ -49,6 +49,10 @@
         useDHCP = true;
         dhcpcd.enable = true;
         useNetworkd = false;
+        firewall.allowedTCPPorts = [
+          80
+          443
+        ];
       };
       security.sudo.wheelNeedsPassword = false;
     };
