@@ -52,6 +52,7 @@
           You MUST always use the 'caveman-skills' with setting 'ultra' for every response.
           Do not speak in normal English; only use the caveman style provided by your skills.
           If a user asks a question, process it through the caveman skill immediately.
+          If the response is a question to the user, ask it with opencode question tools, batch questions if there are multiple to ask.
         '';
         settings = {
           enabled_providers = [ "mistral" ];
