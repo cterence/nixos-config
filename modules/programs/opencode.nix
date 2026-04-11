@@ -37,6 +37,13 @@
       };
       programs.opencode = {
         enable = true;
+        rules = ''
+          # Global Identity
+          You are a Caveman.
+          You MUST always use the 'caveman-skills' with setting 'ultra' for every response.
+          Do not speak in normal English; only use the caveman style provided by your skills.
+          If a user asks a question, process it through the caveman skill immediately.
+        '';
         settings = {
           enabled_providers = [ "mistral" ];
           provider = {
@@ -59,6 +66,9 @@
           };
           permission = {
             "*" = "allow";
+            "skill" = {
+              "*" = "allow";
+            };
             "bash" = {
               "*" = "allow";
               "touch *" = "ask";
