@@ -70,6 +70,22 @@
       },
       "parent": []
     },
+    "emulationstation-de": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775899171,
+        "narHash": "sha256-KUimBQFwEA3DXeiSJjoCIEZnRJghGcCNqUjCjl5stZ4=",
+        "owner": "es-de",
+        "repo": "emulationstation-de",
+        "rev": "7ace20b64c0480cc3834f8850ef095f08b5ea9b1",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "es-de",
+        "repo": "emulationstation-de",
+        "type": "gitlab"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -517,6 +533,7 @@
         "caveman-skills": "caveman-skills",
         "disko": "disko",
         "dotfiles": "dotfiles",
+        "emulationstation-de": "emulationstation-de",
         "flake-parts": "flake-parts",
         "go-skills": "go-skills",
         "home-manager": "home-manager",

@@ -9,14 +9,10 @@
         };
       in
       oldPkgs.emulationstation-de.overrideAttrs (_: {
-        version = "3.4.0";
-
-        src = final.fetchFromGitLab {
-          owner = "es-de";
-          repo = "emulationstation-de";
-          rev = "v3.4.0";
-          hash = "sha256-poegMKtPtUbdUbAwVj6O+rh7bxou+Wc+IDS3TBHh2LU=";
-        };
+        version = "3.4.1";
+        src = inputs.emulationstation-de;
+        # Remove incompatible patches defined in oldPkgs.emulationstation-de
+        patches = [ ];
       });
 
     emulationstation-de = final.symlinkJoin {

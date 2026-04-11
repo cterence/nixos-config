@@ -69,6 +69,11 @@
       url = "path:./patches";
     };
 
+    emulationstation-de = {
+      flake = false;
+      url = "gitlab:es-de/emulationstation-de";
+    };
+
     caveman-skills = {
       flake = false;
       url = "github:JuliusBrussee/caveman";
