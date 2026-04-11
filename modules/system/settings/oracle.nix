@@ -18,25 +18,27 @@
 
       systemd = {
         network.enable = false;
-        services.tailscale-udp-optimizations = {
-          description = "Tailscale UDP throughput optimizations";
+        services = {
+          tailscale-udp-optimizations = {
+            description = "Tailscale UDP throughput optimizations";
 
-          # Ensure this runs after the network is up
-          after = [ "network.target" ];
-          wantedBy = [ "multi-user.target" ];
+            # Ensure this runs after the network is up
+            after = [ "network.target" ];
+            wantedBy = [ "multi-user.target" ];
 
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+            };
+
+            script = ''
+              # Find the primary network interface
+              NETDEV=$(${pkgs.iproute2}/bin/ip -o route get 8.8.8.8 | cut -f 5 -d " ")
+
+              echo "Applying UDP offload optimizations to $NETDEV..."
+              ${pkgs.ethtool}/bin/ethtool -K "$NETDEV" rx-udp-gro-forwarding on rx-gro-list off
+            '';
           };
-
-          script = ''
-            # Find the primary network interface
-            NETDEV=$(${pkgs.iproute2}/bin/ip -o route get 8.8.8.8 | cut -f 5 -d " ")
-
-            echo "Applying UDP offload optimizations to $NETDEV..."
-            ${pkgs.ethtool}/bin/ethtool -K "$NETDEV" rx-udp-gro-forwarding on rx-gro-list off
-          '';
         };
       };
 

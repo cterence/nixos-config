@@ -49,11 +49,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    arion = {
-      url = "github:hercules-ci/arion";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     packages = {
       flake = false;
       url = "path:./packages";
@@ -72,6 +67,21 @@
     patches = {
       flake = false;
       url = "path:./patches";
+    };
+
+    caveman-skills = {
+      flake = false;
+      url = "github:JuliusBrussee/caveman";
+    };
+
+    go-skills = {
+      flake = false;
+      url = "github:spf13/go-skills";
+    };
+
+    terraform-skills = {
+      flake = false;
+      url = "github:hashicorp/agent-skills";
     };
   };
 

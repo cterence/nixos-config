@@ -1,24 +1,18 @@
 {
   "nodes": {
-    "arion": {
-      "inputs": {
-        "flake-parts": "flake-parts",
-        "haskell-flake": "haskell-flake",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
+    "caveman-skills": {
+      "flake": false,
       "locked": {
-        "lastModified": 1770259557,
-        "narHash": "sha256-EvZ09k9+mzXAngPzU2K7oLLUDlKoT1numb4bDb3Gtl4=",
-        "owner": "hercules-ci",
-        "repo": "arion",
-        "rev": "9b24cf65c72cb0e9616e437d55e1ac8e5c6bc715",
+        "lastModified": 1775903584,
+        "narHash": "sha256-5VYa8s0LqulZeBYNEjSPhG9GR/5nLrdg34SZuuEn62Q=",
+        "owner": "JuliusBrussee",
+        "repo": "caveman",
+        "rev": "0bbd46c390319481c6c5a7a48de53fdf124b1aff",
         "type": "github"
       },
       "original": {
-        "owner": "hercules-ci",
-        "repo": "arion",
+        "owner": "JuliusBrussee",
+        "repo": "caveman",
         "type": "github"
       }
     },
@@ -94,27 +88,6 @@
     },
     "flake-parts": {
       "inputs": {
-        "nixpkgs-lib": [
-          "arion",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1769996383,
-        "narHash": "sha256-AnYjnFWgS49RlqX7LrC4uA+sCCDBj0Ry/WOJ5XWAsa0=",
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "rev": "57928607ea566b5db3ad13af0e57e921e6b12381",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "type": "github"
-      }
-    },
-    "flake-parts_2": {
-      "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
@@ -131,7 +104,7 @@
         "type": "github"
       }
     },
-    "flake-parts_3": {
+    "flake-parts_2": {
       "inputs": {
         "nixpkgs-lib": [
           "niks3",
@@ -152,7 +125,7 @@
         "type": "github"
       }
     },
-    "flake-parts_4": {
+    "flake-parts_3": {
       "inputs": {
         "nixpkgs-lib": [
           "nixos-anywhere",
@@ -194,19 +167,19 @@
         "type": "github"
       }
     },
-    "haskell-flake": {
+    "go-skills": {
+      "flake": false,
       "locked": {
-        "lastModified": 1675296942,
-        "narHash": "sha256-u1X1sblozi5qYEcLp1hxcyo8FfDHnRUVX3dJ/tW19jY=",
-        "owner": "srid",
-        "repo": "haskell-flake",
-        "rev": "c2cafce9d57bfca41794dc3b99c593155006c71e",
+        "lastModified": 1775321912,
+        "narHash": "sha256-XB+Z6HR45RylCari6Pmt7pIXBKSlSHYosAp1R4APSvQ=",
+        "owner": "spf13",
+        "repo": "go-skills",
+        "rev": "26434baef9f4d26ba272708fd79bd618ff90f820",
         "type": "github"
       },
       "original": {
-        "owner": "srid",
-        "ref": "0.1.0",
-        "repo": "haskell-flake",
+        "owner": "spf13",
+        "repo": "go-skills",
         "type": "github"
       }
     },
@@ -267,7 +240,7 @@
     },
     "niks3": {
       "inputs": {
-        "flake-parts": "flake-parts_3",
+        "flake-parts": "flake-parts_2",
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -313,7 +286,7 @@
     "nixos-anywhere": {
       "inputs": {
         "disko": "disko_2",
-        "flake-parts": "flake-parts_4",
+        "flake-parts": "flake-parts_3",
         "nix-vm-test": "nix-vm-test",
         "nixos-images": "nixos-images",
         "nixos-stable": "nixos-stable",
@@ -541,10 +514,11 @@
     },
     "root": {
       "inputs": {
-        "arion": "arion",
+        "caveman-skills": "caveman-skills",
         "disko": "disko",
         "dotfiles": "dotfiles",
-        "flake-parts": "flake-parts_2",
+        "flake-parts": "flake-parts",
+        "go-skills": "go-skills",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
         "k0s": "k0s",
@@ -559,7 +533,8 @@
         "plasma-manager": "plasma-manager",
         "pre-commit-hooks": "pre-commit-hooks",
         "secrets": "secrets",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "terraform-skills": "terraform-skills"
       }
     },
     "secrets": {
@@ -591,6 +566,22 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "terraform-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775067057,
+        "narHash": "sha256-rXn/16lz+RxusrcHycM6p355Y1vUXkTTmN46//QvlrQ=",
+        "owner": "hashicorp",
+        "repo": "agent-skills",
+        "rev": "75a9aed3188b6a5a56a4648a4ff7869e0ff52c11",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hashicorp",
+        "repo": "agent-skills",
         "type": "github"
       }
     },

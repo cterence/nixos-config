@@ -19,7 +19,6 @@ in
           };
           nix-daemon-environment = {
             mode = "0440";
-            path = config.systemd.services.nix-daemon.serviceConfig.EnvironmentFile;
             sopsFile = "${inputs.secrets}/settings.yaml";
             group = config.users.groups.keys.name;
           };
@@ -32,7 +31,7 @@ in
 
       systemd = {
         services = {
-          nix-daemon.serviceConfig.EnvironmentFile = "/etc/nixos/nix-daemon-environment";
+          nix-daemon.serviceConfig.EnvironmentFile = config.sops.secrets.nix-daemon-environment.path;
         };
       };
     };

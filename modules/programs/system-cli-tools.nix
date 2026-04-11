@@ -19,6 +19,7 @@
         mlocate
         nano
         net-tools
+        nftables
         openssl
         parted
         pciutils
