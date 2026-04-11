@@ -130,6 +130,7 @@
                 };
               };
             };
+            plugin = [ "superpowers@git+https://github.com/obra/superpowers.git" ];
             mcp = {
               grafana = {
                 type = "remote";
@@ -190,6 +191,13 @@
         zsh.initContent = ''
           export MISTRAL_API_KEY="$(cat ${config.sops.secrets.mistral-api-key.path})"
         '';
+      };
+
+      home.file = {
+        skills = {
+          target = "${config.home.homeDirectory}/.config/opencode/skills";
+          source = "${inputs.dotfiles}/skills";
+        };
       };
 
       sops = {
