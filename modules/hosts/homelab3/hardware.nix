@@ -37,6 +37,7 @@
       };
       "/export/mx500-homelab3" = {
         device = "/mnt/mx500-02/k8s-data";
+        fsType = "ext4";
         options = [ "bind" ];
         depends = [ "/mnt/mx500-02" ];
       };
