@@ -154,5 +154,12 @@
           };
         };
       };
+
+      home.file = {
+        k9s-plugins = {
+          target = "${config.home.homeDirectory}/.config/k9s/plugins.yaml";
+          source = "${inputs.dotfiles}/k9s-plugins.yaml";
+        };
+      };
     };
 }

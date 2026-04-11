@@ -1,0 +1,542 @@
+plugins:
+  refresh-external-secrets:
+    shortCut: Shift-R
+    confirm: false
+    scopes:
+      - externalsecrets
+    description: Refresh the externalsecret
+    command: bash
+    background: true
+    args:
+      - -c
+      - "kubectl annotate externalsecrets.external-secrets.io --context $CONTEXT -n $NAMESPACE $NAME force-sync=$(date +%s) --overwrite"
+  refresh-push-secrets:
+    shortCut: Shift-R
+    confirm: false
+    scopes:
+      - pushsecrets
+    description: Refresh the pushsecret
+    command: bash
+    background: true
+    args:
+      - -c
+      - "kubectl annotate pushsecrets.external-secrets.io --context $CONTEXT -n $NAMESPACE $NAME force-sync=$(date +%s) --overwrite"
+
+  argocd:
+    shortCut: "s"
+    description: Sync ArgoCD Application
+    scopes:
+      - application
+    command: argocd
+    args:
+      - app
+      - sync
+      - $NAME
+      - --app-namespace
+      - $NAMESPACE
+    background: true
+    confirm: true
+
+  refresh-apps:
+    shortCut: Shift-R
+    confirm: false
+    scopes:
+      - apps
+    description: Refresh a argocd app hard
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl annotate applications -n argocd $NAME argocd.argoproj.io/refresh=hard"
+
+  disable-auto-sync:
+    shortCut: Shift-J
+    confirm: false
+    scopes:
+      - apps
+    description: Disable argocd sync
+    command: kubectl
+    background: false
+    args:
+      - patch
+      - applications
+      - -n
+      - argocd
+      - $NAME
+      - "--type=json"
+      - '-p=[{"op":"replace", "path": "/spec/syncPolicy", "value": {}}]'
+
+  enable-auto-sync:
+    shortCut: Shift-B
+    confirm: false
+    scopes:
+      - apps
+    description: Enable argocd sync
+    command: kubectl
+    background: false
+    args:
+      - patch
+      - applications
+      - -n
+      - argocd
+      - $NAME
+      - --type=merge
+      - '-p={"spec":{"syncPolicy":{"automated":{"prune":true,"selfHeal":true},"syncOptions":["ApplyOutOfSyncOnly=true","CreateNamespace=true","PruneLast=true","PrunePropagationPolicy=foreground"]}}}'
+
+  # Manage cert-manager Certificate resources via cmctl.
+  # See: https://github.com/cert-manager/cmctl
+  cert-status:
+    shortCut: Shift-T
+    confirm: false
+    description: Certificate status
+    scopes:
+      - certificates
+    command: bash
+    background: false
+    args:
+      - -c
+      - "cmctl status certificate --context $CONTEXT -n $NAMESPACE $NAME |& less"
+  cert-renew:
+    shortCut: Shift-R
+    confirm: false
+    description: Certificate renew
+    scopes:
+      - certificates
+    command: bash
+    background: false
+    args:
+      - -c
+      - "cmctl renew --context $CONTEXT -n $NAMESPACE $NAME |& less"
+  secret-inspect:
+    shortCut: Shift-I
+    confirm: false
+    description: Inspect secret
+    scopes:
+      - secrets
+    command: bash
+    background: false
+    args:
+      - -c
+      - "cmctl inspect secret --context $CONTEXT -n $NAMESPACE $NAME |& less"
+
+  # $HOME/.k9s/plugin.yml
+  # move selected line to chosen resource in K9s, then:
+  # Shift-T (with confirmation) to toggle helm releases or kustomizations suspend and resume
+  # Shift-R (no confirmation) to reconcile a git source or a helm release or a kustomization
+  toggle-helmrelease:
+    shortCut: Shift-T
+    confirm: true
+    scopes:
+      - helmreleases
+    description: Toggle to suspend or resume a HelmRelease
+    command: bash
+    background: false
+    args:
+      - -c
+      - >-
+        suspended=$(kubectl --context $CONTEXT get helmreleases -n $NAMESPACE $NAME -o=custom-columns=TYPE:.spec.suspend | tail -1);
+        verb=$([ $suspended = "true" ] && echo "resume" || echo "suspend");
+        flux
+        $verb helmrelease
+        --context $CONTEXT
+        -n $NAMESPACE $NAME
+        | less -K
+  toggle-kustomization:
+    shortCut: Shift-T
+    confirm: true
+    scopes:
+      - kustomizations
+    description: Toggle to suspend or resume a Kustomization
+    command: bash
+    background: false
+    args:
+      - -c
+      - >-
+        suspended=$(kubectl --context $CONTEXT get kustomizations -n $NAMESPACE $NAME -o=custom-columns=TYPE:.spec.suspend | tail -1);
+        verb=$([ $suspended = "true" ] && echo "resume" || echo "suspend");
+        flux
+        $verb kustomization
+        --context $CONTEXT
+        -n $NAMESPACE $NAME
+        | less -K
+  reconcile-git:
+    shortCut: Shift-R
+    confirm: false
+    description: Flux reconcile
+    scopes:
+      - gitrepositories
+    command: bash
+    background: false
+    args:
+      - -c
+      - >-
+        flux
+        reconcile source git
+        --context $CONTEXT
+        -n $NAMESPACE $NAME
+        | less -K
+  reconcile-hr:
+    shortCut: Shift-R
+    confirm: false
+    description: Flux reconcile
+    scopes:
+      - helmreleases
+    command: bash
+    background: false
+    args:
+      - -c
+      - >-
+        flux
+        reconcile helmrelease
+        --context $CONTEXT
+        -n $NAMESPACE $NAME
+        | less -K
+  reconcile-helm-repo:
+    shortCut: Shift-Z
+    description: Flux reconcile
+    scopes:
+      - helmrepositories
+    command: bash
+    background: false
+    confirm: false
+    args:
+      - -c
+      - >-
+        flux
+        reconcile source helm
+        --context $CONTEXT
+        -n $NAMESPACE $NAME
+        | less -K
+  reconcile-oci-repo:
+    shortCut: Shift-Z
+    description: Flux reconcile
+    scopes:
+      - ocirepositories
+    command: bash
+    background: false
+    confirm: false
+    args:
+      - -c
+      - >-
+        flux
+        reconcile source oci
+        --context $CONTEXT
+        -n $NAMESPACE $NAME
+        | less -K
+  reconcile-ks:
+    shortCut: Shift-R
+    confirm: false
+    description: Flux reconcile
+    scopes:
+      - kustomizations
+    command: bash
+    background: false
+    args:
+      - -c
+      - >-
+        flux
+        reconcile kustomization
+        --context $CONTEXT
+        -n $NAMESPACE $NAME
+        | less -K
+  reconcile-ir:
+    shortCut: Shift-R
+    confirm: false
+    description: Flux reconcile
+    scopes:
+      - imagerepositories
+    command: sh
+    background: false
+    args:
+      - -c
+      - >-
+        flux
+        reconcile image repository
+        --context $CONTEXT
+        -n $NAMESPACE $NAME
+        | less -K
+  reconcile-iua:
+    shortCut: Shift-R
+    confirm: false
+    description: Flux reconcile
+    scopes:
+      - imageupdateautomations
+    command: sh
+    background: false
+    args:
+      - -c
+      - >-
+        flux
+        reconcile image update
+        --context $CONTEXT
+        -n $NAMESPACE $NAME
+        | less -K
+  toggle-rset:
+    shortCut: Shift-T
+    confirm: false
+    scopes:
+      - resourcesets
+    description: Toggle to suspend or resume a ResourceSet
+    command: bash
+    background: false
+    args:
+      - -c
+      - >-
+        reconcile=$(kubectl --context $CONTEXT get resourceset -n $NAMESPACE $NAME -o=custom-columns='TYPE:.metadata.annotations.fluxcd\.controlplane\.io/reconcile' | tail -1);
+        verb=$([ $reconcile = "disabled" ] && echo "resume" || echo "suspend");
+        flux-operator
+        $verb rset
+        --kube-context $CONTEXT
+        -n $NAMESPACE $NAME
+        | less -K
+  toggle-inputprovider:
+    shortCut: Shift-T
+    confirm: false
+    scopes:
+      - resourcesetinputprovider
+    description: Toggle to suspend or resume an InputProvider
+    command: bash
+    background: false
+    args:
+      - -c
+      - >-
+        reconcile=$(kubectl --context $CONTEXT get resourcesetinputprovider -n $NAMESPACE $NAME -o=custom-columns='TYPE:.metadata.annotations.fluxcd\.controlplane\.io/reconcile' | tail -1);
+        verb=$([ $reconcile = "disabled" ] && echo "resume" || echo "suspend");
+        flux-operator
+        $verb inputprovider
+        --kube-context $CONTEXT
+        -n $NAMESPACE $NAME
+        | less -K
+  reconcile-rset:
+    shortCut: Shift-R
+    confirm: false
+    description: Flux reconcile
+    scopes:
+      - resourcesets
+    command: bash
+    background: false
+    args:
+      - -c
+      - >-
+        flux-operator
+        reconcile rset
+        --kube-context $CONTEXT
+        -n $NAMESPACE $NAME
+        | less -K
+  reconcile-inputprovider:
+    shortCut: Shift-R
+    confirm: false
+    description: Flux reconcile
+    scopes:
+      - resources
+    command: bash
+    background: false
+    args:
+      - -c
+      - >-
+        flux-operator
+        reconcile inputprovider
+        --kube-context $CONTEXT
+        -n $NAMESPACE $NAME
+        | less -K
+  reconcile-fluxinstance:
+    shortCut: Shift-R
+    confirm: false
+    description: Flux reconcile
+    scopes:
+      - fluxinstances
+    command: bash
+    background: false
+    args:
+      - -c
+      - >-
+        flux-operator
+        reconcile instance
+        --kube-context $CONTEXT
+        -n $NAMESPACE $NAME
+        | less -K
+  trace:
+    shortCut: Shift-Q
+    confirm: false
+    description: Flux trace
+    scopes:
+      - all
+    command: bash
+    background: false
+    args:
+      - -c
+      - >-
+        if [ -n "$RESOURCE_GROUP" ]; then api_endpoint="/apis/$RESOURCE_GROUP/$RESOURCE_VERSION"; else api_endpoint="/api/$RESOURCE_VERSION"; fi;
+        api_resource=$(kubectl get --raw "${api_endpoint}" | jq -r ".resources[] | select(.name==\"$RESOURCE_NAME\")");
+        kind=$(echo ${api_resource} | jq -r '.kind');
+        namespace_arg=$(echo ${api_resource} | jq -r "if .namespaced == true then \"--namespace $NAMESPACE\" else \"\" end");
+        [ -n "$RESOURCE_GROUP" ] && api_version=$RESOURCE_GROUP/;
+        api_version=${api_version}$RESOURCE_VERSION;
+        flux
+        trace
+        --context $CONTEXT
+        --kind ${kind}
+        --api-version ${api_version}
+        ${namespace_arg}
+        $NAME
+        |& less -K
+  # credits: https://github.com/fluxcd/flux2/discussions/2494
+  get-suspended-helmreleases:
+    shortCut: Shift-U
+    confirm: false
+    description: Suspended Helm Releases
+    scopes:
+      - helmrelease
+    command: sh
+    background: false
+    args:
+      - -c
+      - >-
+        kubectl get
+        --context $CONTEXT
+        --all-namespaces
+        helmreleases.helm.toolkit.fluxcd.io -o json
+        | jq -r '.items[] | select(.spec.suspend==true) | [.metadata.namespace,.metadata.name,.spec.suspend] | @tsv'
+        | less -K
+  get-suspended-kustomizations:
+    shortCut: Shift-U
+    confirm: false
+    description: Suspended Kustomizations
+    scopes:
+      - kustomizations
+    command: sh
+    background: false
+    args:
+      - -c
+      - >-
+        kubectl get
+        --context $CONTEXT
+        --all-namespaces
+        kustomizations.kustomize.toolkit.fluxcd.io -o json
+        | jq -r '.items[] | select(.spec.suspend==true) | [.metadata.name,.spec.suspend] | @tsv'
+        | less -K
+
+  # Leverage stern (https://github.com/stern/stern) to output logs.
+  stern:
+    shortCut: Ctrl-Y
+    confirm: false
+    description: "Logs <Stern>"
+    scopes:
+      - pods
+    command: kubectl
+    background: false
+    args:
+      - stern
+      - --tail
+      - 50
+      - $FILTER
+      - -n
+      - $NAMESPACE
+      - --context
+      - $CONTEXT
+
+  cnpg-backup:
+    shortCut: b
+    description: Backup
+    scopes:
+      - cluster
+    command: bash
+    confirm: true
+    background: false
+    args:
+      - -c
+      - "kubectl cnpg backup $NAME -n $NAMESPACE --context $CONTEXT |& less -R"
+  cnpg-hibernate-status:
+    shortCut: h
+    description: Hibernate status
+    scopes:
+      - cluster
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl cnpg hibernate status $NAME -n $NAMESPACE --context $CONTEXT |& less -R"
+  cnpg-hibernate:
+    shortCut: Shift-H
+    description: Hibernate
+    confirm: true
+    scopes:
+      - cluster
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl cnpg hibernate on $NAME -n $NAMESPACE --context $CONTEXT |& less -R"
+  cnpg-hibernate-off:
+    shortCut: Shift-H
+    description: Wake up hibernated cluster in this namespace
+    confirm: true
+    scopes:
+      - namespace
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl cnpg hibernate off $NAME -n $NAME --context $CONTEXT |& less -R"
+  cnpg-logs:
+    shortCut: l
+    description: Logs
+    scopes:
+      - cluster
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl cnpg logs cluster $NAME -f -n $NAMESPACE --context $CONTEXT"
+  cnpg-psql:
+    shortCut: p
+    description: PSQL shell
+    scopes:
+      - cluster
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl cnpg psql $NAME -n $NAMESPACE --context $CONTEXT"
+  cnpg-reload:
+    shortCut: r
+    description: Reload
+    confirm: true
+    scopes:
+      - cluster
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl cnpg reload $NAME -n $NAMESPACE --context $CONTEXT |& less -R"
+  cnpg-restart:
+    shortCut: Shift-R
+    description: Restart
+    confirm: true
+    scopes:
+      - cluster
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl cnpg restart $NAME -n $NAMESPACE --context $CONTEXT |& less -R"
+  cnpg-status:
+    shortCut: s
+    description: Status
+    scopes:
+      - cluster
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl cnpg status $NAME -n $NAMESPACE --context $CONTEXT |& less -R"
+  cnpg-status-verbose:
+    shortCut: Shift-T
+    description: Status (verbose)
+    scopes:
+      - cluster
+    command: bash
+    background: false
+    args:
+      - -c
+      - "kubectl cnpg status $NAME -n $NAMESPACE --context $CONTEXT --verbose |& less -R"

@@ -1,6 +1,6 @@
 { self, ... }:
 let
-  hostname = "free-oracle-amd-1";
+  hostname = "free-oracle-amd-2";
 in
 {
   # How to be able to nixos-anywhere kexec without oomkill:
@@ -17,7 +17,7 @@ in
   # echo 1 > /proc/sys/vm/compact_memory
 
   # Then run:
-  # nixos-anywhere --flake .#free-oracle-amd-1 --no-disko-deps opc@_ip_
+  # nixos-anywhere --flake .#free-oracle-amd-2 --no-disko-deps opc@_ip_
 
   flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" hostname;
   flake.modules.nixos.${hostname} = {
@@ -25,10 +25,6 @@ in
       system-oracle
       systemd-boot
       terence-server
-    ];
-
-    home-manager.users.terence.imports = with self.modules.homeManager; [
-      docker-compose-gatus
     ];
 
     networking.hostName = hostname;
