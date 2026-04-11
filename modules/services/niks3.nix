@@ -1,5 +1,10 @@
 { inputs, ... }:
 {
+  flake-file.inputs.niks3 = {
+    url = "github:Mic92/niks3";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   flake.modules.nixos.niks3 =
     { config, pkgs, ... }:
     {

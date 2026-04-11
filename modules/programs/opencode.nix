@@ -1,6 +1,23 @@
 { inputs, ... }:
 
 {
+  flake-file.inputs = {
+    caveman-skills = {
+      flake = false;
+      url = "github:JuliusBrussee/caveman";
+    };
+
+    go-skills = {
+      flake = false;
+      url = "github:spf13/go-skills";
+    };
+
+    terraform-skills = {
+      flake = false;
+      url = "github:hashicorp/agent-skills";
+    };
+  };
+
   flake.modules.homeManager.opencode =
     { config, ... }:
     {

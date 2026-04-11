@@ -8,6 +8,18 @@ let
   forAllSystems = inputs.nixpkgs.lib.genAttrs config.systems;
 in
 {
+  flake-file.inputs = {
+    pre-commit-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    patches = {
+      flake = false;
+      url = "path:./patches";
+    };
+  };
+
   flake.checks = forAllSystems (
     system:
     let

@@ -1,5 +1,10 @@
 { inputs, ... }:
 {
+  flake-file.inputs.k0s = {
+    url = "github:johbo/k0s-nix";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   flake.modules.nixos.k0s =
     { pkgs, ... }:
     {

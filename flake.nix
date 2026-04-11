@@ -1,94 +1,79 @@
+# DO-NOT-EDIT. This file was auto-generated using github:vic/flake-file.
+# Use `nix run .#write-flake` to regenerate it.
 {
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
+
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # Commit preceding https://github.com/NixOS/nixpkgs/commit/608422bd4ba434d02278602bc74c46d10bfde2ba
-    nixpkgs-emulationstation.url = "github:nixos/nixpkgs/845134719941b3a2087842eae23e521d67e35ad5";
+    caveman-skills = {
+      url = "github:JuliusBrussee/caveman";
+      flake = false;
+    };
+    disko.url = "github:nix-community/disko";
+    dotfiles = {
+      url = "path:./dotfiles";
+      flake = false;
+    };
+    emulationstation-de = {
+      url = "gitlab:es-de/emulationstation-de";
+      flake = false;
+    };
+    flake-file.url = "github:vic/flake-file";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    import-tree.url = "github:vic/import-tree";
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
-
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
+    go-skills = {
+      url = "github:spf13/go-skills";
+      flake = false;
     };
-
-    nixos-anywhere = {
-      url = "github:nix-community/nixos-anywhere";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    import-tree.url = "github:vic/import-tree";
     k0s = {
       url = "github:johbo/k0s-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    pre-commit-hooks = {
-      url = "github:cachix/git-hooks.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    plasma-manager = {
-      url = "github:nix-community/plasma-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-    };
-
     niks3 = {
       url = "github:Mic92/niks3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    nixos-anywhere = {
+      url = "github:nix-community/nixos-anywhere";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-emulationstation.url = "github:nixos/nixpkgs/845134719941b3a2087842eae23e521d67e35ad5";
+    packages = {
+      url = "path:./packages";
+      flake = false;
+    };
+    patches = {
+      url = "path:./patches";
+      flake = false;
+    };
+    pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs = {
+        home-manager.follows = "home-manager";
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
+    pre-commit-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    secrets = {
+      url = "path:./secrets";
+      flake = false;
+    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    packages = {
-      flake = false;
-      url = "path:./packages";
-    };
-
-    dotfiles = {
-      flake = false;
-      url = "path:./dotfiles";
-    };
-
-    secrets = {
-      flake = false;
-      url = "path:./secrets";
-    };
-
-    patches = {
-      flake = false;
-      url = "path:./patches";
-    };
-
-    emulationstation-de = {
-      flake = false;
-      url = "gitlab:es-de/emulationstation-de";
-    };
-
-    caveman-skills = {
-      flake = false;
-      url = "github:JuliusBrussee/caveman";
-    };
-
-    go-skills = {
-      flake = false;
-      url = "github:spf13/go-skills";
-    };
-
     terraform-skills = {
-      flake = false;
       url = "github:hashicorp/agent-skills";
+      flake = false;
     };
   };
-
-  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }

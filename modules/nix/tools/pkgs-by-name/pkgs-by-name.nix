@@ -1,5 +1,14 @@
 { inputs, withSystem, ... }:
 {
+  flake-file.inputs = {
+    packages = {
+      flake = false;
+      url = "path:./packages";
+    };
+
+    pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
+  };
+
   imports = [
     inputs.pkgs-by-name-for-flake-parts.flakeModule
   ];

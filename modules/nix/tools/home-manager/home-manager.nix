@@ -24,6 +24,17 @@ let
     };
 in
 {
+  flake-file.inputs = {
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dotfiles = {
+      flake = false;
+      url = "path:./dotfiles";
+    };
+  };
+
   imports = [ inputs.home-manager.flakeModules.home-manager ];
 
   flake.modules.nixos.home-manager = {
