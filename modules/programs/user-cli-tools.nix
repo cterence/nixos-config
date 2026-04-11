@@ -51,7 +51,6 @@
           velero
           versitygw
           yq-go
-          yt-dlp
           zip
         ];
       };
