@@ -1,6 +1,6 @@
 {
   flake.modules.nixos.settings-oracle =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
       boot = {
         initrd.availableKernelModules = [
@@ -12,6 +12,7 @@
         kernel.sysctl = {
           "net.ipv4.ip_forward" = 1;
           "net.ipv6.conf.all.forwarding" = 1;
+          "net.ipv4.ip_unprivileged_port_start" = 80;
         };
       };
 
@@ -53,6 +54,10 @@
           80
           443
         ];
+      };
+
+      virtualisation.docker = {
+        enable = lib.mkForce false;
       };
       security.sudo.wheelNeedsPassword = false;
     };
