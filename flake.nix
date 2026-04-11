@@ -8,7 +8,10 @@
       url = "github:JuliusBrussee/caveman";
       flake = false;
     };
-    disko.url = "github:nix-community/disko";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     dotfiles = {
       url = "path:./dotfiles";
       flake = false;
