@@ -17,7 +17,9 @@
           fastfetch
           fd
           ffmpeg
+          google-cloud-sdk
           glab
+          gws
           htop
           ipcalc
           jq

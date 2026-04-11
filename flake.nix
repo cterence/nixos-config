@@ -26,6 +26,10 @@
       url = "github:spf13/go-skills";
       flake = false;
     };
+    gws-skills = {
+      url = "github:googleworkspace/cli";
+      flake = false;
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";

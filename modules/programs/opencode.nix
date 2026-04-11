@@ -16,6 +16,11 @@
       flake = false;
       url = "github:hashicorp/agent-skills";
     };
+
+    gws-skills = {
+      flake = false;
+      url = "github:googleworkspace/cli";
+    };
   };
 
   flake.modules.homeManager.opencode =
@@ -33,6 +38,10 @@
         caveman-skills = {
           source = inputs.caveman-skills + "/caveman";
           target = ".config/opencode/skills/caveman-skills";
+        };
+        gws-skills = {
+          source = inputs.gws-skills + "/skills";
+          target = ".config/opencode/skills/gws-skills";
         };
       };
       programs.opencode = {
@@ -109,7 +118,9 @@
               "nixos-rebuild *" = "ask";
             };
             "doom_loop" = "ask";
-            "external_directory" = "ask";
+            "external_directory" = {
+              "/tmp/**" = "allow";
+            };
           };
         };
       };
