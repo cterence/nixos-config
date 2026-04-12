@@ -3,11 +3,11 @@
     "caveman-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1775903584,
-        "narHash": "sha256-5VYa8s0LqulZeBYNEjSPhG9GR/5nLrdg34SZuuEn62Q=",
+        "lastModified": 1775945827,
+        "narHash": "sha256-gDPgQx1TIhGrJ2EVvEoDY+4MXdlI79zdcx6pL5nMEG4=",
         "owner": "JuliusBrussee",
         "repo": "caveman",
-        "rev": "0bbd46c390319481c6c5a7a48de53fdf124b1aff",
+        "rev": "600e8efcd6aca4006051ca2a889aa8100a9b3967",
         "type": "github"
       },
       "original": {
@@ -295,11 +295,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1775881410,
-        "narHash": "sha256-6hkiyPd8mP9I4G3HtYEDHs7YeEEXUUljIcytgBdqAGc=",
+        "lastModified": 1775969377,
+        "narHash": "sha256-cf1M4K5dT5oKca9IyKk+qlhRYO21ZXvJnPHFdkz9HMk=",
         "owner": "Mic92",
         "repo": "niks3",
-        "rev": "502617b9ca98e99fdd98978d89ab7b5201f373f0",
+        "rev": "05bda4806a70a443b00d3958ceb84dbf1cba84f6",
         "type": "github"
       },
       "original": {
