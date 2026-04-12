@@ -3,6 +3,7 @@
   flake-file.inputs.niks3 = {
     url = "github:Mic92/niks3";
     inputs.nixpkgs.follows = "nixpkgs";
+    inputs.flake-parts.follows = "flake-parts";
   };
 
   flake.modules.nixos.niks3 =
