@@ -12,6 +12,11 @@ in
       fingerprint
       terence-desktop
     ];
+
+    home-manager.users.terence.imports = with self.modules.homeManager; [
+      kopia-sync
+    ];
+
     networking.hostName = hostname;
 
     system.stateVersion = "25.11";
