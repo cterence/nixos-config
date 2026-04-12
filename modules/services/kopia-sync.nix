@@ -30,12 +30,12 @@
         };
       };
 
-      systemd.user.services.kopia-sync = {
+      systemd.user.services.kopia-sync-backblaze = {
         Unit = {
           Description = "Sync remote Kopia repositories to filesystem repositories";
         };
         Service = {
-          ExecStart = "${pkgs.writeShellScript "kopia-sync" ''
+          ExecStart = "${pkgs.writeShellScript "kopia-sync-backblaze" ''
             #!/run/current-system/sw/bin/bash
 
             set -eu
@@ -100,12 +100,12 @@
         };
       };
 
-      systemd.user.services.kopia-vgw-sync = {
+      systemd.user.services.kopia-sync-vgw = {
         Unit = {
           Description = "Sync remote Kopia repositories to filesystem repositories";
         };
         Service = {
-          ExecStart = "${pkgs.writeShellScript "kopia-vgw-sync" ''
+          ExecStart = "${pkgs.writeShellScript "kopia-sync-vgw" ''
             #!/run/current-system/sw/bin/bash
 
             set -eu
@@ -113,7 +113,7 @@
             # Configuration
             BUCKET="velero"
             PATH_PREFIX="v2/kopia/"
-            ENDPOINT="localhost:7070"
+            ENDPOINT_DOMAIN="localhost:7070"
             ENDPOINT_URL="http://$ENDPOINT_DOMAIN"
             REGION="us-east-1"
             LOCAL_BASE_DIR="/mnt/elements/kopia-vgw-sync/repositories"
@@ -141,7 +141,7 @@
 
             # List all directories (repositories) in the bucket
             echo "Listing repositories in bucket..."
-            REPOSITORIES=$(${pkgs.awscli2}/bin/aws s3 ls "$BUCKET/$PATH_PREFIX" --endpoint-url "$ENDPOINT_URL" | ${pkgs.gawk}/bin/awk '/PRE/ {print $2}' | ${pkgs.gnused}/bin/sed 's:/$::')
+            REPOSITORIES=$(${pkgs.awscli2}/bin/aws s3 ls "$BUCKET/$PATH_PREFIX" --endpoint-url "$ENDPOINT_URL" --profile versitygw  | ${pkgs.gawk}/bin/awk '/PRE/ {print $2}' | ${pkgs.gnused}/bin/sed 's:/$::')
 
             unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
 
@@ -165,7 +165,7 @@
                     --region $REGION \
                     --access-key="$VGW_KEY_ID" \
                     --secret-access-key="$VGW_KEY" \
-                    --endpoint $ENDPOINT \
+                    --endpoint $ENDPOINT_DOMAIN \
                     --prefix="$PATH_PREFIX$REPO/" \
                     --no-check-for-updates
 
