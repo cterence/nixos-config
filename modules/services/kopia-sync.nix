@@ -113,7 +113,7 @@
             # Configuration
             BUCKET="velero"
             PATH_PREFIX="v2/kopia/"
-            ENDPOINT_DOMAIN="localhost:7070"
+            ENDPOINT_DOMAIN="versity-gw-nfs.snow-delta.ts.net:7070"
             ENDPOINT_URL="http://$ENDPOINT_DOMAIN"
             REGION="us-east-1"
             LOCAL_BASE_DIR="/mnt/elements/kopia-vgw-sync/repositories"
@@ -126,18 +126,6 @@
 
             export AWS_ACCESS_KEY_ID=$VGW_KEY_ID
             export AWS_SECRET_ACCESS_KEY=$VGW_KEY
-
-            echo "Creating port-forward to versity-gw..."
-            ${pkgs.kubectl}/bin/kubectl port-forward -n versity-gw svc/versity-gw-nfs 7070:7070 > /dev/null 2>&1 &
-
-            KPID=$!
-
-            # Ensure cleanup on exit
-            trap "kill $KPID 2>/dev/null" EXIT
-
-            # --- NEW: Health Check Loop ---
-            echo "Waiting for port 7070 to become available..."
-            ${pkgs.coreutils}/bin/sleep 3
 
             # List all directories (repositories) in the bucket
             echo "Listing repositories in bucket..."
