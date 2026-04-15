@@ -259,6 +259,22 @@
         "type": "github"
       }
     },
+    "karpathy-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1776275240,
+        "narHash": "sha256-l6qmVV3QI6E3/lrTks1PWt8Tfp43qMN5DG7GdubVTpM=",
+        "owner": "forrestchang",
+        "repo": "andrej-karpathy-skills",
+        "rev": "c9a44ae835fa2f5765a697216692705761a53f40",
+        "type": "github"
+      },
+      "original": {
+        "owner": "forrestchang",
+        "repo": "andrej-karpathy-skills",
+        "type": "github"
+      }
+    },
     "niks3": {
       "inputs": {
         "flake-parts": [
@@ -569,6 +585,7 @@
         "home-manager": "home-manager",
         "import-tree": "import-tree",
         "k0s": "k0s",
+        "karpathy-skills": "karpathy-skills",
         "niks3": "niks3",
         "nixos-anywhere": "nixos-anywhere",
         "nixos-hardware": "nixos-hardware",

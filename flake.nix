@@ -43,6 +43,10 @@
       url = "github:johbo/k0s-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    karpathy-skills = {
+      url = "github:forrestchang/andrej-karpathy-skills";
+      flake = false;
+    };
     niks3 = {
       url = "github:Mic92/niks3";
       inputs = {

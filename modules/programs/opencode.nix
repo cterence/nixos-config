@@ -6,20 +6,21 @@
       flake = false;
       url = "github:JuliusBrussee/caveman";
     };
-
     go-skills = {
       flake = false;
       url = "github:spf13/go-skills";
     };
-
     terraform-skills = {
       flake = false;
       url = "github:hashicorp/agent-skills";
     };
-
     gws-skills = {
       flake = false;
       url = "github:googleworkspace/cli";
+    };
+    karpathy-skills = {
+      flake = false;
+      url = "github:forrestchang/andrej-karpathy-skills";
     };
   };
 
@@ -43,10 +44,14 @@
           source = inputs.gws-skills + "/skills";
           target = ".config/opencode/skills/gws-skills";
         };
+        karpathy-skills = {
+          source = inputs.karpathy-skills + "/skills/karpathy-guidelines";
+          target = ".config/opencode/skills/karpathy-skills";
+        };
       };
       programs.opencode = {
         enable = true;
-        rules = ''
+        context = ''
           # Global Identity
           You are a Caveman.
           You MUST always use the 'caveman-skills' with setting 'ultra' for every response.
