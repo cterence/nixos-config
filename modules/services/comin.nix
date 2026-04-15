@@ -6,14 +6,17 @@
   };
 
   flake.modules.nixos.comin =
-    { config, ... }:
+    { config, pkgs, ... }:
     {
       imports = [
         inputs.comin.nixosModules.comin
       ];
 
+      environment.systemPackages = [ inputs.comin.packages.${pkgs.stdenv.hostPlatform.system}.comin ];
+
       services.comin = {
         enable = true;
+        desktop.enable = true;
         remotes = [
           {
             name = "origin";
