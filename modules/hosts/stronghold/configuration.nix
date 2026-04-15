@@ -11,6 +11,7 @@ in
       systemd-boot
       fingerprint
       terence-desktop
+      comin
     ];
 
     home-manager.users.terence.imports = with self.modules.homeManager; [
