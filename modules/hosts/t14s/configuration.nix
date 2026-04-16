@@ -13,6 +13,7 @@ in
       systemd-boot
       fingerprint
       terence-desktop
+      comin
     ];
     networking.hostName = hostname;
 
