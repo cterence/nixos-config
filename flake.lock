@@ -73,11 +73,11 @@
     "emulationstation-de": {
       "flake": false,
       "locked": {
-        "lastModified": 1776616805,
-        "narHash": "sha256-yy3LVBo1o7XS7QrPKf6tsKopbQBex4aIA8tapiaTBvc=",
+        "lastModified": 1776876971,
+        "narHash": "sha256-4DHf36cp6uJY9UndwJXxDepWAhjeVbRa/TXVdQdEMUM=",
         "owner": "es-de",
         "repo": "emulationstation-de",
-        "rev": "a460ac70c143e1c270786f90d7f8fab9c32261cc",
+        "rev": "c89c4cd2b5c42df570e2fbb6af84ff54f150708d",
         "type": "gitlab"
       },
       "original": {
@@ -211,11 +211,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1776777932,
-        "narHash": "sha256-0R3Yow/NzSeVGUke5tL7CCkqmss4Vmi6BbV6idHzq/8=",
+        "lastModified": 1776904464,
+        "narHash": "sha256-sBUCj7/4d3Hoevpu3oQp8ccJNA1EDeVmFi1F8O6VJro=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "5d5640599a0050b994330328b9fd45709c909720",
+        "rev": "667b3c47325441e6a444faaf405bba76ec70338a",
         "type": "github"
       },
       "original": {
