@@ -1,5 +1,12 @@
 { inputs, ... }:
 {
+  flake-file.inputs = {
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
   flake.modules.homeManager.shell =
     {
       config,
@@ -7,6 +14,10 @@
       ...
     }:
     {
+      imports = [
+        inputs.nix-index-database.homeModules.default
+      ];
+
       home.file.".p10k.zsh".source = "${inputs.dotfiles}/.p10k.zsh";
 
       sops.secrets = {
