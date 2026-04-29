@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.browser =
+  flake.aspects.browser.homeManager =
     { config, ... }:
     {
       programs = {

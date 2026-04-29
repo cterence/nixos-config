@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.tmux =
+  flake.aspects.tmux.homeManager =
     { pkgs, ... }:
     {
       programs.zsh.initContent = ''

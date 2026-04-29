@@ -8,10 +8,18 @@
   };
 
   flake.modules.homeManager.vibe =
-    { pkgs, ... }:
+    { pkgs, config, ... }:
     {
-      home.packages = [
-        inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.mistral-vibe
-      ];
+      home = {
+        file = {
+          vibe-config = {
+            source = "${inputs.dotfiles}/vibe/config.toml";
+            target = "${config.home.homeDirectory}/.vibe/config.toml";
+          };
+        };
+        packages = [
+          inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.mistral-vibe
+        ];
+      };
     };
 }

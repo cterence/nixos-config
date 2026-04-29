@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.desktop-apps =
+  flake.aspects.desktop-apps.homeManager =
     {
       config,
       pkgs,
