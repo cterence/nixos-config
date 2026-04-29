@@ -1,10 +1,13 @@
 {
-  flake.modules.homeManager.browser = {
-    programs = {
-      firefox = {
-        enable = true;
+  flake.modules.homeManager.browser =
+    { config, ... }:
+    {
+      programs = {
+        firefox = {
+          enable = true;
+          configPath = "${config.xdg.configHome}/mozilla/firefox";
+        };
+        chromium.enable = true;
       };
-      chromium.enable = true;
     };
-  };
 }

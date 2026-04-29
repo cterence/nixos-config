@@ -24,6 +24,7 @@
       url = "gitlab:es-de/emulationstation-de";
       flake = false;
     };
+    flake-aspects.url = "github:vic/flake-aspects";
     flake-file.url = "github:vic/flake-file";
     flake-parts.url = "github:hercules-ci/flake-parts";
     go-skills = {
@@ -46,6 +47,10 @@
     karpathy-skills = {
       url = "github:forrestchang/andrej-karpathy-skills";
       flake = false;
+    };
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.flake-parts.follows = "flake-parts";
     };
     niks3 = {
       url = "github:Mic92/niks3";

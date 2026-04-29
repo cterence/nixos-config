@@ -3,7 +3,10 @@
   flake.modules.homeManager.development =
     { config, ... }:
     {
-      imports = [ self.modules.homeManager.opencode ];
+      imports = with self.modules.homeManager; [
+        opencode
+        vibe
+      ];
 
       programs = {
         go.enable = true;
