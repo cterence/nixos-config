@@ -43,10 +43,6 @@ in
         sops = {
           age.keyFile = config.home.homeDirectory + "/.config/sops/age/keys.txt";
           secrets = {
-            gh-cli-token = {
-              mode = "0440";
-              sopsFile = "${inputs.secrets}/gh-cli-token.yaml";
-            };
             oracle-config = {
               mode = "0440";
               key = "config";
@@ -61,10 +57,6 @@ in
             };
           };
         };
-
-        programs.zsh.initContent = ''
-          export GH_TOKEN="$(cat ${config.sops.secrets.gh-cli-token.path})"
-        '';
       };
   };
 }

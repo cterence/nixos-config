@@ -60,11 +60,19 @@
           If the response is a question to the user, ask it with opencode question tools, batch questions if there are multiple to ask.
         '';
         settings = {
-          enabled_providers = [ "mistral" ];
+          enabled_providers = [
+            "mistral"
+            "nvidia"
+          ];
           provider = {
             mistral = {
               options = {
                 apiKey = "{file:${config.sops.secrets.mistral-api-key.path}}";
+              };
+            };
+            nvidia = {
+              options = {
+                apiKey = "{file:${config.sops.secrets.nvidia-nim-api-key.path}}";
               };
             };
           };
