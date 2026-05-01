@@ -5,18 +5,23 @@ in
 {
   flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" hostname;
 
-  flake.modules.nixos.t14s = {
-    imports = with self.modules.nixos; [
-      system-desktop
-      system-personal
-      system-laptop
-      systemd-boot
-      fingerprint
-      terence-desktop
-      comin
-    ];
-    networking.hostName = hostname;
+  flake.aspects =
+    { aspects, ... }:
+    {
+      ${hostname} = {
+        includes = with aspects; [
+          system-desktop
+          system-personal
+          systemd-boot
+          fingerprint
+          comin
+          terence-desktop
+        ];
 
-    system.stateVersion = "25.11";
-  };
+        nixos = {
+          networking.hostName = hostname;
+          system.stateVersion = "25.11";
+        };
+      };
+    };
 }

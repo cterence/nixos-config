@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.free-oracle-amd-1 = {
+  flake.aspects.free-oracle-amd-1.nixos = {
     disko.devices = {
       disk.disk1 = {
         device = "/dev/sda";

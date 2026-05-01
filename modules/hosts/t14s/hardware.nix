@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.nixos.t14s = {
+  flake.aspects.t14s.nixos = {
     imports = [
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t14s-amd-gen1
     ];

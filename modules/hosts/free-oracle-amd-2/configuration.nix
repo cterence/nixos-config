@@ -20,26 +20,33 @@ in
   # nixos-anywhere --flake .#free-oracle-amd-2 --no-disko-deps opc@_ip_
 
   flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" hostname;
-  flake.modules.nixos.${hostname} = {
-    imports = with self.modules.nixos; [
-      system-oracle
-      systemd-boot
-      terence-server
-    ];
 
-    networking.hostName = hostname;
-    system.stateVersion = "25.11";
+  flake.aspects =
+    { aspects, ... }:
+    {
+      ${hostname} = {
+        includes = with aspects; [
+          system-oracle
+          systemd-boot
+          terence-server
+        ];
 
-    # MANDATORY: Add key to root so nixos-anywhere can finish the install
-    users.users.root.openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIITdJbmR8b5wJyc7UijPQGNfPBAkng6lChJsMDsOKZdf terence@t14s"
-    ];
+        nixos = {
+          networking.hostName = hostname;
+          system.stateVersion = "25.11";
 
-    zramSwap = {
-      enable = true;
-      algorithm = "zstd";
-      memoryPercent = 150; # 1GB RAM -> 1.5GB zram
-      priority = 10;
+          # MANDATORY: Add key to root so nixos-anywhere can finish the install
+          users.users.root.openssh.authorizedKeys.keys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIITdJbmR8b5wJyc7UijPQGNfPBAkng6lChJsMDsOKZdf terence@t14s"
+          ];
+
+          zramSwap = {
+            enable = true;
+            algorithm = "zstd";
+            memoryPercent = 150; # 1GB RAM -> 1.5GB zram
+            priority = 10;
+          };
+        };
+      };
     };
-  };
 }

@@ -3,7 +3,7 @@ let
   hostname = "free-oracle-arm-1";
 in
 {
-  flake.modules.nixos.${hostname} =
+  flake.aspects.${hostname}.nixos =
     { config, ... }:
     {
       sops = {

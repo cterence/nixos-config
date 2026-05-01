@@ -1,18 +1,12 @@
 {
-  self,
-  ...
-}:
-{
-  flake.modules.nixos.system-personal = {
-    imports = with self.modules.nixos; [
-      games
-      homelab-client-cert
-    ];
-  };
-
-  flake.modules.homeManager.system-personal = {
-    imports = with self.modules.homeManager; [
-      homelab-client-cert
-    ];
-  };
+  flake.aspects =
+    { aspects, ... }:
+    {
+      system-personal = {
+        includes = with aspects; [
+          homelab-client-cert
+          games
+        ];
+      };
+    };
 }

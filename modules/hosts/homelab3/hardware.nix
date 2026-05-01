@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.homelab3 = {
+  flake.aspects.homelab3.nixos = {
     boot = {
       kernelParams = [ ];
       kernelModules = [

@@ -23,7 +23,7 @@
     };
   };
 
-  flake.modules.generic.pkgs-by-name = {
+  flake.aspects.pkgs-by-name.generic = {
     nixpkgs.overlays = [
       inputs.self.overlays.default
     ];

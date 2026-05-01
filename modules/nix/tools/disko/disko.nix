@@ -5,7 +5,7 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  flake.modules.nixos.disko = {
+  flake.aspects.disko.nixos = {
     imports = [ inputs.disko.nixosModules.disko ];
   };
 }

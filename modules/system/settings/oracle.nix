@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.settings-oracle =
+  flake.aspects.settings-oracle.nixos =
     { pkgs, lib, ... }:
     {
       boot = {

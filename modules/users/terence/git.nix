@@ -2,7 +2,7 @@ let
   username = "terence";
 in
 {
-  flake.modules.homeManager.${username} = {
+  flake.aspects."${username}-git".homeManager = {
     programs = {
       git = {
         enable = true;

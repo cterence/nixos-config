@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.settings-homelab =
+  flake.aspects.settings-homelab.nixos =
     { pkgs, config, ... }:
     {
       boot.kernel.sysctl = {

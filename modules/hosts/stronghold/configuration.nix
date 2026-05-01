@@ -4,22 +4,27 @@ let
 in
 {
   flake.nixosConfigurations = self.lib.mkNixos "x86_64-linux" hostname;
-  flake.modules.nixos.stronghold = {
-    imports = with self.modules.nixos; [
-      system-desktop
-      system-personal
-      systemd-boot
-      fingerprint
-      terence-desktop
-      comin
-    ];
 
-    home-manager.users.terence.imports = with self.modules.homeManager; [
-      kopia-sync
-    ];
+  flake.aspects =
+    { aspects, ... }:
+    {
+      ${hostname} = {
+        includes = with aspects; [
+          system-desktop
+          system-personal
+          systemd-boot
+          comin
+          terence-desktop
+        ];
 
-    networking.hostName = hostname;
+        nixos = {
+          home-manager.users.terence.imports = with self.modules.homeManager; [
+            kopia-sync
+          ];
 
-    system.stateVersion = "25.11";
-  };
+          networking.hostName = hostname;
+          system.stateVersion = "25.11";
+        };
+      };
+    };
 }

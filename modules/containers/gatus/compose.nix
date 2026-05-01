@@ -1,5 +1,5 @@
 {
-  flake.modules.homeManager.docker-compose-gatus =
+  flake.aspects.docker-compose-gatus.homeManager =
     { pkgs, config, ... }:
     let
       directory = "${config.home.homeDirectory}/gatus";

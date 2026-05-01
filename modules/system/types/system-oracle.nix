@@ -1,10 +1,11 @@
-{ self, ... }:
 {
-  flake.modules.nixos.system-oracle = {
-    imports = with self.modules.nixos; [
-      system-cli
-      settings-oracle
-      disko
-    ];
-  };
+  flake.aspects =
+    { aspects, ... }:
+    {
+      system-oracle.includes = with aspects; [
+        system-cli
+        settings-oracle
+        disko
+      ];
+    };
 }

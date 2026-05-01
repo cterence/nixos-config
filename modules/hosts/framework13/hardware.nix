@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.nixos.framework13 = {
+  flake.aspects.framework13.nixos = {
     imports = [
       inputs.nixos-hardware.nixosModules.framework-13-7040-amd
     ];

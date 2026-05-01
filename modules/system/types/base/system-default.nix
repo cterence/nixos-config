@@ -3,26 +3,21 @@
   ...
 }:
 {
-  flake.modules.nixos.system-default = {
-    imports =
-      with self.modules.nixos;
-      [
-        system-minimal
-        niks3
-        home-manager
-        secrets
-        qol
-      ]
-      ++ (with self.modules.generic; [
-        pkgs-by-name
-      ]);
-  };
+  flake.aspects =
+    { aspects, ... }:
+    {
+      system-default = {
+        includes = with aspects; [
+          system-minimal
+          niks3
+          secrets
+          home-manager
+          qol
+        ];
 
-  flake.modules.homeManager.system-default = {
-    imports = with self.modules.homeManager; [
-      system-minimal
-      niks3
-      secrets
-    ];
-  };
+        nixos.imports = [
+          self.modules.generic.pkgs-by-name
+        ];
+      };
+    };
 }
