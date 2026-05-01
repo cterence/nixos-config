@@ -5,7 +5,7 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  flake.modules.nixos.comin =
+  flake.aspects.comin.nixos =
     { config, pkgs, ... }:
     {
       imports = [

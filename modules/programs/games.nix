@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.modules.nixos.games =
+  flake.aspects.games.nixos =
     { pkgs, ... }:
     {
       nixpkgs.overlays = [

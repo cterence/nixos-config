@@ -2,7 +2,7 @@ let
   StateDirectory = "dnscrypt-proxy";
 in
 {
-  flake.modules.nixos.networking = {
+  flake.aspects.networking.nixos = {
     networking = {
       nameservers = [
         "127.0.0.1"

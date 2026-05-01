@@ -1,6 +1,6 @@
 { inputs, self, ... }:
 {
-  flake.modules.homeManager.development =
+  flake.aspects.development.homeManager =
     { config, ... }:
     {
       imports = with self.modules.homeManager; [

@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.homeManager.kopia-sync =
+  flake.aspects.kopia-sync.homeManager =
     {
       pkgs,
       config,

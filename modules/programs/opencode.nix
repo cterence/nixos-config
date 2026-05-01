@@ -24,7 +24,7 @@
     };
   };
 
-  flake.modules.homeManager.opencode =
+  flake.aspects.opencode.homeManager =
     { config, ... }:
     {
       home.file = {

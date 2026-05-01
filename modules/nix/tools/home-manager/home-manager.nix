@@ -37,17 +37,19 @@ in
 
   imports = [ inputs.home-manager.flakeModules.home-manager ];
 
-  flake.modules.nixos.home-manager = {
-    imports = [
-      inputs.home-manager.nixosModules.home-manager
-      home-manager-config
-    ];
-  };
+  flake.aspects.home-manager = {
+    nixos = {
+      imports = [
+        inputs.home-manager.nixosModules.home-manager
+        home-manager-config
+      ];
+    };
 
-  flake.modules.darwin.home-manager = {
-    imports = [
-      inputs.home-manager.darwinModules.home-manager
-      home-manager-config
-    ];
+    darwin = {
+      imports = [
+        inputs.home-manager.darwinModules.home-manager
+        home-manager-config
+      ];
+    };
   };
 }

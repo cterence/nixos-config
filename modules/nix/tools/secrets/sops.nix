@@ -11,15 +11,17 @@
     };
   };
 
-  flake.modules.nixos.secrets = {
-    imports = [
-      inputs.sops-nix.nixosModules.sops
-    ];
-  };
+  flake.aspects.secrets = {
+    nixos = {
+      imports = [
+        inputs.sops-nix.nixosModules.sops
+      ];
+    };
 
-  flake.modules.homeManager.secrets = {
-    imports = [
-      inputs.sops-nix.homeManagerModules.sops
-    ];
+    homeManager = {
+      imports = [
+        inputs.sops-nix.homeManagerModules.sops
+      ];
+    };
   };
 }

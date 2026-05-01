@@ -7,7 +7,7 @@
     };
   };
 
-  flake.modules.homeManager.vibe =
+  flake.aspects.vibe.homeManager =
     { pkgs, config, ... }:
     {
       home = {

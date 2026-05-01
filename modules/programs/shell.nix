@@ -7,7 +7,7 @@
     };
   };
 
-  flake.modules.homeManager.shell =
+  flake.aspects.shell.homeManager =
     {
       config,
       pkgs,

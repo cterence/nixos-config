@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos.stronghold = {
+  flake.aspects.stronghold.nixos = {
     boot = {
       kernelParams = [ "acpi_backlight=video" ];
       kernelModules = [
