@@ -8,7 +8,6 @@
       ];
       environment.systemPackages = with pkgs; [
         heroic
-        lutris
         mangohud
         protonup-rs
         (retroarch.withCores (
