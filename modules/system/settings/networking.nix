@@ -4,9 +4,6 @@ in
 {
   flake.aspects.networking.nixos = {
     networking = {
-      nameservers = [
-        "127.0.0.1"
-      ];
       # Trying search domain only on domain with < 1 dot
       resolvconf.extraOptions = [
         "ndots:1"
@@ -18,8 +15,27 @@ in
       };
     };
 
-    services.dnscrypt-proxy = {
+    services.dnsmasq = {
       enable = true;
+      settings = {
+        server = [
+          "1.1.1.1"
+          "9.9.9.9"
+          "/snow-delta.ts.net/100.100.100.100"
+          "/ts.net/100.100.100.100"
+          "/100.in-addr.arpa/100.100.100.100"
+        ];
+        listen-address = [
+          "127.0.0.1"
+          "::1"
+        ];
+        domain-needed = true;
+        bind-interfaces = true;
+      };
+    };
+
+    services.dnscrypt-proxy = {
+      enable = false;
       settings = {
         sources.public-resolvers = {
           urls = [
@@ -30,10 +46,10 @@ in
           cache_file = "/var/lib/${StateDirectory}/public-resolvers.md";
         };
 
-        ipv6_servers = false;
-        block_ipv6 = true;
+        ipv6_servers = true;
+        block_ipv6 = false;
         require_dnssec = true;
-        require_nolog = false;
+        require_nolog = true;
         require_nofilter = true;
 
         forwarding_rules = "/etc/dnscrypt-proxy/forwarding-rules.txt";
@@ -44,6 +60,7 @@ in
       # Forward Tailscale MagicDNS queries to the Tailscale internal IP
       ts.net 100.100.100.100
       tailscale.net 100.100.100.100
+      100.in-addr.arpa 100.100.100.100
     '';
 
     systemd.services.dnscrypt-proxy.serviceConfig.StateDirectory = StateDirectory;
