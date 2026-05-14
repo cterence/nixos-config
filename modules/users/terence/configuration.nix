@@ -26,6 +26,7 @@ in
                 "networkmanager"
                 "wheel"
                 "keys"
+                "i2c"
               ];
               shell = pkgs.zsh;
             };

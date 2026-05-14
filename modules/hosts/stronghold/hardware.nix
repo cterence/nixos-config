@@ -5,6 +5,7 @@
       kernelModules = [
         "kvm-amd"
         "i2c-dev"
+        "amdgpu"
       ];
       extraModulePackages = [ ];
       initrd = {
@@ -16,7 +17,7 @@
           "usb_storage"
           "sd_mod"
         ];
-        kernelModules = [ ];
+        kernelModules = [ "amdgpu" ];
       };
     };
 
@@ -45,8 +46,13 @@
 
     nixpkgs.hostPlatform = "x86_64-linux";
     hardware = {
+      i2c.enable = true;
       cpu.amd.updateMicrocode = true;
       enableRedistributableFirmware = true;
+      graphics = {
+        enable = true;
+        enable32Bit = true; # Useful for Steam/Wine
+      };
     };
   };
 }
