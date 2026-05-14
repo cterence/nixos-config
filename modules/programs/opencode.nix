@@ -37,7 +37,7 @@
           target = ".config/opencode/skills/terraform-skills";
         };
         caveman-skills = {
-          source = inputs.caveman-skills + "/caveman";
+          source = inputs.caveman-skills + "/skills";
           target = ".config/opencode/skills/caveman-skills";
         };
         gws-skills = {
