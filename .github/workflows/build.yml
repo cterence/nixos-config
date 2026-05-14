@@ -43,6 +43,12 @@ jobs:
           remove-swapfile: true
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: Generate Github app token
+        id: generate-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        with:
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
         with:
@@ -52,22 +58,22 @@ jobs:
       - name: Build
         run: |
           sudo systemctl set-environment NIX_GITHUB_PRIVATE_USERNAME=${{ github.repository_owner }}
-          sudo systemctl set-environment NIX_GITHUB_PRIVATE_PASSWORD=${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          sudo systemctl set-environment NIX_GITHUB_PRIVATE_PASSWORD=${{ steps.generate-token.outputs.token }}
           sudo systemctl daemon-reload && sudo systemctl restart nix-daemon
-          OUT_PATH="$(nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel --print-out-paths --access-tokens github.com=${{ secrets.GH_TOKEN_FOR_UPDATES }})"
+          OUT_PATH="$(nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel --print-out-paths --access-tokens github.com=${{ steps.generate-token.outputs.token }})"
           echo -e "\x1b[32;1mSuccessfully built .#nixosConfigurations.${{ matrix.host }}\x1b[0m"
           echo -e "## Build ${{ matrix.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Diff closures
         if: github.event_name == 'pull_request'
         run: |
           sudo systemctl set-environment NIX_GITHUB_PRIVATE_USERNAME=${{ github.repository_owner }}
-          sudo systemctl set-environment NIX_GITHUB_PRIVATE_PASSWORD=${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          sudo systemctl set-environment NIX_GITHUB_PRIVATE_PASSWORD=${{ steps.generate-token.outputs.token }}
           sudo systemctl daemon-reload && sudo systemctl restart nix-daemon
           HOST_DRV="nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel"
           PREV_FLAKE="github:${GITHUB_REPOSITORY}"
           NEXT_FLAKE="."
           DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
-          nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" --access-tokens github.com=${{ secrets.GH_TOKEN_FOR_UPDATES }} --no-write-lock-file | tee "$DIFF_OUTPUT"
+          nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" --access-tokens github.com=${{ steps.generate-token.outputs.token }} --no-write-lock-file | tee "$DIFF_OUTPUT"
           [[ -s "$DIFF_OUTPUT" ]] && sed -i 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
           echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Get niks3 OIDC token
