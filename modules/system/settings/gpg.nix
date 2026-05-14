@@ -9,7 +9,7 @@
           enableSshSupport = true;
           enableZshIntegration = true;
           pinentry = {
-            package = pkgs.kwalletcli;
+            package = pkgs.pinentry-qt;
             program = "pinentry-kwallet";
           };
         };
