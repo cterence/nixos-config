@@ -10,12 +10,16 @@
           enableZshIntegration = true;
           pinentry = {
             package = pkgs.pinentry-qt;
-            program = "pinentry-kwallet";
+            program = "pinentry-qt";
           };
         };
       };
       programs.gpg = {
         enable = true;
       };
+
+      home.packages = [
+        pkgs.pinentry-qt
+      ];
     };
 }
