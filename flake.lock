@@ -83,11 +83,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1779222559,
-        "narHash": "sha256-DP/lAeisYBjpB6cjWdNIy32V94s2y90qvkuYB96QFEQ=",
+        "lastModified": 1779393470,
+        "narHash": "sha256-oSDDLcy75oND9o0jCSiiqrWV+45FNLZynfbzXHqs2zY=",
         "owner": "nlewo",
         "repo": "comin",
-        "rev": "e2b3da42bb84a25f075994d98199b5fdac34b36a",
+        "rev": "6255274dcc916dc25c90f0c53c70860e15ac87b5",
         "type": "github"
       },
       "original": {
@@ -131,11 +131,11 @@
     "emulationstation-de": {
       "flake": false,
       "locked": {
-        "lastModified": 1779133952,
-        "narHash": "sha256-+mi7jhEth3dxIp4kFZsnOKuiDOVGdmtwLi92SVXWVUI=",
+        "lastModified": 1779391737,
+        "narHash": "sha256-BzVx7qqIdrh00qMSxOrl9Um2OaaBfiVeW7qqB3dJbDY=",
         "owner": "es-de",
         "repo": "emulationstation-de",
-        "rev": "3d47be321a8594bd5678bf2d071440a11172c053",
+        "rev": "c9b2b7a5abef13382e31984a56b41655289e5c2a",
         "type": "gitlab"
       },
       "original": {
@@ -360,11 +360,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1779326625,
-        "narHash": "sha256-dN9pgfoVIclpoNHt3g6jim2ttzrDQY1vOd19M+8Z8J8=",
+        "lastModified": 1779412118,
+        "narHash": "sha256-2tbqBwfg2fPTt+4ok0JJqbjsq3dsnKsTlx6CtUUhYr0=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "5f394d51138b43ec675f1ef4714c818efbb5b05d",
+        "rev": "fffc9d1b3219bc5cc806b05f3a0a0d91cfa7f51c",
         "type": "github"
       },
       "original": {
