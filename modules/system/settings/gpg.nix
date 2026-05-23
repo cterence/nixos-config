@@ -10,16 +10,20 @@
           enableZshIntegration = true;
           pinentry = {
             package = pkgs.pinentry-qt;
-            program = "pinentry-qt";
           };
         };
       };
-      programs.gpg = {
-        enable = true;
+
+      programs = {
+        gpg = {
+          enable = true;
+        };
       };
 
-      home.packages = [
-        pkgs.pinentry-qt
-      ];
+      home = {
+        sessionVariables = {
+          PINENTRY_KDE_USE_WALLET = "1";
+        };
+      };
     };
 }
