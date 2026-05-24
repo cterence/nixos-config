@@ -131,7 +131,6 @@
               zsh.initContent = ''
                 export MISTRAL_API_KEY="$(cat ${config.sops.secrets.mistral-api-key.path})"
                 export NVIDIA_NIM_API_KEY="$(cat ${config.sops.secrets.nvidia-nim-api-key.path})"
-                export GH_CLI_TOKEN="$(cat ${config.sops.secrets.gh-cli-token.path})"
               '';
             };
 
@@ -151,10 +150,6 @@
                   sopsFile = "${inputs.secrets}/env.yaml";
                 };
                 grafana-mcp-auth = {
-                  sopsFile = "${inputs.secrets}/env.yaml";
-                };
-                gh-cli-token = {
-                  key = "gh-cli-token";
                   sopsFile = "${inputs.secrets}/env.yaml";
                 };
               };
