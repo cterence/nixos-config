@@ -22,6 +22,10 @@
       flake = false;
       url = "github:forrestchang/andrej-karpathy-skills";
     };
+    paperasse-skills = {
+      flake = false;
+      url = "github:romainsimon/paperasse";
+    };
   };
 
   flake.aspects.opencode.homeManager =
@@ -47,6 +51,30 @@
         karpathy-skills = {
           source = inputs.karpathy-skills + "/skills/karpathy-guidelines";
           target = ".config/opencode/skills/karpathy-skills";
+        };
+        paperasse-syndic-skills = {
+          source = inputs.paperasse-skills + "/syndic/";
+          target = ".config/opencode/skills/paperasse-syndic";
+        };
+        paperasse-notaire-skills = {
+          source = inputs.paperasse-skills + "/notaire/";
+          target = ".config/opencode/skills/paperasse-notaire";
+        };
+        paperasse-comptable-skills = {
+          source = inputs.paperasse-skills + "/comptable/";
+          target = ".config/opencode/skills/paperasse-comptable";
+        };
+        paperasse-fiscaliste-skills = {
+          source = inputs.paperasse-skills + "/fiscaliste/";
+          target = ".config/opencode/skills/paperasse-fiscaliste";
+        };
+        paperasse-controleur-fiscal-skills = {
+          source = inputs.paperasse-skills + "/controleur-fiscal/";
+          target = ".config/opencode/skills/paperasse-controleur-fiscal";
+        };
+        paperasse-commissaire-aux-comptes-skills = {
+          source = inputs.paperasse-skills + "/commissaire-aux-comptes/";
+          target = ".config/opencode/skills/paperasse-commissaire-aux-comptes";
         };
       };
       programs.opencode = {

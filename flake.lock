@@ -626,6 +626,22 @@
       },
       "parent": []
     },
+    "paperasse-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778686928,
+        "narHash": "sha256-IhIOMgPBskgZertnJwtw9ggRZbNoLj3gNcoG/4TqIMY=",
+        "owner": "romainsimon",
+        "repo": "paperasse",
+        "rev": "9872ce64b516d42fae84784aab85bd6ef120c6a4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "romainsimon",
+        "repo": "paperasse",
+        "type": "github"
+      }
+    },
     "patches": {
       "flake": false,
       "locked": {
@@ -722,6 +738,7 @@
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-emulationstation": "nixpkgs-emulationstation",
         "packages": "packages",
+        "paperasse-skills": "paperasse-skills",
         "patches": "patches",
         "pkgs-by-name-for-flake-parts": "pkgs-by-name-for-flake-parts",
         "plasma-manager": "plasma-manager",

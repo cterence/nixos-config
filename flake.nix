@@ -64,7 +64,6 @@
       url = "github:nix-community/nixos-anywhere";
       inputs = {
         disko.follows = "disko";
-        flake-parts.follows = "flake-parts";
         nixpkgs.follows = "nixpkgs";
       };
     };
@@ -73,6 +72,10 @@
     nixpkgs-emulationstation.url = "github:nixos/nixpkgs/845134719941b3a2087842eae23e521d67e35ad5";
     packages = {
       url = "path:./packages";
+      flake = false;
+    };
+    paperasse-skills = {
+      url = "github:romainsimon/paperasse";
       flake = false;
     };
     patches = {

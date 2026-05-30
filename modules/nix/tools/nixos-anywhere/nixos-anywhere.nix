@@ -5,7 +5,6 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         disko.follows = "disko";
-        flake-parts.follows = "flake-parts";
       };
     };
   };
