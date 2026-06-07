@@ -131,11 +131,11 @@
     "emulationstation-de": {
       "flake": false,
       "locked": {
-        "lastModified": 1780679141,
-        "narHash": "sha256-QAFa50B0C3LTpCNqeM4jfQYAi3x3MQw5kNAn66LVHvI=",
+        "lastModified": 1780774794,
+        "narHash": "sha256-RBUyTxeXkXk50t61hVi0XKyFklbfOFzrxZjKLhIFhhs=",
         "owner": "es-de",
         "repo": "emulationstation-de",
-        "rev": "ae5a039395e97abe70be6b33cb163ea3ad1e035d",
+        "rev": "abae1c9c1b4894f08deb0193be60ccd5502ecf74",
         "type": "gitlab"
       },
       "original": {
@@ -360,11 +360,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1780708788,
-        "narHash": "sha256-BaHq9HXksp8OGe0kl6x7IxlyqIWgVQj5qHSaAqhAgDs=",
+        "lastModified": 1780798214,
+        "narHash": "sha256-FSgjp5mA36AWGQye7LO0COizgFI3C7YmxMhVhP6/CNE=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "364bfe7a69b3adbfe5c1fedd7a6abf7dd3c79928",
+        "rev": "d03f85ef2700285c0dc4044d265236e881b4a024",
         "type": "github"
       },
       "original": {
@@ -571,11 +571,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1780365719,
-        "narHash": "sha256-QfWfccTN+70ZQ4m2qlU9PiKfz2Yppq94058iJyARNwc=",
+        "lastModified": 1780747962,
+        "narHash": "sha256-IX7G1dlKrOqPOImfbo7ADDfV5yU1+j+MRChI3TL4tAA=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "ffa10e26ae11d676b2db836259889f1f571cb14f",
+        "rev": "cbb5cf358f50aa6acc9efd6113b7bcfbc352cd73",
         "type": "github"
       },
       "original": {
