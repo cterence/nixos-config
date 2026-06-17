@@ -1,5 +1,6 @@
 active_model = "mistral-medium-3.5"
 vim_keybindings = false
+theme = "ansi-dark"
 disable_welcome_banner_animation = false
 autocopy_to_clipboard = true
 file_watcher_for_autocomplete = false
@@ -12,17 +13,18 @@ active_tts_model = "voxtral-tts"
 bypass_tool_permissions = false
 enable_telemetry = true
 system_prompt_id = "cli"
+compaction_prompt_id = "compact"
 include_commit_signature = true
 include_model_info = true
 include_project_context = true
 include_prompt_detail = true
 enable_update_checks = true
-enable_auto_update = true
 enable_notifications = true
+enable_system_trust_store = false
 api_timeout = 720.0
 auto_compact_threshold = 200000
 tool_paths = []
-mcp_servers = []
+enable_connectors = true
 connectors = []
 enabled_tools = []
 disabled_tools = []
@@ -30,9 +32,13 @@ agent_paths = []
 enabled_agents = []
 disabled_agents = []
 installed_agents = []
+default_agent = "default"
 skill_paths = ["~/.config/opencode/skills"]
 enabled_skills = []
 disabled_skills = []
+applied_migrations = [
+    "bash_read_only_defaults_v1",
+]
 
 [[providers]]
 name = "mistral"
@@ -68,6 +74,7 @@ temperature = 1.0
 input_price = 1.5
 output_price = 7.5
 thinking = "high"
+supports_images = true
 auto_compact_threshold = 200000
 
 [[models]]
@@ -78,6 +85,7 @@ temperature = 0.2
 input_price = 0.1
 output_price = 0.3
 thinking = "off"
+supports_images = false
 auto_compact_threshold = 200000
 
 [[models]]
@@ -127,40 +135,17 @@ save_dir = "/home/terence/.vibe/logs/session"
 session_prefix = "session"
 enabled = true
 
-[tools.exit_plan_mode]
-permission = "always"
-allowlist = []
-denylist = []
-sensitive_patterns = []
-
 [tools.skill]
 permission = "always"
 allowlist = []
 denylist = []
 sensitive_patterns = []
 
-[tools.write_file]
-permission = "ask"
-allowlist = []
-denylist = []
-sensitive_patterns = ["**/.env", "**/.env.*"]
-max_write_bytes = 64000
-create_parent_dirs = true
-
-[tools.web_search]
-permission = "ask"
-allowlist = []
-denylist = []
-sensitive_patterns = []
-timeout = 120
-model = "mistral-vibe-cli-with-tools"
-
-[tools.todo]
+[tools.exit_plan_mode]
 permission = "always"
 allowlist = []
 denylist = []
 sensitive_patterns = []
-max_todos = 100
 
 [tools.task]
 permission = "ask"
@@ -168,38 +153,133 @@ allowlist = ["explore"]
 denylist = []
 sensitive_patterns = []
 
+[tools.bash]
+permission = "ask"
+allowlist = [
+    "basename",
+    "cat",
+    "cd",
+    "comm",
+    "cut",
+    "date",
+    "diff",
+    "dirname",
+    "du",
+    "echo",
+    "file",
+    "find",
+    "fmt",
+    "fold",
+    "git diff",
+    "git log",
+    "git status",
+    "grep",
+    "head",
+    "join",
+    "less",
+    "ls",
+    "md5sum",
+    "more",
+    "nl",
+    "od",
+    "paste",
+    "pwd",
+    "readlink",
+    "sha1sum",
+    "sha256sum",
+    "shasum",
+    "sort",
+    "stat",
+    "sum",
+    "tac",
+    "tail",
+    "tr",
+    "tree",
+    "uname",
+    "uniq",
+    "wc",
+    "which",
+    "whoami",
+]
+denylist = [
+    "gdb",
+    "pdb",
+    "passwd",
+    "nano",
+    "vim",
+    "vi",
+    "emacs",
+    "bash -i",
+    "sh -i",
+    "zsh -i",
+    "fish -i",
+    "dash -i",
+    "screen",
+    "tmux",
+]
+sensitive_patterns = [
+    "sudo",
+]
+max_output_bytes = 16000
+default_timeout = 300
+denylist_standalone = [
+    "python",
+    "python3",
+    "ipython",
+    "bash",
+    "sh",
+    "nohup",
+    "vi",
+    "vim",
+    "emacs",
+    "nano",
+    "su",
+]
+
+[tools.edit]
+permission = "ask"
+allowlist = []
+denylist = []
+sensitive_patterns = [
+    "**/.env",
+    "**/.env.*",
+]
+
 [tools.grep]
 permission = "always"
 allowlist = []
 denylist = []
-sensitive_patterns = ["**/.env", "**/.env.*"]
+sensitive_patterns = [
+    "**/.env",
+    "**/.env.*",
+]
 max_output_bytes = 64000
 default_max_matches = 100
 default_timeout = 60
 exclude_patterns = [
-  ".venv/",
-  "venv/",
-  ".env/",
-  "env/",
-  "node_modules/",
-  ".git/",
-  "__pycache__/",
-  ".pytest_cache/",
-  ".mypy_cache/",
-  ".tox/",
-  ".nox/",
-  ".coverage/",
-  "htmlcov/",
-  "dist/",
-  "build/",
-  ".idea/",
-  ".vscode/",
-  "*.egg-info",
-  "*.pyc",
-  "*.pyo",
-  "*.pyd",
-  ".DS_Store",
-  "Thumbs.db",
+    ".venv/",
+    "venv/",
+    ".env/",
+    "env/",
+    "node_modules/",
+    ".git/",
+    "__pycache__/",
+    ".pytest_cache/",
+    ".mypy_cache/",
+    ".tox/",
+    ".nox/",
+    ".coverage/",
+    "htmlcov/",
+    "dist/",
+    "build/",
+    ".idea/",
+    ".vscode/",
+    "*.egg-info",
+    "*.pyc",
+    "*.pyo",
+    "*.pyd",
+    ".DS_Store",
+    "Thumbs.db",
 ]
 codeignore_file = ".vibeignore"
 
@@ -209,76 +289,13 @@ allowlist = []
 denylist = []
 sensitive_patterns = []
 
-[tools.search_replace]
+[tools.web_search]
 permission = "ask"
 allowlist = []
 denylist = []
-sensitive_patterns = ["**/.env", "**/.env.*"]
-max_content_size = 100000
-create_backup = false
-fuzzy_threshold = 0.9
-
-[tools.bash]
-permission = "ask"
-allowlist = [
-  "cd",
-  "echo",
-  "git diff",
-  "git log",
-  "git status",
-  "tree",
-  "whoami",
-  "cat",
-  "file",
-  "find",
-  "head",
-  "ls",
-  "pwd",
-  "stat",
-  "tail",
-  "uname",
-  "wc",
-  "which",
-]
-denylist = [
-  "gdb",
-  "pdb",
-  "passwd",
-  "nano",
-  "vim",
-  "vi",
-  "emacs",
-  "bash -i",
-  "sh -i",
-  "zsh -i",
-  "fish -i",
-  "dash -i",
-  "screen",
-  "tmux",
-]
-sensitive_patterns = ["sudo"]
-max_output_bytes = 16000
-default_timeout = 300
-denylist_standalone = [
-  "python",
-  "python3",
-  "ipython",
-  "bash",
-  "sh",
-  "nohup",
-  "vi",
-  "vim",
-  "emacs",
-  "nano",
-  "su",
-]
-
-[tools.read_file]
-permission = "always"
-allowlist = []
-denylist = []
-sensitive_patterns = ["**/.env", "**/.env.*"]
-max_read_bytes = 64000
+sensitive_patterns = []
+timeout = 120
+model = "mistral-vibe-cli-with-tools"
 
 [tools.web_fetch]
 permission = "ask"
@@ -289,3 +306,31 @@ default_timeout = 30
 max_timeout = 120
 max_content_bytes = 120000
 user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+
+[tools.todo]
+permission = "always"
+allowlist = []
+denylist = []
+sensitive_patterns = []
+max_todos = 100
+
+[tools.write_file]
+permission = "ask"
+allowlist = []
+denylist = []
+sensitive_patterns = [
+    "**/.env",
+    "**/.env.*",
+]
+max_write_bytes = 64000
+create_parent_dirs = true
+
+[tools.read]
+permission = "always"
+allowlist = []
+denylist = []
+sensitive_patterns = [
+    "**/.env",
+    "**/.env.*",
+]
+max_read_bytes = 51200
