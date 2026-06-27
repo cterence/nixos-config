@@ -55,8 +55,6 @@ jobs:
           extra-conf: |
             extra-substituters = https://niks3.terence.cloud
             extra-trusted-public-keys = niks3.terence.cloud-1:YBjuY7HeSjKk5wmvw8N+vq/us2GxQPCHRn871lL7XL4=
-      - name: Setup flakehub cache
-        uses: DeterminateSystems/flakehub-cache-action@main
       - name: Build
         run: |
           sudo systemctl set-environment NIX_GITHUB_PRIVATE_USERNAME=${{ github.repository_owner }}
