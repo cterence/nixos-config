@@ -77,12 +77,17 @@ jobs:
           [[ -s "$DIFF_OUTPUT" ]] && sed -i 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
           echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Push to cache
-        run: |
-          nix build -o niks3 github:Mic92/niks3
-          niks3/bin/niks3 push \
-            --server-url https://niks3.terence.cloud \
-            --auth-token-script "$PWD/.github/scripts/niks3-token.sh" \
-            ./result ./niks3
+        uses: nick-fields/retry@7152eba30c6575329ac0576536151aca5a72780e # v3.0.2
+        with:
+          max_attempts: 5
+          timeout_minutes: 25
+          retry_wait_seconds: 5
+          command: |
+            nix build -o niks3 github:Mic92/niks3
+            niks3/bin/niks3 push \
+              --server-url https://niks3.terence.cloud \
+              --auth-token-script "$PWD/.github/scripts/niks3-token.sh" \
+              ./result ./niks3
       - name: Add job summary to PR
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         if: github.event_name == 'pull_request'
