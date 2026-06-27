@@ -78,20 +78,12 @@ jobs:
           nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" --access-tokens github.com=${{ steps.generate-token.outputs.token }} --no-write-lock-file | tee "$DIFF_OUTPUT"
           [[ -s "$DIFF_OUTPUT" ]] && sed -i 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
           echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
-      - name: Get niks3 OIDC token
-        id: oidc
-        run: |
-          token=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
-            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=https://niks3.terence.cloud" | jq -r '.value')
-          echo "::add-mask::$token"
-          echo "token=$token" >> "$GITHUB_OUTPUT"
       - name: Push to cache
         run: |
           nix build -o niks3 github:Mic92/niks3
-          echo ${{ steps.oidc.outputs.token }} > token
           niks3/bin/niks3 push \
             --server-url https://niks3.terence.cloud \
-            --auth-token-path ./token \
+            --auth-token-script "$PWD/.github/scripts/niks3-token.sh" \
             ./result ./niks3
       - name: Add job summary to PR
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
