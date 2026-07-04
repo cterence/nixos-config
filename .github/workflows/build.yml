@@ -22,7 +22,6 @@ jobs:
     strategy:
       matrix:
         host:
-          - t14s
           - stronghold
           - homelab2
       fail-fast: false
