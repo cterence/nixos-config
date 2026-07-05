@@ -8,6 +8,7 @@
           cryptsetup
           curl
           dig
+          dmidecode
           efibootmgr
           file
           gcc

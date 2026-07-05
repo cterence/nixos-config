@@ -1,7 +1,10 @@
 {
   flake.aspects.stronghold.nixos = {
     boot = {
-      kernelParams = [ "acpi_backlight=video" ];
+      kernelParams = [
+        "acpi_backlight=video"
+        "amdgpu.runpm=0"
+      ];
       kernelModules = [
         "kvm-amd"
         "i2c-dev"
