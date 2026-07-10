@@ -20,9 +20,13 @@
       };
     };
 
-    darwin = {
+    darwin = { pkgs, ... }: {
       imports = [
         self.modules.generic.tailscale
+      ];
+
+      environment.systemPackages = [
+        pkgs.tailscale-gui
       ];
     };
 
