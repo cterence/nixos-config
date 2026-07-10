@@ -6,10 +6,6 @@
         self.overlays.emulationstation-de
       ];
 
-      imports = [
-        self.modules.generic.games
-      ];
-
       environment.systemPackages = with pkgs; [
         heroic
         mangohud

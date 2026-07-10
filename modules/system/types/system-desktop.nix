@@ -1,6 +1,5 @@
 {
   inputs,
-  self,
   ...
 }:
 {
@@ -22,10 +21,6 @@
           development
           plasma-manager
         ];
-
-        nixos = {
-          home-manager.sharedModules = [ self.module.homeManager.gpg ];
-        };
 
         homeManager = {
           home = {

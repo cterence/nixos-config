@@ -29,7 +29,7 @@
       imports = [
         self.modules.generic.fonts
       ];
-      fontconfig.useEmbeddedBitmaps = true; # https://discourse.nixos.org/t/firefox-doesnt-render-noto-color-emojis/51202
+      fonts.fontconfig.useEmbeddedBitmaps = true; # https://discourse.nixos.org/t/firefox-doesnt-render-noto-color-emojis/51202
     };
 
     darwin = {

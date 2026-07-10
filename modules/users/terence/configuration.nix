@@ -29,7 +29,7 @@ in
             ];
           };
 
-        nixos = { pkgs, ... }: {
+        nixos = {
           imports = [
             self.modules.generic.${username}
           ];
@@ -43,7 +43,6 @@ in
               "keys"
               "i2c"
             ];
-            shell = pkgs.zsh;
           };
         };
 
