@@ -14,22 +14,30 @@ jobs:
       PR_JOB_SUMMARY: pr-job-summary
       NIX_GITHUB_PRIVATE_USERNAME:
       NIX_GITHUB_PRIVATE_PASSWORD:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     permissions:
       id-token: write
       contents: read
       pull-requests: write
     strategy:
       matrix:
-        host:
-          - stronghold
-          - homelab2
+        include:
+          - host: stronghold
+            os: ubuntu-latest
+            attr: nixosConfigurations.stronghold.config.system.build.toplevel
+          - host: homelab2
+            os: ubuntu-latest
+            attr: nixosConfigurations.homelab2.config.system.build.toplevel
+          - host: macbook # Change this to your MacBook's name
+            os: macos-latest
+            attr: darwinConfigurations.macbook.system # Adjust to nixosConfigurations if actually running NixOS on it
       fail-fast: false
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-${{ matrix.host }}
       cancel-in-progress: true
     steps:
       - name: Free up disk space
+        if: runner.os == 'Linux'
         uses: AdityaGarg8/remove-unwanted-software@90e01b21170618765a73370fcc3abbd1684a7793
         with:
           remove-android: true
@@ -51,29 +59,43 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
         with:
+          with-linux-vm: ${{ matrix.os == 'macos-latest' }}
           extra-conf: |
             extra-substituters = https://niks3.terence.cloud
             extra-trusted-public-keys = niks3.terence.cloud-1:YBjuY7HeSjKk5wmvw8N+vq/us2GxQPCHRn871lL7XL4=
       - name: Build
         run: |
-          sudo systemctl set-environment NIX_GITHUB_PRIVATE_USERNAME=${{ github.repository_owner }}
-          sudo systemctl set-environment NIX_GITHUB_PRIVATE_PASSWORD=${{ steps.generate-token.outputs.token }}
-          sudo systemctl daemon-reload && sudo systemctl restart nix-daemon
-          OUT_PATH="$(nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel --print-out-paths --access-tokens github.com=${{ steps.generate-token.outputs.token }})"
-          echo -e "\x1b[32;1mSuccessfully built .#nixosConfigurations.${{ matrix.host }}\x1b[0m"
+          if [ "${{ runner.os }}" = "Linux" ]; then
+            sudo systemctl set-environment NIX_GITHUB_PRIVATE_USERNAME=${{ github.repository_owner }}
+            sudo systemctl set-environment NIX_GITHUB_PRIVATE_PASSWORD=${{ steps.generate-token.outputs.token }}
+            sudo systemctl daemon-reload && sudo systemctl restart nix-daemon
+          fi
+          OUT_PATH="$(nix build .#${{ matrix.attr }} --print-out-paths --access-tokens github.com=${{ steps.generate-token.outputs.token }})"
+          echo -e "\x1b[32;1mSuccessfully built .#${{ matrix.host }}\x1b[0m"
           echo -e "## Build ${{ matrix.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Diff closures
         if: github.event_name == 'pull_request'
         run: |
-          sudo systemctl set-environment NIX_GITHUB_PRIVATE_USERNAME=${{ github.repository_owner }}
-          sudo systemctl set-environment NIX_GITHUB_PRIVATE_PASSWORD=${{ steps.generate-token.outputs.token }}
-          sudo systemctl daemon-reload && sudo systemctl restart nix-daemon
-          HOST_DRV="nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel"
+          if [ "${{ runner.os }}" = "Linux" ]; then
+            sudo systemctl set-environment NIX_GITHUB_PRIVATE_USERNAME=${{ github.repository_owner }}
+            sudo systemctl set-environment NIX_GITHUB_PRIVATE_PASSWORD=${{ steps.generate-token.outputs.token }}
+            sudo systemctl daemon-reload && sudo systemctl restart nix-daemon
+          fi
+          HOST_DRV="${{ matrix.attr }}"
           PREV_FLAKE="github:${GITHUB_REPOSITORY}"
           NEXT_FLAKE="."
           DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
           nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" --access-tokens github.com=${{ steps.generate-token.outputs.token }} --no-write-lock-file | tee "$DIFF_OUTPUT"
-          [[ -s "$DIFF_OUTPUT" ]] && sed -i 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
+
+          if [[ -s "$DIFF_OUTPUT" ]]; then
+            if [ "${{ runner.os }}" = "macOS" ]; then
+              sed -i '' 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT"
+            else
+              sed -i 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT"
+            fi
+          else
+            echo "No changes found" | tee "$DIFF_OUTPUT"
+          fi
           echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Push to cache
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
