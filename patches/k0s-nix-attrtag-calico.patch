@@ -1,0 +1,36 @@
+diff --git a/nixos/clusterSpec.nix b/nixos/clusterSpec.nix
+index 72b6d87..b598323 100644
+--- a/nixos/clusterSpec.nix
++++ b/nixos/clusterSpec.nix
+@@ -103,14 +103,24 @@ in
+           kubeproxy = imageOption;
+           coredns = imageOption;
+           pause = imageOption;
+-          calico = {
+-            cni = imageOption;
+-            flexvolume = imageOption;
+-            node = imageOption;
+-            kubecontrollers = imageOption;
++          calico = mkOption {
++            type = submodule {
++              options = {
++                cni = imageOption;
++                flexvolume = imageOption;
++                node = imageOption;
++                kubecontrollers = imageOption;
++              };
++            };
++          };
++          kuberouter = mkOption {
++            type = submodule {
++              options = {
++                cni = imageOption;
++                cniInstaller = imageOption;
++              };
++            };
+           };
+-          kuberouter.cni = imageOption;
+-          kuberouter.cniInstaller = imageOption;
+           repository = mkOption { type = str; };
+           default_pull_policy = mkOption {
+             type = enum [
