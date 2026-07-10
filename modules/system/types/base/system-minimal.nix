@@ -77,6 +77,17 @@
       imports = [
         self.modules.generic.system-minimal
       ];
+
+      nix = {
+        settings = {
+          max-jobs = "auto";
+          extra-platforms = [
+            "x86_64-darwin"
+            "aarch64-darwin"
+          ];
+        };
+        optimise.automatic = true;
+      };
     };
 
     homeManager = {

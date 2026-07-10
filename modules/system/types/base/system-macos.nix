@@ -19,6 +19,8 @@
             AppleShowAllExtensions = true;
             ShowPathbar = true;
             FXEnableExtensionChangeWarning = false;
+            FXPreferredViewStyle = "clmv";
+            ShowStatusBar = true;
           };
           CustomUserPreferences = {
             # Settings of plist in /Users/${username}/Library/Preferences/
