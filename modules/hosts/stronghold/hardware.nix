@@ -3,7 +3,6 @@
     boot = {
       kernelParams = [
         "acpi_backlight=video"
-        "amdgpu.runpm=0"
       ];
       kernelModules = [
         "kvm-amd"

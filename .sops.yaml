@@ -12,6 +12,7 @@ keys:
   - &free-oracle-amd-1 age1efv25tn7w2fcfta2qypx5su5xrscl66h3hau2hv7gxvhchhd9yhsjqnchy
   - &free-oracle-amd-2 age1ppntenfzfrga9ckpcwcfcp2a3d7l8zshsjhd7m9wpfnrjwq0f5yqtp5sf2
   - &free-oracle-arm-1 age1txcs9dqaz9gm2dh49p6tjrxq5tlyez48un5ht5s5yxarkt6agg5sv5cla4
+  - &macbook age1uzwuy5steacgyc2rlg00c0snr3tuc3whtfrvkkp3lr9858gmda6q9d7k29
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini|toml)$
     key_groups:
@@ -25,6 +26,7 @@ creation_rules:
           - *free-oracle-amd-1
           - *free-oracle-amd-2
           - *free-oracle-arm-1
+          - *macbook
   - path_regex: cert.p12
     key_groups:
       - age:
@@ -37,3 +39,4 @@ creation_rules:
           - *free-oracle-amd-1
           - *free-oracle-amd-2
           - *free-oracle-arm-1
+          - *macbook
