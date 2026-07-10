@@ -18,6 +18,12 @@
       ];
     };
 
+    darwin = {
+      imports = [
+        inputs.sops-nix.darwinModules.sops
+      ];
+    };
+
     homeManager = {
       imports = [
         inputs.sops-nix.homeManagerModules.sops

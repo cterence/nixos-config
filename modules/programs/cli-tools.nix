@@ -23,6 +23,7 @@
           nano
           net-tools
           nftables
+          nvtopPackages.amd
           openssl
           parted
           pciutils
@@ -44,8 +45,23 @@
           };
         };
       };
+
+    darwin =
+      { pkgs, ... }:
+      {
+        environment.systemPackages = with pkgs; [
+          iterm2
+          nh
+          pinentry_mac
+        ];
+      };
+
     homeManager =
-      { pkgs, config, ... }:
+      {
+        pkgs,
+        config,
+        ...
+      }:
       {
         home = {
           packages = with pkgs; [
@@ -83,7 +99,6 @@
             nixfmt
             nmap
             nurl
-            nvtopPackages.amd
             p7zip
             postgresql
             pv-migrate

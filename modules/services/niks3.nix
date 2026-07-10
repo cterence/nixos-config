@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
   flake-file.inputs.niks3 = {
     url = "github:Mic92/niks3";
@@ -6,23 +6,10 @@
   };
 
   flake.aspects.niks3 = {
-    nixos =
+    generic =
       { config, pkgs, ... }:
       {
-        imports = [
-          inputs.niks3.nixosModules.niks3-auto-upload
-        ];
-
         environment.systemPackages = [ inputs.niks3.packages.${pkgs.stdenv.hostPlatform.system}.niks3 ];
-
-        nix.settings = {
-          substituters = [
-            "https://niks3.terence.cloud"
-          ];
-          trusted-public-keys = [
-            "niks3.terence.cloud-1:YBjuY7HeSjKk5wmvw8N+vq/us2GxQPCHRn871lL7XL4="
-          ];
-        };
 
         services.niks3-auto-upload = {
           enable = true;
@@ -43,6 +30,13 @@
           };
         };
       };
+
+    nixos = {
+      imports = [
+        inputs.niks3.nixosModules.niks3-auto-upload
+        self.modules.generic.niks3
+      ];
+    };
 
     homeManager =
       { config, ... }:

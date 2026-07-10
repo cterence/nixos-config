@@ -1,5 +1,6 @@
 {
   inputs,
+  self,
   ...
 }:
 {
@@ -11,6 +12,7 @@
           system-cli
           audio
           bluetooth
+          homebrew
           networking
           kde
           keyboard
@@ -20,6 +22,10 @@
           development
           plasma-manager
         ];
+
+        nixos = {
+          home-manager.sharedModules = [ self.module.homeManager.gpg ];
+        };
 
         homeManager = {
           home = {

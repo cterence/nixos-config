@@ -1,15 +1,21 @@
 { self, ... }:
 {
-  flake.aspects.games.nixos =
-    { pkgs, ... }:
-    {
+  flake.aspects.games = {
+    nixos = { pkgs, ... }: {
       nixpkgs.overlays = [
         self.overlays.emulationstation-de
       ];
+
+      imports = [
+        self.modules.generic.games
+      ];
+
       environment.systemPackages = with pkgs; [
         heroic
         mangohud
         protonup-rs
+        winetricks
+        emulationstation-de
         (retroarch.withCores (
           cores: with cores; [
             genesis-plus-gx
@@ -27,9 +33,7 @@
             desmume
           ]
         ))
-        winetricks
         wineWow64Packages.stable
-        emulationstation-de
       ];
 
       programs = {
@@ -42,4 +46,5 @@
         };
       };
     };
+  };
 }

@@ -1,13 +1,18 @@
 {
   flake.aspects.browser.homeManager =
-    { config, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       programs = {
         firefox = {
           enable = true;
           configPath = "${config.xdg.configHome}/mozilla/firefox";
         };
-        chromium.enable = true;
+        chromium.enable = lib.mkIf (!pkgs.stdenv.hostPlatform.isDarwin) true;
       };
     };
 }

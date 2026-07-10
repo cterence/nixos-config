@@ -50,40 +50,42 @@
               enableAskPassword = true;
             };
 
-            home-manager.sharedModules = [ inputs.plasma-manager.homeModules.plasma-manager ];
           };
       };
 
-      plasma-manager.homeManager = {
-        programs.plasma = {
-          enable = true;
-          input = {
-            touchpads = [
-              {
-                enable = true;
-                name = "PIXA3854:00 093A:0274 Touchpad";
-                naturalScroll = true;
-                productId = "0274";
-                vendorId = "093a";
-              }
-            ];
-          };
-          workspace = {
-            enableMiddleClickPaste = true;
-            colorScheme = "BreezeDark";
-            lookAndFeel = "org.kde.breezedark.desktop";
-            theme = "breeze-dark";
-          };
-          kwin = {
-            effects = {
-              minimization = {
-                animation = "magiclamp";
-              };
+      plasma-manager.homeManager = { lib, pkgs, ... }: {
+        imports = [ inputs.plasma-manager.homeModules.plasma-manager ];
+        programs = lib.mkIf (!pkgs.stdenv.hostPlatform.isDarwin) {
+          plasma = {
+            enable = true;
+            input = {
+              touchpads = [
+                {
+                  enable = true;
+                  name = "PIXA3854:00 093A:0274 Touchpad";
+                  naturalScroll = true;
+                  productId = "0274";
+                  vendorId = "093a";
+                }
+              ];
             };
-            nightLight = {
-              enable = true;
-              mode = "constant";
-              temperature.day = 4000;
+            workspace = {
+              enableMiddleClickPaste = true;
+              colorScheme = "BreezeDark";
+              lookAndFeel = "org.kde.breezedark.desktop";
+              theme = "breeze-dark";
+            };
+            kwin = {
+              effects = {
+                minimization = {
+                  animation = "magiclamp";
+                };
+              };
+              nightLight = {
+                enable = true;
+                mode = "constant";
+                temperature.day = 4000;
+              };
             };
           };
         };

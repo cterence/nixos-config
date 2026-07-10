@@ -1,8 +1,8 @@
 {
   flake.aspects.gpg.homeManager =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
-      services = {
+      services = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         ## Enable gpg-agent with ssh support
         gpg-agent = {
           enable = true;
@@ -20,7 +20,7 @@
         };
       };
 
-      home = {
+      home = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         sessionVariables = {
           PINENTRY_KDE_USE_WALLET = "1";
         };

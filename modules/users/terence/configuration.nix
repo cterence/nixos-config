@@ -15,19 +15,11 @@ in
           terence-secrets
         ];
 
-        nixos =
+        generic =
           { pkgs, ... }:
           {
             users.users.${username} = {
-              isNormalUser = true;
               description = "Térence Chateigné";
-              extraGroups = [
-                "docker"
-                "networkmanager"
-                "wheel"
-                "keys"
-                "i2c"
-              ];
               shell = pkgs.zsh;
             };
             programs.zsh.enable = true;
@@ -37,20 +29,61 @@ in
             ];
           };
 
+        nixos = { pkgs, ... }: {
+          imports = [
+            self.modules.generic.${username}
+          ];
+          users.users.${username} = {
+            isNormalUser = true;
+            description = "Térence Chateigné";
+            extraGroups = [
+              "docker"
+              "networkmanager"
+              "wheel"
+              "keys"
+              "i2c"
+            ];
+            shell = pkgs.zsh;
+          };
+        };
+
+        darwin = {
+          imports = [
+            self.modules.generic.${username}
+          ];
+          users.users.${username}.home = "/Users/${username}";
+        };
+
         homeManager = {
           home.username = username;
         };
       };
 
-      "${username}-desktop".nixos = {
-        imports = [
-          self.modules.nixos.${username}
-        ];
+      "${username}-desktop" = {
+        nixos = {
+          imports = [
+            self.modules.nixos.${username}
+          ];
 
-        home-manager.users.${username}.imports = with self.modules.homeManager; [
-          terence
-          system-desktop
-        ];
+          home-manager.users.${username}.imports = with self.modules.homeManager; [
+            terence
+            system-desktop
+          ];
+        };
+
+        darwin = {
+          imports = [
+            self.modules.darwin.${username}
+          ];
+
+          home-manager.users.${username} = {
+            imports = with self.modules.homeManager; [
+              terence
+              system-desktop
+            ];
+          };
+
+        };
       };
 
       "${username}-server".nixos = {
