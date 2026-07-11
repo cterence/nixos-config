@@ -52,7 +52,9 @@
             kns = "kubectl ns";
             ll = "ls -l";
             nfu = "nix flake update";
-            nhup = "cd ~/nixos && git pull --rebase --autostash && nhs && cd -";
+            nhup = "cd ${
+              if isDarwin then "~/nix-darwin" else "~/nixos"
+            } && git pull --rebase --autostash && nhs && cd -";
             nhs = "nh ${
               if isDarwin then "darwin switch ~/nix-darwin" else "os switch ~/nixos"
             } -- --show-trace";
