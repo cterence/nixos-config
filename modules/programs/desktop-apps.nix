@@ -1,8 +1,8 @@
-{
+{ inputs, ... }: {
   flake.aspects.desktop-apps = {
-    darwin = { pkgs, ... }: {
+    darwin = {
       environment.systemPackages = [
-        pkgs.rectangle
+        inputs.nixpkgs-lima.legacyPackages.aarch64-darwin.rectangle
       ];
     };
 
