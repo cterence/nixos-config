@@ -9,20 +9,46 @@
         primaryUser = username;
         defaults = {
           dock = {
-            autohide = false;
+            autohide = true;
+            autohide-time-modifier = 0.50;
+            autohide-delay = 0.0;
+            minimize-to-application = true;
             show-recents = false;
             orientation = "right";
             static-only = false;
             tilesize = 40;
           };
           finder = {
+            AppleShowAllFiles = true;
             AppleShowAllExtensions = true;
             ShowPathbar = true;
             FXEnableExtensionChangeWarning = false;
             FXPreferredViewStyle = "clmv";
             ShowStatusBar = true;
           };
+          trackpad = {
+            Clicking = true;
+          };
+          NSGlobalDomain = {
+            ApplePressAndHoldEnabled = false;
+            KeyRepeat = 2;
+            InitialKeyRepeat = 15;
+            NSAutomaticCapitalizationEnabled = false;
+            NSAutomaticSpellingCorrectionEnabled = false;
+            NSAutomaticQuoteSubstitutionEnabled = false;
+            NSAutomaticInlinePredictionEnabled = false;
+            NSAutomaticPeriodSubstitutionEnabled = false;
+            AppleInterfaceStyle = "Dark";
+          };
           CustomUserPreferences = {
+            ".GlobalPreferences" = {
+              NSUserQuotesArray = [
+                "\""
+                "\""
+                "'"
+                "'"
+              ];
+            };
             # Settings of plist in /Users/${username}/Library/Preferences/
             "com.apple.finder" = {
               # Set home directory as startup window

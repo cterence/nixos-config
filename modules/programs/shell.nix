@@ -13,6 +13,9 @@
       pkgs,
       ...
     }:
+    let
+      isDarwin = pkgs.stdenv.isDarwin;
+    in
     {
       imports = [
         inputs.nix-index-database.homeModules.default
@@ -49,9 +52,16 @@
             kns = "kubectl ns";
             ll = "ls -l";
             nfu = "nix flake update";
-            nhup = "cd ~/nixos && git pull --rebase --autostash && nh os switch ~/nixos -- --show-trace && cd -";
-            nhs = "nh os switch ~/nixos -- --show-trace";
-            nixup = "cd ~/nixos && git pull --rebase --autostash && nixos-rebuild switch --sudo --flake ~/nixos && cd -";
+            nhup = "cd ~/nixos && git pull --rebase --autostash && nhs && cd -";
+            nhs = "nh ${
+              if isDarwin then "darwin switch ~/nix-darwin" else "os switch ~/nixos"
+            } -- --show-trace";
+            nixup = "cd ~/nixos && git pull --rebase --autostash && ${
+              if isDarwin then
+                "sudo darwin-rebuild switch --flake ~/nix-darwin"
+              else
+                "nixos-rebuild switch --sudo --flake ~/nixos "
+            } && cd -";
             src = "source $HOME/.zshrc";
             tf = "terraform";
             tg = "terragrunt";
