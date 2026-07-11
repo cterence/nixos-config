@@ -18,6 +18,10 @@
         nixos.imports = [
           self.modules.generic.pkgs-by-name
         ];
+
+        darwin.imports = [
+          self.modules.generic.pkgs-by-name
+        ];
       };
     };
 }

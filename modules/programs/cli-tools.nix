@@ -54,10 +54,6 @@
           nh
           pinentry_mac
         ];
-
-        system.defaults.CustomUserPreferences."com.googlecode.iterm2" = import (
-          inputs.dotfiles + /macos/iterm2.nix
-        );
       };
 
     homeManager =
