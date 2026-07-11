@@ -39,10 +39,13 @@
 
     homebrew = {
       enable = true;
+      onActivation.cleanup = "zap";
       casks = [
         "markedit"
+        "nextcloud"
         "scroll-reverser"
         "stats"
+        "steam"
       ];
       brews = [
       ];

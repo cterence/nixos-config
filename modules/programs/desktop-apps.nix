@@ -29,7 +29,6 @@
             calibre
             gpu-screen-recorder
             libreoffice-fresh
-            nextcloud-client
             qemu
             todoist-electron
             vlc
