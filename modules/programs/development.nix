@@ -125,6 +125,25 @@
                     "editor.defaultFormatter" = "redhat.vscode-yaml";
                   };
                   "direnv.restart.automatic" = true;
+                  "search.exclude" = {
+                    "**/.git" = true;
+                    "**/node_modules" = true;
+                    "**/.direnv" = true;
+                    "**/.devenv" = true;
+                    "/nix/store" = true;
+                    "**/.local/share/Trash" = true;
+                  };
+                  "files.exclude" = {
+                    "**/.git" = true;
+                    "**/.direnv" = true;
+                    "**/.devenv" = true;
+                  };
+                  "files.watcherExclude" = {
+                    "**/.git" = true;
+                    "**/.direnv" = true;
+                    "**/.devenv" = true;
+                    "/nix/store/**" = true;
+                  };
                 };
               };
 

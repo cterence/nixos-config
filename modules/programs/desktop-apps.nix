@@ -1,8 +1,12 @@
 { inputs, ... }: {
+  flake-file.inputs = {
+    nixpkgs-linker-failure-guard.url = "github:nixos/nixpkgs/30945d3c58d70fbec6efe10d56362a35e7a64507";
+  };
+
   flake.aspects.desktop-apps = {
     darwin = {
       environment.systemPackages = [
-        inputs.nixpkgs-lima.legacyPackages.aarch64-darwin.rectangle
+        inputs.nixpkgs-linker-failure-guard.legacyPackages.aarch64-darwin.rectangle
       ];
     };
 
@@ -19,9 +23,7 @@
           [
             obsidian
             picard
-            qbittorrent
             signal-desktop
-            supersonic
           ]
           ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
             audacity
@@ -29,9 +31,15 @@
             calibre
             gpu-screen-recorder
             libreoffice-fresh
+            supersonic
+            qbittorrent
             qemu
             todoist-electron
             vlc
+          ]
+          ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
+            inputs.nixpkgs-linker-failure-guard.legacyPackages.aarch64-darwin.supersonic
+            inputs.nixpkgs-linker-failure-guard.legacyPackages.aarch64-darwin.qbittorrent
           ];
 
         programs.thunderbird = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
