@@ -3,7 +3,7 @@
 # cp ~/.vibe/config.toml.bak ~/.vibe/config.toml
 # chmod 755 ~/.vibe/config.toml
 # vibe
-# diff .vibe/config.toml.bak .vibe/config.toml
+# cat .vibe/config.toml > ~/nixos/dotfiles/vibe/config.toml
 active_model = "mistral-medium-3.5"
 theme = "ansi-dark"
 disable_welcome_banner_animation = false
@@ -32,7 +32,13 @@ api_timeout = 720.0
 api_retry_max_elapsed_time = 300.0
 auto_compact_threshold = 200000
 tool_paths = []
-mcp_servers = []
+applied_migrations = ["bash_read_only_defaults_v1"]
+
+[[mcp_servers]]
+name = "grafana"
+transport = "http"
+url = "https://gmcp.terence.cloud/sse"
+
 enable_connectors = true
 connectors = []
 enabled_tools = []
@@ -47,6 +53,12 @@ experimental_enable_registry_skills = false
 enabled_skills = []
 disabled_skills = []
 applied_migrations = ["bash_read_only_defaults_v1"]
+
+[mcp_servers.auth]
+type = "static"
+api_key_env = "GRAFANA_MCP_AUTH"
+api_key_header = "Authorization"
+api_key_format = "Basic {token}"
 
 [experiment_overrides]
 

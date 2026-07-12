@@ -1,4 +1,4 @@
-{ self, ... }:
+{ inputs, self, ... }:
 let
   hostname = "homelab2";
 in
@@ -17,7 +17,7 @@ in
           terence-server
         ];
 
-        nixos = {
+        nixos = { config, ... }: {
           networking.hostName = hostname;
 
           services.k0s = {
@@ -33,6 +33,25 @@ in
               };
               network.kuberouter.metricsPort = 8081;
               storage.etcd.peerAddress = "192.168.1.54";
+            };
+          };
+
+          sops = {
+            templates."openbao-keys.yaml".content = ''
+              unseal-key-1: "${config.sops.placeholder.unseal-key-1}"
+              unseal-key-2: "${config.sops.placeholder.unseal-key-2}"
+              unseal-key-3: "${config.sops.placeholder.unseal-key-3}"
+            '';
+            secrets = {
+              unseal-key-1 = {
+                sopsFile = "${inputs.secrets}/openbao.yaml";
+              };
+              unseal-key-2 = {
+                sopsFile = "${inputs.secrets}/openbao.yaml";
+              };
+              unseal-key-3 = {
+                sopsFile = "${inputs.secrets}/openbao.yaml";
+              };
             };
           };
 
