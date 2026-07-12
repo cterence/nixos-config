@@ -48,6 +48,10 @@
                 "'"
                 "'"
               ];
+              NSQuitAlwaysKeepsWindows = false;
+            };
+            "com.apple.WindowManager" = {
+              RestorePersistentStateOnLaunch = false;
             };
             # Settings of plist in /Users/${username}/Library/Preferences/
             "com.apple.finder" = {
