@@ -1,6 +1,6 @@
 { self, ... }: {
   flake-file.inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
   };
 

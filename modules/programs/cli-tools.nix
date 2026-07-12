@@ -1,32 +1,21 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
   flake.aspects.cli-tools = {
-    nixos =
+    generic =
       { pkgs, ... }:
       {
         environment.systemPackages = with pkgs; [
-          cryptsetup
           curl
           dig
-          dmidecode
-          efibootmgr
           file
           gcc
           git
           gnumake
-          gptfdisk
           killall
-          libva-utils
-          lm_sensors
           lsof
-          mlocate
           nano
           net-tools
-          nftables
-          nvtopPackages.amd
           openssl
-          parted
-          pciutils
           ripgrep
           tcpdump
           tmux
@@ -35,6 +24,28 @@
           vim
           wget
           whois
+        ];
+      };
+
+    nixos =
+      { pkgs, ... }:
+      {
+        imports = [
+          self.modules.generic.cli-tools
+        ];
+
+        environment.systemPackages = with pkgs; [
+          cryptsetup
+          dmidecode
+          efibootmgr
+          gptfdisk
+          libva-utils
+          lm_sensors
+          mlocate
+          nftables
+          nvtopPackages.amd
+          parted
+          pciutils
         ];
 
         programs.nh = {
@@ -49,8 +60,11 @@
     darwin =
       { pkgs, ... }:
       {
+        imports = [
+          self.modules.generic.cli-tools
+        ];
+
         environment.systemPackages = with pkgs; [
-          iterm2
           nh
           pinentry_mac
         ];
