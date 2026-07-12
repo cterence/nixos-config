@@ -7,33 +7,40 @@
 
   flake.aspects.niks3 = {
     generic =
-      { config, pkgs, ... }:
+      { pkgs, ... }:
       {
         environment.systemPackages = [ inputs.niks3.packages.${pkgs.stdenv.hostPlatform.system}.niks3 ];
 
-        services.niks3-auto-upload = {
-          enable = true;
-          serverUrl = "https://niks3.terence.cloud";
-          authTokenFile = config.sops.secrets.niks3-api-token.path;
-        };
+      };
 
-        sops.secrets = {
-          niks3-signing-key = {
-            key = "signing-key";
-            sopsFile = "${inputs.secrets}/niks3.yaml";
-            mode = "0440";
-            group = config.users.groups.keys.name;
-          };
-          niks3-api-token = {
-            key = "api-token";
-            sopsFile = "${inputs.secrets}/niks3.yaml";
-          };
+    nixos = { config, ... }: {
+      imports = [
+        inputs.niks3.nixosModules.niks3-auto-upload
+        self.modules.generic.niks3
+      ];
+
+      sops.secrets = {
+        niks3-signing-key = {
+          key = "signing-key";
+          sopsFile = "${inputs.secrets}/niks3.yaml";
+          mode = "0440";
+          group = config.users.groups.keys.name;
+        };
+        niks3-api-token = {
+          key = "api-token";
+          sopsFile = "${inputs.secrets}/niks3.yaml";
         };
       };
 
-    nixos = {
+      services.niks3-auto-upload = {
+        enable = true;
+        serverUrl = "https://niks3.terence.cloud";
+        authTokenFile = config.sops.secrets.niks3-api-token.path;
+      };
+    };
+
+    darwin = {
       imports = [
-        inputs.niks3.nixosModules.niks3-auto-upload
         self.modules.generic.niks3
       ];
     };
