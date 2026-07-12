@@ -19,31 +19,39 @@
         ...
       }:
       {
-        home.packages =
-          with pkgs;
-          [
-            obsidian
-            picard
-            signal-desktop
-          ]
-          ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
-            audacity
-            appimage-run
-            calibre
-            gpu-screen-recorder
-            libreoffice-fresh
-            supersonic
-            qbittorrent
-            qemu
-            todoist-electron
-            vlc
-          ]
-          ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
-            inputs.nixpkgs-linker-failure-guard.legacyPackages.aarch64-darwin.supersonic
-            inputs.nixpkgs-linker-failure-guard.legacyPackages.aarch64-darwin.qbittorrent
-            ghostty-bin
-            iterm2
-          ];
+        home = {
+          packages =
+            with pkgs;
+            [
+              obsidian
+              picard
+              signal-desktop
+            ]
+            ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+              audacity
+              appimage-run
+              calibre
+              gpu-screen-recorder
+              libreoffice-fresh
+              supersonic
+              qbittorrent
+              qemu
+              todoist-electron
+              vlc
+            ]
+            ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
+              inputs.nixpkgs-linker-failure-guard.legacyPackages.aarch64-darwin.supersonic
+              inputs.nixpkgs-linker-failure-guard.legacyPackages.aarch64-darwin.qbittorrent
+              ghostty-bin
+              iterm2
+            ];
+          file = {
+            ghostty = {
+              target = "${config.home.homeDirectory}/.config/ghostty/config.ghostty";
+              source = "${inputs.dotfiles}/config.ghostty";
+            };
+          };
+        };
 
         programs.thunderbird = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
           enable = true;
