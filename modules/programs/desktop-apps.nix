@@ -41,6 +41,7 @@
           ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
             inputs.nixpkgs-linker-failure-guard.legacyPackages.aarch64-darwin.supersonic
             inputs.nixpkgs-linker-failure-guard.legacyPackages.aarch64-darwin.qbittorrent
+            ghostty-bin
             iterm2
           ];
 
