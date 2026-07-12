@@ -1,5 +1,6 @@
 {
   inputs,
+  self,
   ...
 }:
 let
@@ -7,21 +8,16 @@ let
 in
 {
   flake.aspects."${username}-secrets" = {
-    nixos =
+    generic =
       { config, ... }:
       {
         sops = {
-          age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
           secrets = {
             nixos-access-tokens = {
-              mode = "0440";
               sopsFile = "${inputs.secrets}/settings.yaml";
-              group = config.users.groups.keys.name;
             };
             nix-daemon-environment = {
-              mode = "0440";
               sopsFile = "${inputs.secrets}/settings.yaml";
-              group = config.users.groups.keys.name;
             };
           };
         };
@@ -30,12 +26,39 @@ in
           !include ${config.sops.secrets.nixos-access-tokens.path}
         '';
 
-        systemd = {
-          services = {
-            nix-daemon.serviceConfig.EnvironmentFile = config.sops.secrets.nix-daemon-environment.path;
+      };
+
+    nixos = { config, ... }: {
+      imports = [ self.modules.generic."${username}-secrets" ];
+
+      sops = {
+        age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
+        secrets = {
+          nixos-access-tokens = {
+            mode = "0440";
+            group = config.users.groups.keys.name;
+          };
+          nix-daemon-environment = {
+            mode = "0440";
+            group = config.users.groups.keys.name;
           };
         };
       };
+
+      systemd = {
+        services = {
+          nix-daemon.serviceConfig.EnvironmentFile = config.sops.secrets.nix-daemon-environment.path;
+        };
+      };
+    };
+
+    darwin = {
+      imports = [ self.modules.generic."${username}-secrets" ];
+
+      sops = {
+        age.keyFile = "/Users/${username}/.config/sops/age/keys.txt";
+      };
+    };
 
     homeManager =
       { config, ... }:

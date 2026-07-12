@@ -1,8 +1,10 @@
 { inputs, self, ... }:
 {
-  flake-file.inputs.niks3 = {
-    url = "github:Mic92/niks3";
-    inputs.nixpkgs.follows = "nixpkgs";
+  flake-file.inputs = {
+    niks3 = {
+      url = "github:Mic92/niks3";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   flake.aspects.niks3 = {
@@ -11,6 +13,16 @@
       {
         environment.systemPackages = [ inputs.niks3.packages.${pkgs.stdenv.hostPlatform.system}.niks3 ];
 
+        sops.secrets = {
+          niks3-signing-key = {
+            key = "signing-key";
+            sopsFile = "${inputs.secrets}/niks3.yaml";
+          };
+          niks3-api-token = {
+            key = "api-token";
+            sopsFile = "${inputs.secrets}/niks3.yaml";
+          };
+        };
       };
 
     nixos = { config, ... }: {
@@ -18,19 +30,6 @@
         inputs.niks3.nixosModules.niks3-auto-upload
         self.modules.generic.niks3
       ];
-
-      sops.secrets = {
-        niks3-signing-key = {
-          key = "signing-key";
-          sopsFile = "${inputs.secrets}/niks3.yaml";
-          mode = "0440";
-          group = config.users.groups.keys.name;
-        };
-        niks3-api-token = {
-          key = "api-token";
-          sopsFile = "${inputs.secrets}/niks3.yaml";
-        };
-      };
 
       services.niks3-auto-upload = {
         enable = true;
