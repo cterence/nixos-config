@@ -80,6 +80,10 @@ in
             };
           };
         };
+
+        home.sessionVariables = {
+          SOPS_AGE_KEY_FILE = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+        };
       };
   };
 }
