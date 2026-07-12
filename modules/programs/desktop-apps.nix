@@ -9,6 +9,13 @@
         inputs.nixpkgs-linker-failure-guard.legacyPackages.aarch64-darwin.rectangle
         self.packages.aarch64-darwin.iterm2-ai-plugin
       ];
+
+      services.skhd = {
+        enable = true;
+        skhdConfig = ''
+          ctrl + cmd - t : open -a Ghostty
+        '';
+      };
     };
 
     homeManager =
