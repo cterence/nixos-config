@@ -5,11 +5,15 @@
       url = "github:Mic92/niks3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    niks3-auto-upload = {
+      url = "github:cterence/niks3/feat/darwin-auto-upload";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   flake.aspects.niks3 = {
     generic =
-      { pkgs, ... }:
+      { pkgs, config, ... }:
       {
         environment.systemPackages = [ inputs.niks3.packages.${pkgs.stdenv.hostPlatform.system}.niks3 ];
 
@@ -23,23 +27,24 @@
             sopsFile = "${inputs.secrets}/niks3.yaml";
           };
         };
+
+        services.niks3-auto-upload = {
+          enable = true;
+          serverUrl = "https://niks3.terence.cloud";
+          authTokenFile = config.sops.secrets.niks3-api-token.path;
+        };
       };
 
-    nixos = { config, ... }: {
+    nixos = {
       imports = [
         inputs.niks3.nixosModules.niks3-auto-upload
         self.modules.generic.niks3
       ];
-
-      services.niks3-auto-upload = {
-        enable = true;
-        serverUrl = "https://niks3.terence.cloud";
-        authTokenFile = config.sops.secrets.niks3-api-token.path;
-      };
     };
 
     darwin = {
       imports = [
+        inputs.niks3-auto-upload.darwinModules.niks3-auto-upload
         self.modules.generic.niks3
       ];
     };

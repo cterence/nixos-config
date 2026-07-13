@@ -9,7 +9,7 @@
           enableSshSupport = true;
           enableZshIntegration = true;
           pinentry = {
-            package = pkgs.pinentry-qt;
+            package = if pkgs.stdenv.hostPlatform.isLinux then pkgs.pinentry-qt else pkgs.pinentry_mac;
           };
         };
       };
