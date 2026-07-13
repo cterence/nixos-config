@@ -13,6 +13,8 @@
   };
 
   config.flake.lib = {
+    username = "terence";
+
     mkNixos = system: name: {
       ${name} = inputs.nixpkgs.lib.nixosSystem {
         modules = [

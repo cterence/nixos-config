@@ -48,7 +48,7 @@
             hdu = "helm dep update";
             k = "kubectl";
             kctx = "kubectl ctx";
-            kdebug = ''kubectl run shell-terence-$(cat /proc/sys/kernel/random/uuid | sed "s/[ - ] // g " | head -c 8; echo;) --image=ghcr.io/cterence/pkgx-bash -i --tty --rm'';
+            kdebug = "kubectl run shell-terence-$(uuidgen | tr -d '-' | tr '[:upper:]' '[:lower:]' | head -c 8) --image=ghcr.io/cterence/pkgx-bash -i --tty --rm";
             kns = "kubectl ns";
             ll = "ls -l";
             nfu = "nix flake update";
@@ -58,11 +58,11 @@
             nhs = "nh ${
               if isDarwin then "darwin switch ~/nix-darwin" else "os switch ~/nixos"
             } -- --show-trace";
-            nixup = "cd ~/nixos && git pull --rebase --autostash && ${
+            nixup = "cd ${if isDarwin then "~/nix-darwin" else "~/nixos"} && git pull --rebase --autostash && ${
               if isDarwin then
                 "sudo darwin-rebuild switch --flake ~/nix-darwin"
               else
-                "nixos-rebuild switch --sudo --flake ~/nixos "
+                "nixos-rebuild switch --sudo --flake ~/nixos"
             } && cd -";
             src = "source $HOME/.zshrc";
             tf = "terraform";

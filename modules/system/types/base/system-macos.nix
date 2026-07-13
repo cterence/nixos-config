@@ -1,7 +1,8 @@
+{ self, ... }:
 {
   flake.aspects.system-macos.darwin =
     let
-      username = "terence";
+      username = self.lib.username;
     in
     {
       security.pam.services.sudo_local.touchIdAuth = true;

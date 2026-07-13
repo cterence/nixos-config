@@ -1,16 +1,17 @@
 {
   flake.aspects.gpg.homeManager =
     { pkgs, lib, ... }:
+    let
+      isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
+    in
     {
-      services = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
-        ## Enable gpg-agent with ssh support
-        gpg-agent = {
-          enable = true;
-          enableSshSupport = true;
-          enableZshIntegration = true;
-          pinentry = {
-            package = if pkgs.stdenv.hostPlatform.isLinux then pkgs.pinentry-qt else pkgs.pinentry_mac;
-          };
+      ## Enable gpg-agent with ssh support on both Linux and Darwin
+      services.gpg-agent = {
+        enable = true;
+        enableSshSupport = true;
+        enableZshIntegration = true;
+        pinentry = {
+          package = if isDarwin then pkgs.pinentry_mac else pkgs.pinentry-qt;
         };
       };
 
@@ -20,7 +21,7 @@
         };
       };
 
-      home = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+      home = lib.mkIf (!isDarwin) {
         sessionVariables = {
           PINENTRY_KDE_USE_WALLET = "1";
         };

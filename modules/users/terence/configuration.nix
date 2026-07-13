@@ -3,7 +3,7 @@
   ...
 }:
 let
-  username = "terence";
+  username = self.lib.username;
 in
 {
   flake.aspects =
@@ -59,29 +59,25 @@ in
       };
 
       "${username}-desktop" = {
-        nixos = {
-          imports = [
-            self.modules.nixos.${username}
-          ];
-
+        generic = {
           home-manager.users.${username}.imports = with self.modules.homeManager; [
             terence
             system-desktop
           ];
         };
 
+        nixos = {
+          imports = [
+            self.modules.nixos.${username}
+            self.modules.generic."${username}-desktop"
+          ];
+        };
+
         darwin = {
           imports = [
             self.modules.darwin.${username}
+            self.modules.generic."${username}-desktop"
           ];
-
-          home-manager.users.${username} = {
-            imports = with self.modules.homeManager; [
-              terence
-              system-desktop
-            ];
-          };
-
         };
       };
 

@@ -1,4 +1,4 @@
-{ inputs, ... }: {
+{ inputs, self, ... }: {
   flake-file.inputs = {
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
   };
@@ -16,7 +16,7 @@
       enableRosetta = true;
 
       # User owning the Homebrew prefix
-      user = "terence";
+      user = self.lib.username;
 
       # Optional: Enable fully-declarative tap management
       #

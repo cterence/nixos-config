@@ -4,7 +4,7 @@
   ...
 }:
 let
-  username = "terence";
+  username = self.lib.username;
 in
 {
   flake.aspects."${username}-secrets" = {

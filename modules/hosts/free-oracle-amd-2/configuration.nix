@@ -35,11 +35,6 @@ in
           networking.hostName = hostname;
           system.stateVersion = "25.11";
 
-          # MANDATORY: Add key to root so nixos-anywhere can finish the install
-          users.users.root.openssh.authorizedKeys.keys = [
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIITdJbmR8b5wJyc7UijPQGNfPBAkng6lChJsMDsOKZdf terence@t14s"
-          ];
-
           zramSwap = {
             enable = true;
             algorithm = "zstd";

@@ -10,7 +10,16 @@
         ];
 
         homeManager =
-          { config, ... }:
+          { config, pkgs, ... }:
+          let
+            isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
+            nixdFlakePath = if isDarwin then "\${env:HOME}/nix-darwin" else "\${env:HOME}/nixos";
+            nixdOptionsExpr =
+              if isDarwin then
+                "(builtins.getFlake \"${nixdFlakePath}\").darwinConfigurations.\${env:HOST}.options"
+              else
+                "(builtins.getFlake \"${nixdFlakePath}\").nixosConfigurations.\${env:HOST}.options";
+          in
           {
             programs = {
               go.enable = true;
@@ -80,7 +89,7 @@
                       };
                       "options" = {
                         "nixos" = {
-                          "expr" = "(builtins.getFlake \"${"env:HOME"}/nixos\").nixosConfigurations.${"env:HOST"}.options";
+                          "expr" = nixdOptionsExpr;
                         };
                       };
                       "nixpkgs" = {

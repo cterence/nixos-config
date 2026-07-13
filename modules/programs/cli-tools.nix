@@ -66,7 +66,6 @@
 
         environment.systemPackages = with pkgs; [
           nh
-          pinentry_mac
         ];
       };
 

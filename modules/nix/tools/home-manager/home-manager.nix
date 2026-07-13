@@ -12,8 +12,6 @@ let
         useUserPackages = true;
         useGlobalPkgs = true;
         backupFileExtension = "backup";
-        backupCommand = "rm";
-        overwriteBackup = true;
       };
 
       nixpkgs.overlays = [
