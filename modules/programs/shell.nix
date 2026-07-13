@@ -5,6 +5,10 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    direnv-instant = {
+      url = "github:Mic92/direnv-instant";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   flake.aspects.shell.homeManager =
@@ -19,6 +23,7 @@
     {
       imports = [
         inputs.nix-index-database.homeModules.default
+        inputs.direnv-instant.homeModules.default
       ];
 
       home.file.".p10k.zsh".source = "${inputs.dotfiles}/.p10k.zsh";
@@ -130,8 +135,13 @@
 
         direnv = {
           enable = true;
-          enableZshIntegration = true;
+          enableZshIntegration = false;
           nix-direnv.enable = true;
+        };
+
+        direnv-instant = {
+          enable = true;
+          enableZshIntegration = true;
         };
 
         bash = {

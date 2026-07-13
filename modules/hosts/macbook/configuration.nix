@@ -21,6 +21,7 @@ in
           system-desktop
           system-personal
           terence-desktop
+          mac-app-util
         ];
 
         darwin = {

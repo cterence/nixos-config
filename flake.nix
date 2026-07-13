@@ -12,6 +12,10 @@
       url = "github:nlewo/comin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    direnv-instant = {
+      url = "github:Mic92/direnv-instant";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -52,6 +56,10 @@
       url = "github:numtide/llm-agents.nix";
       inputs.flake-parts.follows = "flake-parts";
     };
+    mac-app-util = {
+      url = "github:hraban/mac-app-util";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     niks3 = {
       url = "github:Mic92/niks3";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -81,6 +89,7 @@
     nixpkgs-emulationstation.url = "github:nixos/nixpkgs/845134719941b3a2087842eae23e521d67e35ad5";
     nixpkgs-lima.url = "github:nixos/nixpkgs/9778ed56742b4080a2cbe033c0ba2ad1732a6ce3";
     nixpkgs-linker-failure-guard.url = "github:nixos/nixpkgs/30945d3c58d70fbec6efe10d56362a35e7a64507";
+    nixpkgs-linux-builder.url = "github:nixos/nixpkgs/nixos-25.05";
     packages = {
       url = "path:./packages";
       flake = false;

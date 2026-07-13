@@ -34,10 +34,12 @@
             "root"
             "@wheel"
           ];
+          # Keep build deps around for offline/direnv/dev-shell reuse
+          keep-outputs = true;
+          keep-derivations = true;
         };
         extraOptions = ''
           warn-dirty = false
-          keep-outputs = true
         '';
       };
 
@@ -87,6 +89,21 @@
           ];
         };
         optimise.automatic = true;
+
+        # Keep builds from starving the UI / audio: lower nix-daemon priority
+        daemonProcessType = "Background";
+        daemonIOLowPriority = true;
+
+        # Weekly garbage collection on darwin (NixOS gets it via programs.nh)
+        gc = {
+          automatic = true;
+          interval = {
+            Weekday = 0;
+            Hour = 3;
+            Minute = 0;
+          };
+          options = "--delete-older-than 7d";
+        };
       };
     };
 
