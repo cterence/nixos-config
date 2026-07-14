@@ -166,11 +166,11 @@
     "emulationstation-de": {
       "flake": false,
       "locked": {
-        "lastModified": 1783765435,
-        "narHash": "sha256-fk7NY5KBULltCOdxrIBWUplPCN5/kALlxgoD2r3D14g=",
+        "lastModified": 1783957011,
+        "narHash": "sha256-RUAPNdG3GEKpLzjQDGlabyHlCglx/+7YBrtRZGs5n84=",
         "owner": "es-de",
         "repo": "emulationstation-de",
-        "rev": "816bdd2c407c4266cf67e1534bd8315f0fe50d96",
+        "rev": "72d755c661da3bfbe8d7934a25c8fbeb910675a6",
         "type": "gitlab"
       },
       "original": {
@@ -374,11 +374,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783823409,
-        "narHash": "sha256-OI4IkRjRXa1e7hYmCGJDPDq5H/kPwhsyoS80cNUF9fI=",
+        "lastModified": 1783963347,
+        "narHash": "sha256-r376E2XpakiXwModDHIxlvB6qLq4iFVEq730vxOO4JY=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "7566825d4652a1b885bd4ce65bd9e8def432fec9",
+        "rev": "a45a7c451455a51ae740ec3bce4024b312809c29",
         "type": "github"
       },
       "original": {
@@ -449,11 +449,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1783912404,
-        "narHash": "sha256-XdUwPMY4dmsYJrwdSqSHDV01mSJRqwXHSdTRCEDeecs=",
+        "lastModified": 1783998605,
+        "narHash": "sha256-FZa9vA21dkvLerk20uOt5Gn87VND4GBwXoPBk8JSobw=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "dbd0928ca24380fe62f485785f5fa097f45f4b50",
+        "rev": "9e2dbe1e09a619318696da505dd183c4d36f3048",
         "type": "github"
       },
       "original": {
@@ -516,11 +516,11 @@
         "treefmt-nix": "treefmt-nix_7"
       },
       "locked": {
-        "lastModified": 1783947757,
-        "narHash": "sha256-GKuR1QJKsNYXDkoj8fVFXf9KKDnPDLGgw5o+zK/+Aq4=",
+        "lastModified": 1783949634,
+        "narHash": "sha256-F0N+ZCosp6ZA1vdm+37mqTos/U0srPUcq1kjEFRh0nc=",
         "owner": "cterence",
         "repo": "niks3",
-        "rev": "4d514587e960632b74076132ccf2d6120cafd266",
+        "rev": "22e44c16eaeb5157b4d357dd3cf7303e39b28ac1",
         "type": "github"
       },
       "original": {
@@ -1118,11 +1118,11 @@
     "terraform-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1783619372,
-        "narHash": "sha256-+nlaOU9f2/+ag8QjQtTUaLLLGV0i9q2AR6qZC+34KJE=",
+        "lastModified": 1783965105,
+        "narHash": "sha256-MduRRwpUv8aDwglgxnnTffSq6hF//NBJ0XU6u52QAk4=",
         "owner": "hashicorp",
         "repo": "agent-skills",
-        "rev": "957d5f95911bc22eaf2b7e141c3b08ba824091fe",
+        "rev": "a784e500d0cd246962284f82a9926a8427971df4",
         "type": "github"
       },
       "original": {
