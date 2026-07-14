@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
   flake-file.inputs.plasma-manager = {
     url = "github:nix-community/plasma-manager";
@@ -14,9 +14,20 @@
         nixos =
           { pkgs, ... }:
           {
+            # Pin ddcutil 2.2.3: newer wedges PowerDevil on monitor-off,
+            # blocking shutdown. modules/overlays/ddcutil.nix, ddcutil#581.
+            nixpkgs.overlays = [ self.overlays.ddcutil ];
+
             services = {
-              xserver.enable = false;
-              displayManager.sddm.enable = true;
+              # Required by X11 greeter (asserts xserver || sddm.wayland).
+              xserver.enable = true;
+              displayManager.sddm = {
+                enable = true;
+                # X11 greeter: kwin_wayland greeter can stick on a 0x0
+                # placeholder if DRM outputs aren't ready. bazzite#4826.
+                # Session stays Wayland.
+                wayland.enable = false;
+              };
               desktopManager.plasma6.enable = true;
             };
 
