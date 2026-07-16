@@ -1,4 +1,9 @@
-{ inputs, self, ... }:
+{
+  inputs,
+  self,
+  lib,
+  ...
+}:
 {
   flake.aspects.cli-tools = {
     generic =
@@ -57,17 +62,11 @@
         };
       };
 
-    darwin =
-      { pkgs, ... }:
-      {
-        imports = [
-          self.modules.generic.cli-tools
-        ];
-
-        environment.systemPackages = with pkgs; [
-          nh
-        ];
-      };
+    darwin = {
+      imports = [
+        self.modules.generic.cli-tools
+      ];
+    };
 
     homeManager =
       {
@@ -159,6 +158,7 @@
               };
             };
           };
+
           k9s = {
             enable = true;
             aliases = {
@@ -225,6 +225,14 @@
                   };
                 };
               };
+            };
+          };
+
+          nh = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+            enable = true;
+            clean = {
+              enable = true;
+              extraArgs = "--keep-since 4d --keep 3";
             };
           };
         };
