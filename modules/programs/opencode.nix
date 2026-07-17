@@ -101,13 +101,28 @@
           </IMPORTANT>
         '';
         settings = {
+          model = "mistral-glm/zai-glm-5-2";
           enabled_providers = [
             "mistral"
+            "mistral-glm"
             "nvidia"
           ];
+          agent = {
+            build = {
+              temperature = 1.0;
+            };
+          };
           provider = {
             mistral = {
               options = {
+                apiKey = "{file:${config.sops.secrets.mistral-api-key.path}}";
+              };
+            };
+            mistral-glm = {
+              name = "Mistral (GLM)";
+              npm = "@ai-sdk/openai-compatible";
+              options = {
+                baseURL = "https://api.mistral.ai/v1";
                 apiKey = "{file:${config.sops.secrets.mistral-api-key.path}}";
               };
               models = {
@@ -117,7 +132,11 @@
                     context = 1000000;
                     output = 128000;
                   };
+                  temperature = true;
                   interleaved.field = "reasoning_content";
+                  options = {
+                    reasoningEffort = "max";
+                  };
                 };
               };
             };
