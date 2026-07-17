@@ -133,7 +133,6 @@
                     output = 128000;
                   };
                   temperature = true;
-                  interleaved.field = "reasoning_content";
                   options = {
                     reasoningEffort = "max";
                   };
