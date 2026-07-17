@@ -110,6 +110,16 @@
               options = {
                 apiKey = "{file:${config.sops.secrets.mistral-api-key.path}}";
               };
+              models = {
+                "zai-glm-5-2" = {
+                  name = "GLM-5.2";
+                  limit = {
+                    context = 1000000;
+                    output = 128000;
+                  };
+                  interleaved.field = "reasoning_content";
+                };
+              };
             };
             nvidia = {
               options = {
