@@ -4,7 +4,7 @@
 # chmod 755 ~/.vibe/config.toml
 # vibe
 # cat .vibe/config.toml > ~/nixos/dotfiles/vibe/config.toml
-active_model = "mistral-medium-3.5"
+active_model = "zai-glm-5-2"
 theme = "ansi-dark"
 disable_welcome_banner_animation = false
 autocopy_to_clipboard = true
@@ -38,7 +38,6 @@ applied_migrations = ["bash_read_only_defaults_v1"]
 name = "grafana"
 transport = "http"
 url = "https://gmcp.terence.cloud/sse"
-
 enable_connectors = true
 connectors = []
 enabled_tools = []
@@ -100,26 +99,10 @@ supports_images = true
 auto_compact_threshold = 200000
 
 [[models]]
-name = "devstral-small-latest"
+name = "zai-glm-5-2"
 provider = "mistral"
-alias = "devstral-small"
-temperature = 0.2
-input_price = 0.1
-output_price = 0.3
-thinking = "off"
-supports_images = false
-auto_compact_threshold = 200000
-
-[[models]]
-name = "devstral"
-provider = "llamacpp"
-alias = "local"
-temperature = 0.2
-input_price = 0.0
-output_price = 0.0
-thinking = "off"
-supports_images = false
-auto_compact_threshold = 200000
+thinking = "high"
+alias = "zai-glm-5-2"
 
 [[transcribe_providers]]
 name = "mistral"
