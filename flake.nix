@@ -25,7 +25,7 @@
       flake = false;
     };
     emulationstation-de = {
-      url = "gitlab:es-de/emulationstation-de";
+      url = "gitlab:es-de/emulationstation-de/v3.4.1";
       flake = false;
     };
     flake-aspects.url = "github:vic/flake-aspects";
@@ -89,7 +89,6 @@
     nixpkgs-emulationstation.url = "github:nixos/nixpkgs/845134719941b3a2087842eae23e521d67e35ad5";
     nixpkgs-lima.url = "github:nixos/nixpkgs/9778ed56742b4080a2cbe033c0ba2ad1732a6ce3";
     nixpkgs-linker-failure-guard.url = "github:nixos/nixpkgs/30945d3c58d70fbec6efe10d56362a35e7a64507";
-    nixpkgs-linux-builder.url = "github:nixos/nixpkgs/nixos-25.05";
     packages = {
       url = "path:./packages";
       flake = false;

@@ -4,9 +4,10 @@
     # Commit preceding https://github.com/NixOS/nixpkgs/commit/608422bd4ba434d02278602bc74c46d10bfde2ba
     nixpkgs-emulationstation.url = "github:nixos/nixpkgs/845134719941b3a2087842eae23e521d67e35ad5";
 
+    # Pinned to skip the slow GitLab ref lookup on every flake eval
     emulationstation-de = {
       flake = false;
-      url = "gitlab:es-de/emulationstation-de";
+      url = "gitlab:es-de/emulationstation-de/v3.4.1";
     };
   };
 

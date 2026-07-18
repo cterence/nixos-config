@@ -166,15 +166,16 @@
     "emulationstation-de": {
       "flake": false,
       "locked": {
-        "lastModified": 1784232062,
-        "narHash": "sha256-tnk86pbKEYE/5G1OaldKujU9vnWJaNEAROhhMugFpgI=",
+        "lastModified": 1775822834,
+        "narHash": "sha256-MVmJIdxwEG3wgvwbhuIEYCxKaYss/3hq9xszGLjZ1Xw=",
         "owner": "es-de",
         "repo": "emulationstation-de",
-        "rev": "a8bad91810a7a8fa45efee00e180255163ae16d7",
+        "rev": "5db4e2a32bd5852cc7a3dbeb298d85de86a536d7",
         "type": "gitlab"
       },
       "original": {
         "owner": "es-de",
+        "ref": "v3.4.1",
         "repo": "emulationstation-de",
         "type": "gitlab"
       }
@@ -791,22 +792,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-linux-builder": {
-      "locked": {
-        "lastModified": 1767313136,
-        "narHash": "sha256-16KkgfdYqjaeRGBaYsNrhPRRENs0qzkQVUooNHtoy2w=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "ac62194c3917d5f474c1a844b6fd6da2db95077d",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-25.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1784282293,
@@ -1026,7 +1011,6 @@
         "nixpkgs-emulationstation": "nixpkgs-emulationstation",
         "nixpkgs-lima": "nixpkgs-lima",
         "nixpkgs-linker-failure-guard": "nixpkgs-linker-failure-guard",
-        "nixpkgs-linux-builder": "nixpkgs-linux-builder",
         "packages": "packages",
         "paperasse-skills": "paperasse-skills",
         "patches": "patches",

@@ -90,10 +90,6 @@
         };
         optimise.automatic = true;
 
-        # Keep builds from starving the UI / audio: lower nix-daemon priority
-        daemonProcessType = "Background";
-        daemonIOLowPriority = true;
-
         # Weekly garbage collection on darwin (NixOS gets it via programs.nh)
         gc = {
           automatic = true;
