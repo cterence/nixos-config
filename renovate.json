@@ -9,7 +9,9 @@
   "packageRules": [
     {
       "matchDepNames": [
-        "nixpkgs-emulationstation"
+        "nixpkgs-emulationstation",
+        "nixpkgs-lima",
+        "nixpkgs-linker-failure-guard"
       ],
       "enabled": false
     }
