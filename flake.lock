@@ -778,17 +778,17 @@
     },
     "nixpkgs-linker-failure-guard": {
       "locked": {
-        "lastModified": 1782442247,
-        "narHash": "sha256-PSbMbMj9fPzdZZ3mWaGf/olhPX9Wfn1D4ansk/pIM8k=",
+        "lastModified": 1784364253,
+        "narHash": "sha256-2xSgGlpY6J4TgDvFdXqw6X/2daOdOdCZVx/3F3U9NzY=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "30945d3c58d70fbec6efe10d56362a35e7a64507",
+        "rev": "e72da4e27bb62635d62b27b265482672891e103b",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "30945d3c58d70fbec6efe10d56362a35e7a64507",
+        "rev": "e72da4e27bb62635d62b27b265482672891e103b",
         "type": "github"
       }
     },
