@@ -1,6 +1,6 @@
 services:
   traefik:
-    image: "traefik:v3.7"
+    image: "traefik:v3.7@sha256:4299bbed850421258fc5448c2e0e6ad350981d4d335a68de11b92448aedbefe5"
     container_name: "traefik"
     restart: always
     command:
@@ -24,7 +24,7 @@ services:
       - "${DOCKER_SOCKET_PATH:-/run/user/1000/docker.sock}:/var/run/docker.sock:ro"
 
   gatus:
-    image: twinproduction/gatus:latest
+    image: twinproduction/gatus:latest@sha256:ef87c00b0bfd4fcd57bf86f704f5c773747bf8bee0c67a3934eb3f11795b40c9
     container_name: gatus
     restart: always
     volumes:
