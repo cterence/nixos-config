@@ -5,5 +5,13 @@
   ],
   "nix": {
     "enabled": true
-  }
+  },
+  "packageRules": [
+    {
+      "matchDepNames": [
+        "nixpkgs-emulationstation"
+      ],
+      "enabled": false
+    }
+  ]
 }
