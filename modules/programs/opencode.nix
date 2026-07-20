@@ -149,7 +149,7 @@
           mcp = {
             grafana = {
               type = "remote";
-              url = "https://gmcp.terence.cloud/sse";
+              url = "https://gmcp.terence.cloud/mcp";
               oauth = false;
               headers = {
                 Authorization = "Basic {file:${config.sops.secrets.grafana-mcp-auth.path}}";

@@ -1,9 +1,3 @@
-# To apply migrations
-# mv ~/.vibe/config.toml ~/.vibe/config.toml.bak
-# cp ~/.vibe/config.toml.bak ~/.vibe/config.toml
-# chmod 755 ~/.vibe/config.toml
-# vibe
-# cat .vibe/config.toml > ~/nixos/dotfiles/vibe/config.toml
 active_model = "zai-glm-5-2"
 theme = "ansi-dark"
 disable_welcome_banner_animation = false
@@ -32,12 +26,14 @@ api_timeout = 720.0
 api_retry_max_elapsed_time = 300.0
 auto_compact_threshold = 200000
 tool_paths = []
-applied_migrations = ["bash_read_only_defaults_v1"]
+applied_migrations = [
+    "bash_read_only_defaults_v1",
+]
 
 [[mcp_servers]]
 name = "grafana"
-transport = "http"
-url = "https://gmcp.terence.cloud/sse"
+transport = "streamable-http"
+url = "https://gmcp.terence.cloud/mcp"
 enable_connectors = true
 connectors = []
 enabled_tools = []
@@ -47,11 +43,14 @@ enabled_agents = []
 disabled_agents = []
 installed_agents = []
 default_agent = "default"
-skill_paths = ["~/.config/opencode/skills"]
+skill_paths = []
 experimental_enable_registry_skills = false
 enabled_skills = []
 disabled_skills = []
-applied_migrations = ["bash_read_only_defaults_v1"]
+applied_migrations = [
+    "bash_read_only_defaults_v1",
+]
+disabled = true
 
 [mcp_servers.auth]
 type = "static"
@@ -162,7 +161,9 @@ sensitive_patterns = []
 
 [tools.task]
 permission = "ask"
-allowlist = ["explore"]
+allowlist = [
+    "explore",
+]
 denylist = []
 sensitive_patterns = []
 
@@ -170,7 +171,10 @@ sensitive_patterns = []
 permission = "always"
 allowlist = []
 denylist = []
-sensitive_patterns = ["**/.env", "**/.env.*"]
+sensitive_patterns = [
+    "**/.env",
+    "**/.env.*",
+]
 max_output_bytes = 64000
 default_max_matches = 100
 default_timeout = 60
@@ -204,6 +208,9 @@ codeignore_file = ".vibeignore"
 [tools.bash]
 permission = "ask"
 allowlist = [
+    "/Users/terence/.vibe/*",
+    "/Users/terence/code/*",
+    "base64",
     "basename",
     "cat",
     "cd",
@@ -225,6 +232,8 @@ allowlist = [
     "head",
     "join",
     "jq",
+    "kubectl get",
+    "kubectl logs",
     "less",
     "ls",
     "md5sum",
@@ -242,6 +251,7 @@ allowlist = [
     "sum",
     "tac",
     "tail",
+    "timeout",
     "tr",
     "tree",
     "uname",
@@ -266,7 +276,9 @@ denylist = [
     "screen",
     "tmux",
 ]
-sensitive_patterns = ["sudo"]
+sensitive_patterns = [
+    "sudo",
+]
 max_output_bytes = 16000
 default_timeout = 300
 denylist_standalone = [
@@ -308,19 +320,28 @@ max_todos = 100
 permission = "always"
 allowlist = []
 denylist = []
-sensitive_patterns = ["**/.env", "**/.env.*"]
+sensitive_patterns = [
+    "**/.env",
+    "**/.env.*",
+]
 max_read_bytes = 51200
 
 [tools.edit]
 permission = "ask"
 allowlist = []
 denylist = []
-sensitive_patterns = ["**/.env", "**/.env.*"]
+sensitive_patterns = [
+    "**/.env",
+    "**/.env.*",
+]
 
 [tools.write_file]
 permission = "ask"
 allowlist = []
 denylist = []
-sensitive_patterns = ["**/.env", "**/.env.*"]
+sensitive_patterns = [
+    "**/.env",
+    "**/.env.*",
+]
 max_write_bytes = 64000
 create_parent_dirs = true
