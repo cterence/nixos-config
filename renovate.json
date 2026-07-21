@@ -3,9 +3,6 @@
   "extends": [
     "config:best-practices"
   ],
-  "nix": {
-    "enabled": true
-  },
   "packageRules": [
     {
       "matchDepNames": [
