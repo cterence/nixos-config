@@ -5,10 +5,6 @@
       url = "github:Mic92/niks3";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    niks3-auto-upload = {
-      url = "github:cterence/niks3/feat/darwin-auto-upload";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   flake.aspects.niks3 = {
@@ -44,7 +40,7 @@
 
     darwin = {
       imports = [
-        inputs.niks3-auto-upload.darwinModules.niks3-auto-upload
+        inputs.niks3.darwinModules.niks3-auto-upload
         self.modules.generic.niks3
       ];
     };

@@ -509,28 +509,6 @@
         "type": "github"
       }
     },
-    "niks3-auto-upload": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "treefmt-nix": "treefmt-nix_7"
-      },
-      "locked": {
-        "lastModified": 1784451334,
-        "narHash": "sha256-mNoMfWOrsr8Edy8bYq2ZBQfh7hdj+OsTVeACjjKfl4E=",
-        "owner": "cterence",
-        "repo": "niks3",
-        "rev": "91eb04538744195fcc103cdf0932a42ab7a4ec0b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "cterence",
-        "ref": "feat/darwin-auto-upload",
-        "repo": "niks3",
-        "type": "github"
-      }
-    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -622,7 +600,7 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "treefmt-nix": "treefmt-nix_8"
+        "treefmt-nix": "treefmt-nix_7"
       },
       "locked": {
         "lastModified": 1784099966,
@@ -1017,7 +995,6 @@
         "llm-agents": "llm-agents",
         "mac-app-util": "mac-app-util",
         "niks3": "niks3",
-        "niks3-auto-upload": "niks3-auto-upload",
         "nix-darwin": "nix-darwin",
         "nix-homebrew": "nix-homebrew",
         "nix-index-database": "nix-index-database",
@@ -1250,27 +1227,6 @@
       }
     },
     "treefmt-nix_7": {
-      "inputs": {
-        "nixpkgs": [
-          "niks3-auto-upload",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1780220602,
-        "narHash": "sha256-eynAfOmbmxJnkp7YewvCEbShNnnYJ9gLLqkzsYtBPeM=",
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "rev": "db947814a175b7ca6ded66e21383d938df01c227",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "treefmt-nix_8": {
       "inputs": {
         "nixpkgs": [
           "nixos-anywhere",
