@@ -50,7 +50,7 @@ disabled_skills = []
 applied_migrations = [
     "bash_read_only_defaults_v1",
 ]
-disabled = true
+disabled = false
 
 [mcp_servers.auth]
 type = "static"
@@ -234,6 +234,7 @@ allowlist = [
     "jq",
     "kubectl get",
     "kubectl logs",
+    "kubectl version",
     "less",
     "ls",
     "md5sum",
@@ -345,3 +346,18 @@ sensitive_patterns = [
 ]
 max_write_bytes = 64000
 create_parent_dirs = true
+
+[tools.grafana_list_datasources]
+permission = "always"
+
+[tools.grafana_query_prometheus]
+permission = "always"
+
+[tools.grafana_query_loki_logs]
+permission = "always"
+
+[tools.grafana_list_loki_label_names]
+permission = "always"
+
+[tools.grafana_find_error_pattern_logs]
+permission = "always"

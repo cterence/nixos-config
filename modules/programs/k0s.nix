@@ -8,16 +8,8 @@
   flake.aspects.k0s.nixos =
     { pkgs, ... }:
     {
-      # Patch upstream k0s-nix for attrTag strictness in newer nixpkgs (johbo/k0s-nix#105).
-      # Source patched via inputs.nixpkgs to avoid module-arg recursion in imports.
       imports = [
-        (import "${
-          inputs.nixpkgs.legacyPackages.x86_64-linux.applyPatches {
-            name = "k0s-nix-patched";
-            src = inputs.k0s;
-            patches = [ "${inputs.patches}/k0s-nix-attrtag-calico.patch" ];
-          }
-        }/nixos/k0s.nix")
+        inputs.k0s.nixosModules.default
       ];
 
       nixpkgs.overlays = [
