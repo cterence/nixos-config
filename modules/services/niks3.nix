@@ -43,6 +43,10 @@
         inputs.niks3.darwinModules.niks3-auto-upload
         self.modules.generic.niks3
       ];
+
+      services.niks3-auto-upload = {
+        socketPath = "/run/niks3/upload-to-cache.sock";
+      };
     };
 
     homeManager =
