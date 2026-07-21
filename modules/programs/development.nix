@@ -1,5 +1,7 @@
 { inputs, ... }:
 {
+  # FIXME: https://github.com/NixOS/nixpkgs/issues/543690
+  flake-file.inputs.nixpkgs-vscode.url = "github:nixos/nixpkgs/d90c3631f464595b294b8a6888e2546d37c36539";
   flake.aspects =
     { aspects, ... }:
     {
@@ -19,6 +21,10 @@
                 "(builtins.getFlake \"${nixdFlakePath}\").darwinConfigurations.\${env:HOST}.options"
               else
                 "(builtins.getFlake \"${nixdFlakePath}\").nixosConfigurations.\${env:HOST}.options";
+            vscodePkgs = import inputs.nixpkgs-vscode {
+              inherit (pkgs.stdenv.hostPlatform) system;
+              config.allowUnfree = true;
+            };
           in
           {
             programs = {
@@ -30,6 +36,7 @@
                 #     sed -i -e "s|StartupWMClass=.*|StartupWMClass=code-url-handler|" $out/share/applications/code-url-handler.desktop
                 #   '';
                 # });
+                package = if pkgs.stdenv.hostPlatform.isDarwin then vscodePkgs.vscode else pkgs.vscode;
                 profiles.default = {
                   enableUpdateCheck = false;
                   enableExtensionUpdateCheck = false;
