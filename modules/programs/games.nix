@@ -11,6 +11,7 @@
         mangohud
         protonup-rs
         winetricks
+        protontricks
         emulationstation-de
         (retroarch.withCores (
           cores: with cores; [
