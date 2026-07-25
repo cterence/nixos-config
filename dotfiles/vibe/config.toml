@@ -230,6 +230,8 @@ allowlist = [
     "git status",
     "grep",
     "head",
+    "helm repo",
+    "helm show",
     "join",
     "jq",
     "kubectl get",

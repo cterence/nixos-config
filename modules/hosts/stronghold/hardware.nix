@@ -1,5 +1,5 @@
 {
-  flake.aspects.stronghold.nixos = { pkgs, lib, ... }: {
+  flake.aspects.stronghold.nixos = {
     boot = {
       kernelParams = [
         "acpi_backlight=video"
@@ -11,7 +11,6 @@
       ];
       # Test: pin to 6.12 LTS to isolate amdgpu regressions in 7.1.x on
       # Navi 23. Remove this line to go back to linuxPackages_latest.
-      kernelPackages = lib.mkForce pkgs.linuxPackages_6_12;
       kernelModules = [
         "kvm-amd"
         "i2c-dev"
