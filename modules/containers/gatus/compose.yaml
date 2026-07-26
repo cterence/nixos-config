@@ -24,7 +24,7 @@ services:
       - "${DOCKER_SOCKET_PATH:-/run/user/1000/docker.sock}:/var/run/docker.sock:ro"
 
   gatus:
-    image: twinproduction/gatus:latest@sha256:402a546868d51006bbe984bbcbf64ba24a0bbd4c221722906468b6b026d05778
+    image: twinproduction/gatus:latest@sha256:0009b90a11c042809f7f988c05c3f398dbf24b7498a0b7083efe3b9e8e126550
     container_name: gatus
     restart: always
     volumes:
