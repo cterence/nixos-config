@@ -770,22 +770,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-vscode": {
-      "locked": {
-        "lastModified": 1784359094,
-        "narHash": "sha256-1gJvOpMiZlW9Zf3eia2bhnZEKc6L/ECV6PETsf47S9Q=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "d90c3631f464595b294b8a6888e2546d37c36539",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "d90c3631f464595b294b8a6888e2546d37c36539",
-        "type": "github"
-      }
-    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1785141334,
@@ -1004,7 +988,6 @@
         "nixpkgs-emulationstation": "nixpkgs-emulationstation",
         "nixpkgs-lima": "nixpkgs-lima",
         "nixpkgs-linker-failure-guard": "nixpkgs-linker-failure-guard",
-        "nixpkgs-vscode": "nixpkgs-vscode",
         "packages": "packages",
         "paperasse-skills": "paperasse-skills",
         "patches": "patches",

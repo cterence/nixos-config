@@ -225,6 +225,9 @@ allowlist = [
     "find",
     "fmt",
     "fold",
+    "gh --version",
+    "gh search commits",
+    "gh search issues",
     "git diff",
     "git log",
     "git status",
@@ -362,4 +365,16 @@ permission = "always"
 permission = "always"
 
 [tools.grafana_find_error_pattern_logs]
+permission = "always"
+
+[tools.grafana_alerting_manage_rules]
+permission = "always"
+
+[tools.web_fetch]
+allowlist = [
+    "bugzilla.kernel.org",
+    "lore.kernel.org",
+]
+
+[tools.grafana_list_prometheus_label_values]
 permission = "always"
