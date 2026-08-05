@@ -227,8 +227,13 @@ allowlist = [
     "fmt",
     "fold",
     "gh --version",
+    "gh issue view",
+    "gh release list",
+    "gh release view",
+    "gh search code",
     "gh search commits",
     "gh search issues",
+    "gh search repos",
     "git diff",
     "git log",
     "git status",
@@ -376,8 +381,15 @@ permission = "always"
 [tools.web_fetch]
 allowlist = [
     "bugzilla.kernel.org",
+    "docs.stakater.com",
     "lore.kernel.org",
 ]
 
 [tools.grafana_list_prometheus_label_values]
+permission = "always"
+
+[tools.grafana_list_loki_label_values]
+permission = "always"
+
+[tools.grafana_query_loki_stats]
 permission = "always"

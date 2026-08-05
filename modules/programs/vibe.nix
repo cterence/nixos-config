@@ -5,6 +5,10 @@
       url = "github:numtide/llm-agents.nix";
       inputs.flake-parts.follows = "flake-parts";
     };
+    superpowers = {
+      url = "github:obra/superpowers";
+      flake = false;
+    };
   };
 
   flake.aspects.vibe.homeManager =
@@ -58,7 +62,8 @@
           };
         }
         // flattenSkills "${inputs.caveman-skills}/skills" "caveman"
-        // flattenSkills "${inputs.go-skills}" "go";
+        // flattenSkills "${inputs.go-skills}" "go"
+        // flattenSkills "${inputs.superpowers}/skills" "superpowers";
       };
     };
 }

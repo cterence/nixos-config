@@ -117,6 +117,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    superpowers = {
+      url = "github:obra/superpowers";
+      flake = false;
+    };
     terraform-skills = {
       url = "github:hashicorp/agent-skills";
       flake = false;
