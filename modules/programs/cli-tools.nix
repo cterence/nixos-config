@@ -91,6 +91,7 @@
             ffmpeg
             golangci-lint
             google-cloud-sdk
+            go-tools
             glab
             gws
             htop

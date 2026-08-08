@@ -34,6 +34,20 @@ applied_migrations = [
 name = "grafana"
 transport = "streamable-http"
 url = "https://gmcp.terence.cloud/mcp"
+disabled = false
+type = "static"
+api_key_env = "GRAFANA_MCP_AUTH"
+api_key_header = "Authorization"
+api_key_format = "Basic {token}"
+
+[[mcp_servers]]
+name = "context7"
+transport = "streamable-http"
+url = "https://mcp.context7.com/mcp"
+type = "static"
+api_key_env = "CONTEXT7_API_KEY"
+api_key_header = "Authorization"
+api_key_format = "Bearer {token}"
 enable_connectors = true
 connectors = []
 enabled_tools = []
@@ -51,12 +65,6 @@ applied_migrations = [
     "bash_read_only_defaults_v1",
 ]
 disabled = false
-
-[mcp_servers.auth]
-type = "static"
-api_key_env = "GRAFANA_MCP_AUTH"
-api_key_header = "Authorization"
-api_key_format = "Basic {token}"
 
 [experiment_overrides]
 
@@ -396,4 +404,10 @@ permission = "always"
 permission = "always"
 
 [tools.grafana_query_loki_stats]
+permission = "always"
+
+[tools.context7_resolve-library-id]
+permission = "always"
+
+[tools.context7_query-docs]
 permission = "always"
