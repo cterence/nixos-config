@@ -89,6 +89,7 @@
             fastfetch
             fd
             ffmpeg
+            golangci-lint
             google-cloud-sdk
             glab
             gws

@@ -210,6 +210,7 @@ permission = "ask"
 allowlist = [
     "/Users/terence/.vibe/*",
     "/Users/terence/code/*",
+    "/private/tmp/*",
     "awk",
     "base64",
     "basename",
@@ -251,6 +252,7 @@ allowlist = [
     "less",
     "ls",
     "md5sum",
+    "mkdir",
     "more",
     "nl",
     "od",
@@ -265,6 +267,7 @@ allowlist = [
     "sum",
     "tac",
     "tail",
+    "tar",
     "timeout",
     "tr",
     "tree",
@@ -273,6 +276,7 @@ allowlist = [
     "wc",
     "which",
     "whoami",
+    "xargs",
 ]
 denylist = [
     "gdb",

@@ -174,6 +174,7 @@
 
               zsh.initContent = ''
                 export MISTRAL_API_KEY="$(cat ${config.sops.secrets.mistral-api-key.path})"
+                export CONTEXT7_API_KEY="$(cat ${config.sops.secrets.context7-api-key.path})"
                 export NVIDIA_NIM_API_KEY="$(cat ${config.sops.secrets.nvidia-nim-api-key.path})"
                 export GRAFANA_MCP_AUTH="$(cat ${config.sops.secrets.grafana-mcp-auth.path})"
               '';
@@ -188,6 +189,10 @@
                 };
                 mistral-api-key = {
                   key = "mistral-api-key";
+                  sopsFile = "${inputs.secrets}/env.yaml";
+                };
+                context7-api-key = {
+                  key = "context7-api-key";
                   sopsFile = "${inputs.secrets}/env.yaml";
                 };
                 nvidia-nim-api-key = {
