@@ -92,6 +92,7 @@
             golangci-lint
             google-cloud-sdk
             go-tools
+            gopls
             glab
             gws
             htop
