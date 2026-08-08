@@ -33,6 +33,14 @@ in
               };
               network.kuberouter.metricsPort = 8081;
               storage.etcd.peerAddress = "192.168.1.54";
+              workerProfiles = [
+                {
+                  name = "default";
+                  values = {
+                    maxPods = 250;
+                  };
+                }
+              ];
             };
           };
 
