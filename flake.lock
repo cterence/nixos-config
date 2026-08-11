@@ -53,11 +53,11 @@
     "caveman-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1786187098,
-        "narHash": "sha256-54NN2TsYVVjWXJn6C+tPgCn1IdpecASJXeaMRpWXcFk=",
+        "lastModified": 1786384753,
+        "narHash": "sha256-jm5/xMkG/WpF8OGW2mkhXA9xVS1LBE2j9iwAiJzPXs0=",
         "owner": "JuliusBrussee",
         "repo": "caveman",
-        "rev": "11ddc0c9813c8f75365cd5be2f753df08712f154",
+        "rev": "309834233183478e6fd7800d26e1fbaa6210274e",
         "type": "github"
       },
       "original": {
@@ -375,11 +375,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786286733,
-        "narHash": "sha256-7dN93WKkEERgutPtTjK7SY3ZarO2LAU33A1+vKu+7cc=",
+        "lastModified": 1786356609,
+        "narHash": "sha256-ou8fYz5w9yhXC8YbvvExybFIa19MyW5G/8dEPqa90hM=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "367f7ef80856d18438953d54dda235d42a46ba31",
+        "rev": "c30c7955cec30d664a9baced6bc0112e263d4647",
         "type": "github"
       },
       "original": {
@@ -410,11 +410,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1786141444,
-        "narHash": "sha256-DR9RYy7b9y775cWEpfXGCU1gkJF4Kvk06m9YgO7uE5A=",
+        "lastModified": 1786373594,
+        "narHash": "sha256-wHGWEOwNpuuLswfMxyGs4YbTQhUoSmtVhvZpTWgwK1E=",
         "owner": "johbo",
         "repo": "k0s-nix",
-        "rev": "54675b2ee1d173ee2b726c220fc2c061c4313339",
+        "rev": "0393d887cdd48feeab994c67dd3066dcb379b402",
         "type": "github"
       },
       "original": {
@@ -450,11 +450,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1786323141,
-        "narHash": "sha256-IiNvo9rlL9ncnLOp70Mo1toobC2t9xHzsZIZayEv7dg=",
+        "lastModified": 1786409560,
+        "narHash": "sha256-AVQf47gVcJZHI8mPHyIcWZcpB3jI/4UzdVimmL79Ris=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "76f2e1f07e0435873d08e7f8a07dbe18f237ec5c",
+        "rev": "1f2ee1ae801d5ba4195b81ff2ff2c2429f3a9baf",
         "type": "github"
       },
       "original": {
@@ -772,11 +772,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1785975029,
-        "narHash": "sha256-X44cn5rzytELc3NNoQsh0aLkjWA/QzPfc6HPQmsG3sU=",
+        "lastModified": 1786098110,
+        "narHash": "sha256-shi1tjDhCGGd0kIgVPNY03V8NBWSTzhMSFDb7IqSoec=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "70ce234312134a463ba7728e94da2486a1d237ac",
+        "rev": "afb4584a80bbf779ce0f691509ff902d188c2b3d",
         "type": "github"
       },
       "original": {
@@ -875,11 +875,11 @@
     "paperasse-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1783765158,
-        "narHash": "sha256-9nvvXSCrkz1YxApFsw9jYPiPL6J0qP97t5mYiOaqYQA=",
+        "lastModified": 1786395508,
+        "narHash": "sha256-cKqTRY1UxYotqJZaCeBKri8OYOH9SuLf9i9dN6p9crY=",
         "owner": "romainsimon",
         "repo": "paperasse",
-        "rev": "c2a2ce3cba53d865ae26003eaaaff4a5ae7eec6c",
+        "rev": "f2e15c43112ddda9b80f53822185a21b6ad3b099",
         "type": "github"
       },
       "original": {
@@ -1019,11 +1019,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783174389,
-        "narHash": "sha256-aCWC8ngycU7OdJrU2+Je3qf+1a2ykuBvpPhZT/9tXMc=",
+        "lastModified": 1786375908,
+        "narHash": "sha256-G7qDAT98nywA4EFmJCwIRO5wKvDlBBN3BWpsOnjAto8=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "f1406619a3884cd5c47992a70b8b35c9c0fcb4c9",
+        "rev": "d1337e05ba0a8e88a75d2c0e1595d82f3b3e2ac4",
         "type": "github"
       },
       "original": {
@@ -1096,11 +1096,11 @@
     "terraform-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1785861436,
-        "narHash": "sha256-JI0xMAOZ9xXl4ZrPnI8L2D3f4RGfrARFm3n4PwFA1Zk=",
+        "lastModified": 1786376266,
+        "narHash": "sha256-h55m1tpG7KYs+5b+OemiNVMztpwrsFWrjjpBN5XuT1c=",
         "owner": "hashicorp",
         "repo": "agent-skills",
-        "rev": "146815e19decbb28252eebcf4125054e0a8783f1",
+        "rev": "4451ceca5456e79cc776efee96a744f7ac96e5bf",
         "type": "github"
       },
       "original": {
