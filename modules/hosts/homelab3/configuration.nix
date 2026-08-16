@@ -13,7 +13,7 @@ in
           system-server
           systemd-boot
           k0s
-          comin
+          vibe
           terence-server
         ];
 
