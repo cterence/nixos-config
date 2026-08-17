@@ -120,6 +120,62 @@
             argodiff () {
               argocd app diff $1 --grpc-web --local-repo-root $(git rev-parse --show-toplevel) --local $PWD --loglevel warn
             }
+
+            ai () {
+              if [[ $# -eq 0 ]]; then
+                echo "usage: ai <question>" >&2
+                return 1
+              fi
+              local question="$*"
+              local os arch shell pkg tools ctx
+              os=$(uname -s)
+              arch=$(uname -m)
+              shell=$SHELL
+              pkg=$(
+                if command -v nix &>/dev/null; then echo "nix"
+                elif command -v brew &>/dev/null; then echo "brew"
+                elif command -v apt &>/dev/null; then echo "apt"
+                elif command -v dnf &>/dev/null; then echo "dnf"
+                fi
+              )
+              tools=$(
+                local available=()
+                for t in kubectl docker git gh helm terraform jq curl fzf rg fd python3 node go cargo npm brew nix nixos-rebuild darwin-rebuild; do
+                  command -v $t &>/dev/null && available+=$t
+                done
+                echo ''${available:--none-}
+              )
+              ctx="OS: ''${os} (''${arch}) | Shell: ''${shell} | Pkg manager: ''${pkg:-unknown} | CWD: ''${PWD} | Available tools: ''${tools}"
+              local response
+              response=$(curl -s https://api.mistral.ai/v1/chat/completions \
+                -H "Authorization: Bearer ''${MISTRAL_API_KEY}" \
+                -H "Content-Type: application/json" \
+                -d "$(jq -n \
+                  --arg ctx "$ctx" \
+                  --arg q "$question" '{
+                  model: "zai-glm-5-2",
+                  reasoning_effort: "high",
+                  messages: [
+                    {role: "system", content: ("You translate natural-language requests into a single shell command. Output ONLY the command, no explanation, no markdown fences, no backticks. Use the system context to choose correct syntax and tools. If you cannot produce a command, respond with a line starting with # explaining why. " + $ctx)},
+                    {role: "user", content: $q}
+                  ]
+                }')")
+              local command
+              command=$(echo "$response" | tr '[:cntrl:]' ' ' | sed 's/\\\././g' | jq -r '
+                (.choices[0].message.content // "") |
+                if type == "array" then [.[] | select(.type == "text") | .text] | last // "" else . end
+              ' 2>/dev/null)
+              if [[ -z "$command" ]]; then
+                echo "ai: no response from API" >&2
+                echo "$response" | tr '[:cntrl:]' ' ' | sed 's/\\\././g' | jq -r '.error.message // .' >&2
+                return 1
+              fi
+              if [[ "$command" == \#* ]]; then
+                echo "$command" >&2
+                return 0
+              fi
+              print -z "$command"
+            }
           '';
         };
 
