@@ -60,11 +60,14 @@
           };
         };
 
-        programs.thunderbird = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
-          enable = true;
-          profiles.${config.home.username} = {
-            isDefault = true;
+        programs = {
+          thunderbird = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+            enable = true;
+            profiles.${config.home.username} = {
+              isDefault = true;
+            };
           };
+          discord.enable = true;
         };
 
         accounts.email = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
