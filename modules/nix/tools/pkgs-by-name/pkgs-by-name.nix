@@ -13,8 +13,20 @@
     inputs.pkgs-by-name-for-flake-parts.flakeModule
   ];
 
-  perSystem = {
+  # The packages exposed via `.#<name>` are built with the perSystem `pkgs`,
+  # which flake-parts defaults to the raw nixpkgs input (no `allowUnfree`).
+  # Several local packages (e.g. todoist-electron) have unfree licenses, so
+  # reimport nixpkgs with `allowUnfree = true` to match the system/home-manager
+  # configs and make `nix build .#<name>` work without env vars.
+  perSystem = { lib, inputs', ... }: {
     pkgsDirectory = inputs.packages;
+
+    _module.args.pkgs = lib.mkForce (
+      import inputs.nixpkgs {
+        system = inputs'.nixpkgs.legacyPackages.stdenv.hostPlatform.system;
+        config.allowUnfree = true;
+      }
+    );
   };
 
   flake = {

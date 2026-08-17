@@ -55,6 +55,7 @@
               inputs.nixpkgs-linker-failure-guard.legacyPackages.aarch64-darwin.qbittorrent
               ghostty-bin
               iterm2
+              pkgs.local.todoist-electron
             ];
           file = {
             ghostty = {

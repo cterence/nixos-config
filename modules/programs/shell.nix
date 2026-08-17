@@ -18,7 +18,7 @@
       ...
     }:
     let
-      isDarwin = pkgs.stdenv.isDarwin;
+      isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
     in
     {
       imports = [
@@ -154,7 +154,7 @@
                   --arg ctx "$ctx" \
                   --arg q "$question" '{
                   model: "zai-glm-5-2",
-                  reasoning_effort: "high",
+                  reasoning_effort: "low",
                   messages: [
                     {role: "system", content: ("You translate natural-language requests into a single shell command. Output ONLY the command, no explanation, no markdown fences, no backticks. Use the system context to choose correct syntax and tools. If you cannot produce a command, respond with a line starting with # explaining why. " + $ctx)},
                     {role: "user", content: $q}
