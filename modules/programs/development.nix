@@ -168,6 +168,9 @@
                       "**/.devenv" = true;
                       "/nix/store/**" = true;
                     };
+                    "vs-kubernetes" = {
+                      "vs-kubernetes.crd-code-completion" = "disabled";
+                    };
                   };
                 };
               };
