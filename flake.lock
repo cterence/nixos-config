@@ -692,6 +692,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-discord-darwin": {
+      "locked": {
+        "lastModified": 1780365719,
+        "narHash": "sha256-QfWfccTN+70ZQ4m2qlU9PiKfz2Yppq94058iJyARNwc=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "ffa10e26ae11d676b2db836259889f1f571cb14f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "ffa10e26ae11d676b2db836259889f1f571cb14f",
+        "type": "github"
+      }
+    },
     "nixpkgs-emulationstation": {
       "locked": {
         "lastModified": 1747902034,
@@ -985,6 +1001,7 @@
         "nixos-anywhere": "nixos-anywhere",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_7",
+        "nixpkgs-discord-darwin": "nixpkgs-discord-darwin",
         "nixpkgs-emulationstation": "nixpkgs-emulationstation",
         "nixpkgs-lima": "nixpkgs-lima",
         "nixpkgs-linker-failure-guard": "nixpkgs-linker-failure-guard",

@@ -5,6 +5,10 @@
 
   flake.aspects.desktop-apps = {
     darwin = {
+      nixpkgs.overlays = [
+        self.overlays.discord-pinned
+      ];
+
       environment.systemPackages = [
         inputs.nixpkgs-linker-failure-guard.legacyPackages.aarch64-darwin.rectangle
         self.packages.aarch64-darwin.iterm2-ai-plugin
