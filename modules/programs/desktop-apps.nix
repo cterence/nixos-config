@@ -72,7 +72,7 @@
               isDefault = true;
             };
           };
-          discord.enable = true;
+          discord.enable = false;
         };
 
         accounts.email = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {

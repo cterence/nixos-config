@@ -111,7 +111,7 @@ provider = "mistral"
 thinking = "max"
 temperature = 1.0
 alias = "zai-glm-5-2"
-auto_compact_threshold = 500000
+auto_compact_threshold = 1000000
 
 [[transcribe_providers]]
 name = "mistral"
@@ -231,6 +231,7 @@ allowlist = [
     "dirname",
     "du",
     "echo",
+    "fd",
     "file",
     "find",
     "fmt",
