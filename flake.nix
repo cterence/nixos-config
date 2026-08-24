@@ -45,7 +45,7 @@
     };
     import-tree.url = "github:vic/import-tree";
     k0s = {
-      url = "github:johbo/k0s-nix";
+      url = "github:nix-community/k0s-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     karpathy-skills = {
