@@ -37,6 +37,7 @@ in
             isNormalUser = true;
             description = "Térence Chateigné";
             extraGroups = [
+              "gamemode"
               "docker"
               "networkmanager"
               "wheel"

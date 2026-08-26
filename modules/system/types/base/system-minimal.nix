@@ -51,7 +51,8 @@
         self.modules.generic.system-minimal
       ];
 
-      boot.kernelPackages = pkgs.linuxPackages_6_18;
+      # boot.kernelPackages = pkgs.linuxPackages_6_18;
+      boot.kernelPackages = pkgs.linuxPackages_latest;
       console.useXkbConfig = true;
 
       i18n = {

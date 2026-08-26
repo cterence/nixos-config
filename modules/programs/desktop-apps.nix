@@ -43,7 +43,7 @@
               appimage-run
               calibre
               gpu-screen-recorder
-              libreoffice-fresh
+              libreoffice-stable
               supersonic
               qbittorrent
               qemu
