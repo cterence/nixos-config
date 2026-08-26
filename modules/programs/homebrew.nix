@@ -43,9 +43,8 @@
       casks = [
         "markedit"
         "nextcloud"
-        "scroll-reverser"
-        "stats"
         "steam"
+        "vorssaint"
       ];
       brews = [
       ];
