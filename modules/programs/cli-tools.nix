@@ -9,27 +9,30 @@
     generic =
       { pkgs, ... }:
       {
-        environment.systemPackages = with pkgs; [
-          curl
-          dig
-          file
-          gcc
-          git
-          gnumake
-          killall
-          lsof
-          nano
-          net-tools
-          openssl
-          ripgrep
-          tcpdump
-          tmux
-          tree
-          usbutils
-          vim
-          wget
-          whois
-        ];
+        environment.systemPackages =
+          with pkgs;
+          [
+            curl
+            dig
+            file
+            gcc
+            git
+            gnumake
+            killall
+            lsof
+            nano
+            net-tools
+            openssl
+            ripgrep
+            tcpdump
+            tmux
+            tree
+            usbutils
+            vim
+            wget
+            whois
+          ]
+          ++ lib.optional pkgs.stdenv.hostPlatform.isLinux ghostty.terminfo;
       };
 
     nixos =

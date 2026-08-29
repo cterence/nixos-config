@@ -22,6 +22,7 @@ in
           system-personal
           terence-desktop
           mac-app-util
+          ssh
         ];
 
         darwin = {
