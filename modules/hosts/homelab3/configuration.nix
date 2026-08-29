@@ -33,7 +33,7 @@ in
 
             services = {
               k0s = {
-                enable = false;
+                enable = true;
                 role = "worker";
                 spec = {
                   api = {
@@ -42,6 +42,14 @@ in
                       "192.168.1.54"
                     ];
                   };
+                  workerProfiles = [
+                    {
+                      name = "default";
+                      values = {
+                        maxPods = 250;
+                      };
+                    }
+                  ];
                 };
               };
               nfs.server = {
