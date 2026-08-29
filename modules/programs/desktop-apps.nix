@@ -1,17 +1,8 @@
 { inputs, self, ... }: {
-  flake-file.inputs = {
-    nixpkgs-linker-failure-guard.url = "github:nixos/nixpkgs/30945d3c58d70fbec6efe10d56362a35e7a64507";
-  };
-
   flake.aspects.desktop-apps = {
     darwin = {
       nixpkgs.overlays = [
         self.overlays.discord-pinned
-      ];
-
-      environment.systemPackages = [
-        inputs.nixpkgs-linker-failure-guard.legacyPackages.aarch64-darwin.rectangle
-        self.packages.aarch64-darwin.iterm2-ai-plugin
       ];
 
       services.skhd = {
