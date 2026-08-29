@@ -24,6 +24,7 @@ in
             enable = true;
             role = "controller+worker";
             controller.isLeader = true;
+            extraArgs = "--labels=storage-type=ssd";
             spec = {
               api = {
                 address = "192.168.1.54";
