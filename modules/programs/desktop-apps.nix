@@ -34,6 +34,7 @@
           packages =
             with pkgs;
             [
+              localsend
               obsidian
               picard
               signal-desktop
