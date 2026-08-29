@@ -1,6 +1,6 @@
 { inputs, self, ... }: {
   flake.aspects.desktop-apps = {
-    darwin = {
+    darwin = { config, lib, ... }: {
       nixpkgs.overlays = [
         self.overlays.discord-pinned
       ];
@@ -11,6 +11,15 @@
           ctrl + cmd - t : open -a Ghostty
         '';
       };
+
+      # Override the skhd launch agent to use a stable, re-signed binary
+      # so TCC keys on the stable code-signing cert instead of the volatile
+      # Nix store CDHash. Requires the "skhd-signer" cert in the login keychain.
+      launchd.user.agents.skhd.serviceConfig.ProgramArguments = lib.mkForce [
+        "${config.users.users.terence.home}/.local/bin/skhd"
+        "-c"
+        "/etc/skhdrc"
+      ];
     };
 
     homeManager =
@@ -51,6 +60,17 @@
               source = "${inputs.dotfiles}/config.ghostty";
             };
           };
+
+          activation.skhd-stable-sign = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin (
+            config.lib.dag.entryAfter [ "writeBoundary" ] ''
+              if [ -x "${pkgs.skhd}/bin/skhd" ]; then
+                install -d -m 0755 "$HOME/.local/bin"
+                cp -f "${pkgs.skhd}/bin/skhd" "$HOME/.local/bin/skhd"
+                chmod 0755 "$HOME/.local/bin/skhd"
+                codesign --force --sign "skhd-signer" "$HOME/.local/bin/skhd" 2>/dev/null || true
+              fi
+            ''
+          );
         };
 
         programs = {
