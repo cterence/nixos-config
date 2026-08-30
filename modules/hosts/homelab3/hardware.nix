@@ -100,8 +100,7 @@
 
     systemd.tmpfiles.rules = [
       "d /mnt/mx500-02/k8s-data 0777 root root -"
-      "d /mnt/exos-10tb-1/velero-backups 0755 root root -"
-      "d /mnt/exos-10tb-1/media 0755 root root -"
+      "d /mnt/storage-pool/local-path-provisioner 0777 root root -"
     ];
 
     environment.systemPackages = [ pkgs.mergerfs ];
