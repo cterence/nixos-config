@@ -259,6 +259,7 @@ allowlist = [
     "helm template",
     "join",
     "jq",
+    "kubectl describe",
     "kubectl get",
     "kubectl logs",
     "kubectl version",

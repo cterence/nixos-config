@@ -18,6 +18,8 @@
       # Needed for Longhorn
       environment = {
         systemPackages = with pkgs; [
+          mergerfs
+          mergerfs-tools
           nfs-utils
           smartmontools
         ];

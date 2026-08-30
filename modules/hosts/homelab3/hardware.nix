@@ -1,5 +1,5 @@
 {
-  flake.aspects.homelab3.nixos = {
+  flake.aspects.homelab3.nixos = { pkgs, ... }: {
     boot = {
       kernelParams = [ ];
       kernelModules = [
@@ -33,6 +33,7 @@
         options = [
           "users"
           "nofail"
+          "noatime"
         ];
       };
       "/export/mx500-homelab3" = {
@@ -47,9 +48,45 @@
         options = [
           "users"
           "nofail"
+          "noatime"
           "x-systemd.automount"
           "noauto"
         ];
+      };
+      "/mnt/exos-10tb-1" = {
+        device = "/dev/disk/by-uuid/80dc1dc1-f805-4cd7-bad4-344431ec79fd";
+        fsType = "ext4";
+        options = [
+          "users"
+          "nofail"
+          "noatime"
+        ];
+      };
+      "/mnt/storage-pool" = {
+        # mergerfs: append more branches colon-separated, e.g. "/mnt/exos-10tb-1:/mnt/<newdisk>"
+        device = "/mnt/exos-10tb-1";
+        fsType = "fuse.mergerfs";
+        options = [
+          "defaults"
+          "allow_other"
+          "dropcacheonclose=true"
+          "category.create=pfrd"
+          "minfreespace=100G"
+          "moveonenospc=mspmfs"
+          "ignorepponrename=true"
+          "never-forget-nodes=true"
+          "inodecalc=path-hash"
+          "lazy-umount-mountpoint=false"
+          "fsname=storage-pool"
+          "nofail"
+        ];
+        depends = [ "/mnt/exos-10tb-1" ];
+      };
+      "/export/storage-pool" = {
+        device = "/mnt/storage-pool";
+        fsType = "none";
+        options = [ "bind" ];
+        depends = [ "/mnt/storage-pool" ];
       };
       "/boot" = {
         device = "/dev/disk/by-uuid/23D5-7E17";
@@ -63,7 +100,11 @@
 
     systemd.tmpfiles.rules = [
       "d /mnt/mx500-02/k8s-data 0777 root root -"
+      "d /mnt/exos-10tb-1/velero-backups 0755 root root -"
+      "d /mnt/exos-10tb-1/media 0755 root root -"
     ];
+
+    environment.systemPackages = [ pkgs.mergerfs ];
 
     swapDevices = [
       { device = "/dev/disk/by-uuid/04352eda-e976-48d1-822b-450cc6638d7a"; }

@@ -35,6 +35,7 @@ in
               k0s = {
                 enable = true;
                 role = "worker";
+                extraArgs = "--labels=storage-type=ssd";
                 spec = {
                   api = {
                     address = "192.168.1.54";
@@ -56,9 +57,15 @@ in
                 enable = true;
                 exports = ''
                   /export                 192.168.1.54/32(rw,fsid=0,no_subtree_check,all_squash,anonuid=1000,anongid=100)
-                  /export/mx500-homelab3  192.168.1.54/32(rw,nohide,no_subtree_check,all_squash,anonuid=1000,anongid=100)
+                  /export/mx500-homelab3  192.168.1.54/32(rw,nohide,fsid=1,no_subtree_check,all_squash,anonuid=1000,anongid=100)
+                  /export/storage-pool    192.168.1.0/24(rw,nohide,fsid=2,no_subtree_check,no_root_squash,no_all_squash)
                 '';
               };
+            };
+
+            systemd.services.nfs-server = {
+              after = [ "mnt-storage-pool.mount" ];
+              wants = [ "mnt-storage-pool.mount" ];
             };
 
             system.stateVersion = "25.11";
