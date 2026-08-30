@@ -44,7 +44,11 @@
         80
         443
         2049
-        6443
+        179 # kube-router BGP (pod CIDR routing between nodes)
+        6443 # k0s kube-apiserver (worker → controller)
+        8132 # k0s Konnectivity reverse tunnel (worker → controller)
+        9443 # k0s controller API (controller ↔ controller)
+        10250 # kubelet API (controller → worker)
       ];
     };
 }
