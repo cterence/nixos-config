@@ -101,6 +101,7 @@
     systemd.tmpfiles.rules = [
       "d /mnt/mx500-02/k8s-data 0777 root root -"
       "d /mnt/storage-pool/local-path-provisioner 0777 root root -"
+      "d /mnt/storage-pool/arr-stack 0777 root root -"
     ];
 
     environment.systemPackages = [ pkgs.mergerfs ];
