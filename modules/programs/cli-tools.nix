@@ -88,7 +88,9 @@
             docker-buildx
             dust
             entr
+            exfatprogs
             eza
+            f3
             fastfetch
             fd
             ffmpeg

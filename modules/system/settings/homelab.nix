@@ -19,7 +19,7 @@
       environment = {
         systemPackages = with pkgs; [
           nfs-utils
-          # openiscsi
+          smartmontools
         ];
       };
       services = {
