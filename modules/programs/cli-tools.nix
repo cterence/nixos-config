@@ -5,11 +5,21 @@
   ...
 }:
 {
+  flake-file.inputs = {
+    tailcat = {
+      url = "github:tailscale/tailcat";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+
   flake.aspects.cli-tools = {
     generic =
       { pkgs, ... }:
       {
-        environment.systemPackages =
+        environment.systemPackages = [
+          inputs.tailcat.packages.${pkgs.stdenv.hostPlatform.system}.default
+        ]
+        ++ (
           with pkgs;
           [
             curl
@@ -32,7 +42,8 @@
             wget
             whois
           ]
-          ++ lib.optional pkgs.stdenv.hostPlatform.isLinux ghostty.terminfo;
+          ++ lib.optional pkgs.stdenv.hostPlatform.isLinux ghostty.terminfo
+        );
       };
 
     nixos =

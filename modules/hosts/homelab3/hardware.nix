@@ -77,7 +77,6 @@
           "never-forget-nodes=true"
           "inodecalc=path-hash"
           "lazy-umount-mountpoint=false"
-          "fsname=storage-pool"
           "nofail"
         ];
         depends = [ "/mnt/exos-10tb-1" ];

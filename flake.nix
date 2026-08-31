@@ -84,7 +84,6 @@
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     nixpkgs-discord-darwin.url = "github:nixos/nixpkgs/ffa10e26ae11d676b2db836259889f1f571cb14f";
     nixpkgs-emulationstation.url = "github:nixos/nixpkgs/845134719941b3a2087842eae23e521d67e35ad5";
-    nixpkgs-lima.url = "github:nixos/nixpkgs/9778ed56742b4080a2cbe033c0ba2ad1732a6ce3";
     packages = {
       url = "path:./packages";
       flake = false;
@@ -120,6 +119,10 @@
     superpowers = {
       url = "github:obra/superpowers";
       flake = false;
+    };
+    tailcat = {
+      url = "github:tailscale/tailcat";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     terraform-skills = {
       url = "github:hashicorp/agent-skills";
