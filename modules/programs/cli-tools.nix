@@ -46,6 +46,7 @@
           cryptsetup
           dmidecode
           efibootmgr
+          exfatprogs
           gptfdisk
           libva-utils
           lm_sensors
@@ -88,7 +89,6 @@
             docker-buildx
             dust
             entr
-            exfatprogs
             eza
             f3
             fastfetch
