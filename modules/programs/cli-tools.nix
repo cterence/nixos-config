@@ -41,6 +41,7 @@
             vim
             wget
             whois
+            yt-dlp
           ]
           ++ lib.optional pkgs.stdenv.hostPlatform.isLinux ghostty.terminfo
         );
