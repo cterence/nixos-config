@@ -346,7 +346,7 @@ denylist = []
 sensitive_patterns = []
 
 [tools.web_search]
-permission = "ask"
+permission = "always"
 allowlist = []
 denylist = []
 sensitive_patterns = []

@@ -9,12 +9,42 @@ defaults:
     shell: bash -euo pipefail {0}
 
 jobs:
+  eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      id-token: write
+      contents: read
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-eval
+      cancel-in-progress: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Generate Github app token
+        id: generate-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        with:
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
+        with:
+          flakehub: false
+          extra-conf: |
+            extra-substituters = https://niks3.terence.cloud
+            extra-trusted-public-keys = niks3.terence.cloud-1:YBjuY7HeSjKk5wmvw8N+vq/us2GxQPCHRn871lL7XL4=
+      - name: Evaluate all hosts
+        run: |
+          nix flake check --all-systems --access-tokens github.com=${{ steps.generate-token.outputs.token }}
+          # darwinConfigurations only gets a shallow check from flake check
+          nix eval --raw .#darwinConfigurations.macbook.system.drvPath >/dev/null
   build:
+    needs: eval
     env:
       PR_JOB_SUMMARY: pr-job-summary
-      NIX_GITHUB_PRIVATE_USERNAME:
-      NIX_GITHUB_PRIVATE_PASSWORD:
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
     permissions:
       id-token: write
       contents: read
@@ -59,7 +89,7 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
         with:
-          with-linux-vm: ${{ matrix.os == 'macos-latest' }}
+          flakehub: false
           extra-conf: |
             extra-substituters = https://niks3.terence.cloud
             extra-trusted-public-keys = niks3.terence.cloud-1:YBjuY7HeSjKk5wmvw8N+vq/us2GxQPCHRn871lL7XL4=
@@ -77,6 +107,7 @@ jobs:
           echo -e "## Build ${{ matrix.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Diff closures
         if: github.event_name == 'pull_request'
+        continue-on-error: true
         run: |
           if [ "${{ runner.os }}" = "Linux" ]; then
             sudo systemctl set-environment NIX_GITHUB_PRIVATE_USERNAME=${{ github.repository_owner }}
@@ -98,7 +129,7 @@ jobs:
           else
             echo "No changes found" | tee "$DIFF_OUTPUT"
           fi
-          echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
+          echo -e "## Closures difference\n\`\`\`\n$(<"$DIFF_OUTPUT")\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Push to cache
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
         with:
@@ -114,6 +145,7 @@ jobs:
       - name: Add job summary to PR
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         if: github.event_name == 'pull_request'
+        continue-on-error: true
         with:
           script: |
             const { readFile } = require('node:fs/promises')

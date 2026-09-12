@@ -109,9 +109,22 @@ tell the user to apply them so they can review and control the deployment:
 - Don't hardcode usernames; use `self.lib.username` (= `"terence"`).
 - Don't hardcode `User` in ssh config blocks — some hosts don't have a
   `terence` account (e.g. `ssh root@homelab3`).
-- Verify changes evaluate before claiming done:
-  `nix eval --raw .#darwinConfigurations.macbook` (or the relevant host).
-  Note: NixOS hosts can't be cross-built from macOS — verify on the host.
+- Verify changes evaluate before claiming done. `nix flake check
+  --all-systems` is the fastest gate: it evals all 7 hosts plus every
+  system's packages/checks (~1-3 min cold). For a single host:
+  `nix eval --raw .#darwinConfigurations.macbook.system.drvPath` (or the
+  relevant host). Note: NixOS hosts can't be cross-built from macOS —
+  build coverage is CI's job (`.github/workflows/build.yml` has an `eval`
+  job gating the per-host build jobs).
+- `nix flake check` gotchas (fixed, kept here so it stays working):
+  `packages/` output is platform-filtered in
+  `modules/nix/tools/pkgs-by-name/pkgs-by-name.nix` (pkgs-by-name-for-flake-parts
+  exposes every package on every system otherwise, tripping `meta.platforms`
+  asserts), and `flake.nix` must match what `write-flake` would generate
+  (the `check-flake-file` check fails on drift, e.g. the upstream
+  `vic/flake-file` → `denful/flake-file` rename). `darwinConfigurations`
+  only gets a shallow check — eval `.system.drvPath` explicitly for
+  macbook coverage.
 - `stateVersion`: darwin hosts `= 7`; NixOS hosts `= "25.11"`; HM `= "25.11"`.
 
 ## Secrets (sops-nix)
