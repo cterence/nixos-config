@@ -34,6 +34,7 @@
           packages =
             with pkgs;
             [
+              darktable
               localsend
               obsidian
               picard
@@ -53,6 +54,7 @@
             ]
             ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
               ghostty-bin
+              pkgs.local.art
               pkgs.local.todoist-electron
             ];
           file = {
