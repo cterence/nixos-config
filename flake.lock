@@ -394,11 +394,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789183968,
-        "narHash": "sha256-pEWnYdIF1pBMZwarp/rEPzl+Lknhm5hhjSfeLxH8nAA=",
+        "lastModified": 1789272111,
+        "narHash": "sha256-tZU3K1oMxrUPZd7bDhZ/qX1uIZVeZcPsWNoCNWapRPI=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "cd1c9e552f41894aeb5cc5cb353d5a1d61550357",
+        "rev": "8597ac635c67d742846485bc76307c679e8516c0",
         "type": "github"
       },
       "original": {
@@ -469,11 +469,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1789184768,
-        "narHash": "sha256-8eGx20eL8xKi8XttQuBPM06QnKeeXqOGGHb+NxvL/O8=",
+        "lastModified": 1789272139,
+        "narHash": "sha256-NpgrXskO/5JBEMsNbO6uGgkSBfNGxwGch5iOvo2k00Y=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "ac68358a6577815fe5bc4d3c70b472e13e3f508f",
+        "rev": "78dc1fc98ce7079bab3e348c3f1991ff7db05a03",
         "type": "github"
       },
       "original": {
@@ -852,11 +852,11 @@
     },
     "nixpkgs_7": {
       "locked": {
-        "lastModified": 1789006805,
-        "narHash": "sha256-q+GdZ3yq4Y2LXHRK0vKTM32Hwy7RCgUgy+hjwZLI5pY=",
-        "rev": "8ce4ef6cb6f871616146b9fe26d2a5ae594e94fe",
+        "lastModified": 1789149629,
+        "narHash": "sha256-eQUZVehWLDBbpBR2rq6DnuRee1ULT6Y675RhsYDSjYI=",
+        "rev": "eaad089433ca2bb662274377d33df3d0e51ef28b",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1070770.8ce4ef6cb6f8/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1072397.eaad089433ca/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -1119,11 +1119,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1788968666,
-        "narHash": "sha256-MnwOZgwaEgRts4UxU/NJTBqxJbkb+0WMF0OUyZVHrUo=",
+        "lastModified": 1789258074,
+        "narHash": "sha256-HJu37KhFJLapAuOG5AJeBqsxock/j5Nfdl1nsl/pIr4=",
         "owner": "tailscale",
         "repo": "tailcat",
-        "rev": "91dc4979bd4ae88af6ae2c8bb549616de4bcaa5a",
+        "rev": "fd101889796a947ac514e9d86ec731af2965fad3",
         "type": "github"
       },
       "original": {
