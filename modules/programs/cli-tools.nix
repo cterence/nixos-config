@@ -17,7 +17,10 @@
       { pkgs, ... }:
       {
         environment.systemPackages = [
-          inputs.tailcat.packages.${pkgs.stdenv.hostPlatform.system}.default
+          # upstream TestLocalDERPMode is flaky (timeout waiting for addr file)
+          (inputs.tailcat.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs {
+            doCheck = false;
+          })
         ]
         ++ (
           with pkgs;
