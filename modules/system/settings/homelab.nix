@@ -48,6 +48,7 @@
         2049
         179 # kube-router BGP (pod CIDR routing between nodes)
         6443 # k0s kube-apiserver (worker → controller)
+        7946 # k0s etcd member discovery (controller ↔ controller)
         8132 # k0s Konnectivity reverse tunnel (worker → controller)
         9100 # node exporter
         9443 # k0s controller API (controller ↔ controller)
