@@ -137,6 +137,7 @@
             p7zip
             postgresql
             pv-migrate
+            qrencode
             rclone
             skopeo
             socat

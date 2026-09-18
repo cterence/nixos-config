@@ -29,12 +29,20 @@ tool_paths = []
 applied_migrations = [
     "bash_read_only_defaults_v1",
 ]
+enable_connectors = true
+connectors = [
+    { name = "grafana_bdd0", disabled = false },
+    { name = "argocd_4988", disabled = false },
+]
 
 [[mcp_servers]]
 name = "grafana"
 transport = "streamable-http"
 url = "https://gmcp.terence.cloud/mcp"
-disabled = false
+disabled = true
+type = "static"
+
+[mcp_servers.auth]
 type = "static"
 api_key_env = "GRAFANA_MCP_AUTH"
 api_key_header = "Authorization"
@@ -45,26 +53,13 @@ name = "context7"
 transport = "streamable-http"
 url = "https://mcp.context7.com/mcp"
 type = "static"
+disabled = false
+
+[mcp_servers.auth]
+type = "static"
 api_key_env = "CONTEXT7_API_KEY"
 api_key_header = "Authorization"
 api_key_format = "Bearer {token}"
-enable_connectors = true
-connectors = []
-enabled_tools = []
-disabled_tools = []
-agent_paths = []
-enabled_agents = []
-disabled_agents = []
-installed_agents = []
-default_agent = "default"
-skill_paths = []
-experimental_enable_registry_skills = false
-enabled_skills = []
-disabled_skills = []
-applied_migrations = [
-    "bash_read_only_defaults_v1",
-]
-disabled = false
 
 [experiment_overrides]
 
@@ -108,7 +103,7 @@ auto_compact_threshold = 200000
 [[models]]
 name = "zai-glm-5-2"
 provider = "mistral"
-thinking = "max"
+thinking = "high"
 temperature = 1.0
 alias = "GLM 5.2"
 auto_compact_threshold = 1000000
@@ -116,9 +111,18 @@ auto_compact_threshold = 1000000
 [[models]]
 name = "zai-glm-5-3"
 provider = "mistral"
-thinking = "max"
+thinking = "high"
 temperature = 1.0
 alias = "GLM 5.3"
+auto_compact_threshold = 1000000
+supports_images = false
+
+[[models]]
+name = "kimi-k3"
+provider = "mistral"
+thinking = "high"
+temperature = 1.0
+alias = "Kimi K3"
 auto_compact_threshold = 1000000
 supports_images = false
 
@@ -428,4 +432,10 @@ permission = "always"
 permission = "always"
 
 [tools.context7_query-docs]
+permission = "always"
+
+[tools.grafana_user_info]
+permission = "always"
+
+[tools.grafana_check_datasources_health]
 permission = "always"
