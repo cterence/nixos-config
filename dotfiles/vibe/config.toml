@@ -22,17 +22,18 @@ include_prompt_detail = true
 enable_update_checks = true
 enable_notifications = true
 enable_system_trust_store = false
+default_agent = "smart-approve"
 api_timeout = 720.0
 api_retry_max_elapsed_time = 300.0
 auto_compact_threshold = 200000
 tool_paths = []
-applied_migrations = [
-    "bash_read_only_defaults_v1",
-]
+applied_migrations = ["bash_read_only_defaults_v1"]
 enable_connectors = true
 connectors = [
     { name = "grafana_bdd0", disabled = false },
     { name = "argocd_4988", disabled = false },
+    { name = "github_app", disabled = false },
+    { name = "telegram_messenger_fd42", disabled = false },
 ]
 
 [[mcp_servers]]
@@ -182,9 +183,7 @@ sensitive_patterns = []
 
 [tools.task]
 permission = "ask"
-allowlist = [
-    "explore",
-]
+allowlist = ["explore"]
 denylist = []
 sensitive_patterns = []
 
@@ -192,10 +191,7 @@ sensitive_patterns = []
 permission = "always"
 allowlist = []
 denylist = []
-sensitive_patterns = [
-    "**/.env",
-    "**/.env.*",
-]
+sensitive_patterns = ["**/.env", "**/.env.*"]
 max_output_bytes = 64000
 default_max_matches = 100
 default_timeout = 60
@@ -251,6 +247,7 @@ allowlist = [
     "fold",
     "gh --version",
     "gh issue view",
+    "gh pr list",
     "gh release list",
     "gh release view",
     "gh search code",
@@ -324,9 +321,7 @@ denylist = [
     "screen",
     "tmux",
 ]
-sensitive_patterns = [
-    "sudo",
-]
+sensitive_patterns = ["sudo"]
 max_output_bytes = 16000
 default_timeout = 300
 denylist_standalone = [
@@ -368,29 +363,20 @@ max_todos = 100
 permission = "always"
 allowlist = []
 denylist = []
-sensitive_patterns = [
-    "**/.env",
-    "**/.env.*",
-]
+sensitive_patterns = ["**/.env", "**/.env.*"]
 max_read_bytes = 51200
 
 [tools.edit]
 permission = "ask"
 allowlist = []
 denylist = []
-sensitive_patterns = [
-    "**/.env",
-    "**/.env.*",
-]
+sensitive_patterns = ["**/.env", "**/.env.*"]
 
 [tools.write_file]
 permission = "ask"
 allowlist = []
 denylist = []
-sensitive_patterns = [
-    "**/.env",
-    "**/.env.*",
-]
+sensitive_patterns = ["**/.env", "**/.env.*"]
 max_write_bytes = 64000
 create_parent_dirs = true
 
@@ -413,11 +399,7 @@ permission = "always"
 permission = "always"
 
 [tools.web_fetch]
-allowlist = [
-    "bugzilla.kernel.org",
-    "docs.stakater.com",
-    "lore.kernel.org",
-]
+allowlist = ["bugzilla.kernel.org", "docs.stakater.com", "lore.kernel.org"]
 
 [tools.grafana_list_prometheus_label_values]
 permission = "always"
@@ -438,4 +420,7 @@ permission = "always"
 permission = "always"
 
 [tools.grafana_check_datasources_health]
+permission = "always"
+
+[tools.connector_grafana_bdd0_query_loki_logs]
 permission = "always"

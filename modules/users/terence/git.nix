@@ -25,7 +25,7 @@ in
             decorate = false;
           };
           push = {
-            default = "upstream";
+            default = "simple";
             followTags = true;
             autoSetupRemote = true;
           };
