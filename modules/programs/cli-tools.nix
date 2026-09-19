@@ -263,7 +263,11 @@
         };
 
         home.file = {
-          k9s-plugins = {
+          k9s-plugins-darwin = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+            target = "${config.home.homeDirectory}/Library/Application Support/k9s/plugins.yaml";
+            source = "${inputs.dotfiles}/k9s-plugins.yaml";
+          };
+          k9s-plugins-linux = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
             target = "${config.home.homeDirectory}/.config/k9s/plugins.yaml";
             source = "${inputs.dotfiles}/k9s-plugins.yaml";
           };
