@@ -146,6 +146,7 @@
             tfautomv
             tig
             unzip
+            vault
             velero
             versitygw
             yq-go
