@@ -33,6 +33,7 @@
           trusted-users = [
             "root"
             "@wheel"
+            self.lib.username
           ];
           # Keep build deps around for offline/direnv/dev-shell reuse
           keep-outputs = true;
