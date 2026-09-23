@@ -134,6 +134,7 @@
             nixfmt
             nmap
             nurl
+            openbao
             p7zip
             postgresql
             pv-migrate
