@@ -94,7 +94,7 @@ jobs:
             extra-substituters = https://niks3.terence.cloud
             extra-trusted-public-keys = niks3.terence.cloud-1:YBjuY7HeSjKk5wmvw8N+vq/us2GxQPCHRn871lL7XL4=
       - name: Setup binary cache
-        uses: Mic92/hestia@f1f4df2801140a36398ed423533c8460618539df # v3
+        uses: Mic92/hestia@dfed9ced335d28978ba74e513939a10db1f71025 # v3
       - name: Build
         run: |
           if [ "${{ runner.os }}" = "Linux" ]; then
