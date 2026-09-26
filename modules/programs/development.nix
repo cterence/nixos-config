@@ -65,6 +65,9 @@
                     };
                     "workbench.sideBar.location" = "right";
                     "go.formatTool" = "gofmt";
+                    "go.alternateTools" = {
+                      "gopls" = "/etc/profiles/per-user/terence/bin/gopls";
+                    };
                     "[json]" = {
                       "editor.defaultFormatter" = "vscode.json-language-features";
                     };
