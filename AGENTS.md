@@ -148,6 +148,7 @@ input next to the module that uses it:
 |----------------------------|-------------------------------------------|-----------------------------------------|
 | `nixpkgs-discord-darwin`   | macOS Discord corruption (nixpkgs#544338) | `modules/overlays/discord.nix`          |
 | `nixpkgs-emulationstation` | emulationstation-de build break           | `modules/overlays/emulationstation.nix` |
+| `nixpkgs-kernel`           | amdgpu RDNA2 sclk regression in 7.2.1+ (GPU stuck at low clock under load, stronghold) | `modules/hosts/stronghold/configuration.nix` |
 
 Find the last good revision: `nix shell nixpkgs#hydra-check -c hydra-check --channel unstable <pkg>`.
 

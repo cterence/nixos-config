@@ -11,6 +11,7 @@
           system-cli
           audio
           bluetooth
+          clowder
           homebrew
           networking
           kde
