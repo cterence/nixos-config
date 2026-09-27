@@ -10,7 +10,12 @@
         ];
 
         homeManager =
-          { config, pkgs, ... }:
+          {
+            config,
+            lib,
+            pkgs,
+            ...
+          }:
           let
             isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
             nixdFlakePath = if isDarwin then "\${env:HOME}/nix-darwin" else "\${env:HOME}/nixos";
@@ -21,6 +26,26 @@
                 "(builtins.getFlake \"${nixdFlakePath}\").nixosConfigurations.\${env:HOST}.options";
           in
           {
+            # The Android emulator's physical-keyboard setting lives in
+            # each AVD's generated config.ini (no global file), so it
+            # cannot be mounted as a managed dotfile without clobbering
+            # the generated content. Flip it in place instead, at every
+            # switch, for every AVD: hw.keyboard=yes lets the host
+            # keyboard type into the emulator.
+            home.activation.avdHardwareKeyboard = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+              for f in "$HOME"/.android/avd/*.avd/config.ini; do
+                [ -f "$f" ] || continue
+                if grep -q '^hw.keyboard=' "$f"; then
+                  if ! grep -q '^hw.keyboard=yes$' "$f"; then
+                    $DRY_RUN_CMD sed 's/^hw.keyboard=.*/hw.keyboard=yes/' "$f" > "$f.clow-tmp"
+                    $DRY_RUN_CMD mv "$f.clow-tmp" "$f"
+                  fi
+                else
+                  $DRY_RUN_CMD sh -c "printf 'hw.keyboard=yes\n' >> '$f'"
+                fi
+              done
+            '';
+
             programs = {
               go.enable = true;
               vscode = {
