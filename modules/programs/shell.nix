@@ -198,6 +198,12 @@
         direnv-instant = {
           enable = true;
           enableZshIntegration = true;
+          # No bash hook: the only interactive bash this machine runs is
+          # the shell inside `nix develop`, where the hook's async
+          # `direnv export` stomps the devshell's environment back to
+          # the .envrc's default shell (e.g. PATH losing devShells.*.
+          # specific binaries like the android emulator SDK).
+          enableBashIntegration = false;
         };
 
         bash = {
