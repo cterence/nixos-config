@@ -22,7 +22,10 @@
             let
               dirs = builtins.readDir s.source;
               isDir = name: dirs.${name} == "directory" || dirs.${name} == "symlink";
-              skillNames = builtins.filter isDir (builtins.attrNames dirs);
+              excluded = s.exclude or [ ];
+              skillNames = builtins.filter (name: isDir name && !builtins.elem name excluded) (
+                builtins.attrNames dirs
+              );
             in
             builtins.listToAttrs (
               map (name: {

@@ -8,6 +8,10 @@
       url = "github:JuliusBrussee/caveman";
       flake = false;
     };
+    cc-skills-golang = {
+      url = "github:samber/cc-skills-golang";
+      flake = false;
+    };
     comin = {
       url = "github:nlewo/comin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -31,10 +35,6 @@
     flake-aspects.url = "github:denful/flake-aspects";
     flake-file.url = "github:denful/flake-file";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    go-skills = {
-      url = "github:spf13/go-skills";
-      flake = false;
-    };
     gws-skills = {
       url = "github:googleworkspace/cli";
       flake = false;
@@ -119,10 +119,6 @@
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    superpowers = {
-      url = "github:obra/superpowers";
-      flake = false;
     };
     tailcat = {
       url = "github:tailscale/tailcat";

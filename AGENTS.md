@@ -163,6 +163,22 @@ Auto-discovered by `pkgs-by-name-for-flake-parts` from `packages/`:
 
 Exposed as `.#<name>` and via `pkgs.local.<name>` overlay.
 
+## Adding a skill collection
+
+To wire a skills repo (e.g. `github:samber/cc-skills-golang`) into
+opencode/vibe, edit `modules/programs/skills.nix`:
+
+1. Declare the input in `flake-file.inputs` with `flake = false`.
+2. Add an entry to `flake.lib.skills`: `source` = `${inputs.<name>}/<subdir>`,
+   `agents` = `[ "opencode" ]` / `[ "vibe" ]` (or both), `flatten = true`
+   to expand the collection one sub-skill per entry (vibe only; opencode
+   mounts the whole dir as `<dir or name>`).
+3. Regenerate: `nix run .#write-flake`, then `nix flake lock`
+   (adds only the new input).
+4. Verify eval: `nix eval --raw .#darwinConfigurations.macbook.system.drvPath`
+   (exercises the `readDir` behind `flatten`), then
+   `nix flake check --all-systems`.
+
 ## Dotfiles
 
 Raw non-nix files in `dotfiles/` (flake=false, `path:./dotfiles`), sourced

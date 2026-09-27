@@ -8,10 +8,6 @@
       flake = false;
       url = "github:JuliusBrussee/caveman";
     };
-    go-skills = {
-      flake = false;
-      url = "github:spf13/go-skills";
-    };
     terraform-skills = {
       flake = false;
       url = "github:hashicorp/agent-skills";
@@ -28,13 +24,13 @@
       flake = false;
       url = "github:romainsimon/paperasse";
     };
-    superpowers = {
-      flake = false;
-      url = "github:obra/superpowers";
-    };
     ponytail-skills = {
       flake = false;
       url = "github:DietrichGebert/ponytail";
+    };
+    cc-skills-golang = {
+      flake = false;
+      url = "github:samber/cc-skills-golang";
     };
   };
 
@@ -45,21 +41,12 @@
   #   source  - store path of the skill collection
   #   agents  - agents that should install this skill ("opencode" / "vibe")
   #   flatten - vibe expands the collection into one entry per sub-skill
+  #   exclude - vibe-only: sub-skill names to skip when flattening
   flake.lib.skills = [
     {
       name = "caveman";
       dir = "caveman-skills";
       source = "${inputs.caveman-skills}/skills";
-      agents = [
-        "opencode"
-        "vibe"
-      ];
-      flatten = true;
-    }
-    {
-      name = "go";
-      dir = "go-skills";
-      source = "${inputs.go-skills}";
       agents = [
         "opencode"
         "vibe"
@@ -118,15 +105,18 @@
       agents = [ "opencode" ];
     }
     {
-      name = "superpowers";
-      source = "${inputs.superpowers}/skills";
+      name = "ponytail";
+      source = "${inputs.ponytail-skills}/skills";
       agents = [ "vibe" ];
       flatten = true;
     }
     {
-      name = "ponytail";
-      source = "${inputs.ponytail-skills}/skills";
-      agents = [ "vibe" ];
+      name = "cc-golang";
+      source = "${inputs.cc-skills-golang}/skills";
+      agents = [
+        "opencode"
+        "vibe"
+      ];
       flatten = true;
     }
   ];
