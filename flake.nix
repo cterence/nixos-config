@@ -28,8 +28,8 @@
       url = "gitlab:es-de/emulationstation-de/v3.4.1";
       flake = false;
     };
-    flake-aspects.url = "github:vic/flake-aspects";
-    flake-file.url = "github:vic/flake-file";
+    flake-aspects.url = "github:denful/flake-aspects";
+    flake-file.url = "github:denful/flake-file";
     flake-parts.url = "github:hercules-ci/flake-parts";
     go-skills = {
       url = "github:spf13/go-skills";
@@ -43,7 +43,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    import-tree.url = "github:vic/import-tree";
+    import-tree.url = "github:denful/import-tree";
     k0s = {
       url = "github:nix-community/k0s-nix";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -5,10 +5,10 @@
 {
   flake-file = {
     inputs = {
-      flake-file.url = "github:vic/flake-file";
+      flake-file.url = "github:denful/flake-file";
       flake-parts.url = "github:hercules-ci/flake-parts";
-      import-tree.url = "github:vic/import-tree";
-      flake-aspects.url = "github:vic/flake-aspects";
+      import-tree.url = "github:denful/import-tree";
+      flake-aspects.url = "github:denful/flake-aspects";
     };
     outputs = ''
       inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules)
