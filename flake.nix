@@ -8,6 +8,10 @@
       url = "github:JuliusBrussee/caveman";
       flake = false;
     };
+    ponytail-skills = {
+      url = "github:DietrichGebert/ponytail";
+      flake = false;
+    };
     comin = {
       url = "github:nlewo/comin";
       inputs.nixpkgs.follows = "nixpkgs";

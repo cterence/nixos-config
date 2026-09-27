@@ -9,6 +9,10 @@
       url = "github:obra/superpowers";
       flake = false;
     };
+    ponytail-skills = {
+      url = "github:DietrichGebert/ponytail";
+      flake = false;
+    };
   };
 
   flake.aspects.vibe.homeManager =
@@ -63,7 +67,8 @@
         }
         // flattenSkills "${inputs.caveman-skills}/skills" "caveman"
         // flattenSkills "${inputs.go-skills}" "go"
-        // flattenSkills "${inputs.superpowers}/skills" "superpowers";
+        // flattenSkills "${inputs.superpowers}/skills" "superpowers"
+        // flattenSkills "${inputs.ponytail-skills}/skills" "ponytail";
       };
     };
 }
