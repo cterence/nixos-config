@@ -1,38 +1,46 @@
-{ inputs, ... }:
+{
+  inputs,
+  self,
+  ...
+}:
 {
   flake-file.inputs = {
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.flake-parts.follows = "flake-parts";
     };
-    superpowers = {
-      url = "github:obra/superpowers";
-      flake = false;
-    };
-    ponytail-skills = {
-      url = "github:DietrichGebert/ponytail";
-      flake = false;
-    };
   };
 
   flake.aspects.vibe.homeManager =
     let
-      flattenSkills =
-        source: prefix:
+      toHomeFile =
+        skills:
         let
-          entries = builtins.readDir source;
-          isDir = name: entries.${name} == "directory" || entries.${name} == "symlink";
-          skillNames = builtins.filter isDir (builtins.attrNames entries);
-        in
-        builtins.listToAttrs (
-          map (name: {
-            name = "${prefix}-${name}";
-            value = {
-              target = ".vibe/skills/${name}";
-              source = "${source}/${name}";
+          entries = builtins.filter (s: builtins.elem "vibe" s.agents) skills;
+          flatten =
+            s:
+            let
+              dirs = builtins.readDir s.source;
+              isDir = name: dirs.${name} == "directory" || dirs.${name} == "symlink";
+              skillNames = builtins.filter isDir (builtins.attrNames dirs);
+            in
+            builtins.listToAttrs (
+              map (name: {
+                name = "${s.name}-${name}";
+                value = {
+                  target = ".vibe/skills/${name}";
+                  source = "${s.source}/${name}";
+                };
+              }) skillNames
+            );
+          mount = s: {
+            "vibe-${s.name}" = {
+              target = ".vibe/skills/${s.name}";
+              inherit (s) source;
             };
-          }) skillNames
-        );
+          };
+        in
+        builtins.foldl' (acc: s: acc // (if s.flatten or false then flatten s else mount s)) { } entries;
     in
     { pkgs, lib, ... }:
     {
@@ -53,22 +61,16 @@
             mkdir -p "$(dirname "$LIVE")"
             cat "${inputs.dotfiles}/vibe/config.toml" > "$LIVE"
           fi
+
+          # Install the shared agent instructions (repo-owned, one-way copy).
+          cat "${inputs.dotfiles}/AGENTS.md" > "$HOME/.vibe/AGENTS.md"
         '';
 
         packages = [
           inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.mistral-vibe
         ];
 
-        file = {
-          vibe-karpathy-skills = {
-            target = ".vibe/skills/karpathy";
-            source = "${inputs.karpathy-skills}/skills/karpathy-guidelines";
-          };
-        }
-        // flattenSkills "${inputs.caveman-skills}/skills" "caveman"
-        // flattenSkills "${inputs.go-skills}" "go"
-        // flattenSkills "${inputs.superpowers}/skills" "superpowers"
-        // flattenSkills "${inputs.ponytail-skills}/skills" "ponytail";
+        file = toHomeFile self.lib.skills;
       };
     };
 }
