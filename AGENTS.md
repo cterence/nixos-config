@@ -12,9 +12,8 @@ Personal nix flake managing NixOS and nix-darwin hosts. Uses
   `flake-file.inputs` / `flake-file.outputs`, then aggregated by
   `flake-file`.
 - `import-tree ./modules` auto-discovers every `.nix` file under `modules/`.
-  Files are read from the **git tree**, not the working directory — so new
-  modules MUST be `git add`ed or they will be invisible to the flake and
-  produce "undefined variable" errors.
+  Files are read from the **git tree**, not the working directory — new
+  modules MUST be `git add`ed, otherwise they are invisible to the flake.
 - Each module registers aspects via `flake.aspects.<name>.<class>` (where
   class is `homeManager`, `darwin`, `nixos`, or `generic`).
 - Aspects are activated by listing them in a host's `includes` list:
@@ -102,30 +101,32 @@ tell the user to apply them so they can review and control the deployment:
 
 ## Conventions
 
-- Format with **nixfmt** (enforced by pre-commit: nixfmt + statix + deadnix +
-  gitleaks + trufflehog + flake-checker). Run `nix develop` to install hooks.
+- Format with **nixfmt** (pre-commit: nixfmt + statix + deadnix + gitleaks +
+  trufflehog + flake-checker). Run `nix develop` to install hooks.
 - Use `${pkgs.<package>}/bin/<binary>` for script/program references — never
   bare command names that rely on PATH resolution.
 - Don't hardcode usernames; use `self.lib.username` (= `"terence"`).
 - Don't hardcode `User` in ssh config blocks — some hosts don't have a
   `terence` account (e.g. `ssh root@homelab3`).
-- Verify changes evaluate before claiming done. `nix flake check
-  --all-systems` is the fastest gate: it evals all 7 hosts plus every
-  system's packages/checks (~1-3 min cold). For a single host:
-  `nix eval --raw .#darwinConfigurations.macbook.system.drvPath` (or the
-  relevant host). Note: NixOS hosts can't be cross-built from macOS —
-  build coverage is CI's job (`.github/workflows/build.yml` has an `eval`
-  job gating the per-host build jobs).
-- `nix flake check` gotchas (fixed, kept here so it stays working):
-  `packages/` output is platform-filtered in
-  `modules/nix/tools/pkgs-by-name/pkgs-by-name.nix` (pkgs-by-name-for-flake-parts
-  exposes every package on every system otherwise, tripping `meta.platforms`
-  asserts), and `flake.nix` must match what `write-flake` would generate
-  (the `check-flake-file` check fails on drift, e.g. the upstream
-  `vic/flake-file` → `denful/flake-file` rename). `darwinConfigurations`
-  only gets a shallow check — eval `.system.drvPath` explicitly for
-  macbook coverage.
 - `stateVersion`: darwin hosts `= 7`; NixOS hosts `= "25.11"`; HM `= "25.11"`.
+
+## Verification
+
+- Fastest gate: `nix flake check --all-systems` — evals all 7 hosts plus
+  every system's packages/checks (~1-3 min cold).
+- Single host: `nix eval --raw .#darwinConfigurations.<host>.system.drvPath`
+  (or the NixOS equivalent).
+- NixOS hosts can't be cross-built from macOS. Build coverage is CI's job
+  (`.github/workflows/build.yml`: `eval` job gates the per-host build jobs).
+- `flake.nix` must match what `nix run .#write-flake` would generate; the
+  `check-flake-file` check fails on drift.
+- `darwinConfigurations` only gets a shallow check in `nix flake check` —
+  eval `.system.drvPath` explicitly for macbook coverage.
+- The `packages` output is platform-filtered in
+  `modules/nix/tools/pkgs-by-name/pkgs-by-name.nix`. Its `mkForce` must keep
+  merging `flake-file.apps` back in: flake-file exposes its writers
+  (`write-flake`, `write-inputs`, `write-lock`) under `perSystem.packages`,
+  and replacing `packages` wholesale removes them.
 
 ## Secrets (sops-nix)
 
@@ -170,6 +171,4 @@ ghostty config, `.XCompose`, k9s plugins, skopeo policy, vibe config.
 
 ## Maintaining this file
 
-Keep this file up to date as the repo evolves. When you learn a new gotcha,
-convention, or workflow detail during a session, add it here so future agents
-benefit. This is a living document.
+Keep this file up to date as the repo evolves.

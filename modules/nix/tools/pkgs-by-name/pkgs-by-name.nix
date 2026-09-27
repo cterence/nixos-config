@@ -1,4 +1,12 @@
-{ inputs, withSystem, ... }:
+{
+  config,
+  inputs,
+  withSystem,
+  ...
+}:
+let
+  flakeFileApps = config.flake-file.apps;
+in
 {
   flake-file.inputs = {
     packages = {
@@ -42,8 +50,12 @@
         }
       );
 
+      # mkForce replaces the whole attrset, which would drop the packages
+      # other modules contribute (e.g. flake-file's write-flake), so merge
+      # flake-file's apps back in.
       packages = lib.mkForce (
-        lib.filterAttrs (_: lib.meta.availableOn pkgs.stdenv.hostPlatform) config.legacyPackages
+        (lib.filterAttrs (_: lib.meta.availableOn pkgs.stdenv.hostPlatform) config.legacyPackages)
+        // (lib.mapAttrs (_: f: f pkgs) flakeFileApps)
       );
     };
 
