@@ -28,9 +28,9 @@
       flake = false;
       url = "github:DietrichGebert/ponytail";
     };
-    cc-skills-golang = {
+    spf13-go-skills = {
       flake = false;
-      url = "github:samber/cc-skills-golang";
+      url = "github:spf13/go-skills";
     };
   };
 
@@ -52,6 +52,15 @@
         "vibe"
       ];
       flatten = true;
+    }
+    {
+      name = "go";
+      dir = "go-skills";
+      source = "${inputs.spf13-go-skills}/go";
+      agents = [
+        "opencode"
+        "vibe"
+      ];
     }
     {
       name = "terraform";
@@ -108,15 +117,6 @@
       name = "ponytail";
       source = "${inputs.ponytail-skills}/skills";
       agents = [ "vibe" ];
-      flatten = true;
-    }
-    {
-      name = "cc-golang";
-      source = "${inputs.cc-skills-golang}/skills";
-      agents = [
-        "opencode"
-        "vibe"
-      ];
       flatten = true;
     }
   ];

@@ -90,22 +90,6 @@
         "type": "github"
       }
     },
-    "cc-skills-golang": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1788745517,
-        "narHash": "sha256-owdNtWmTwxzzrmS0XwU/8GKbJmDKl0uqi9VpiBhemps=",
-        "owner": "samber",
-        "repo": "cc-skills-golang",
-        "rev": "19a0626ae8565d27a7b7bdf59d8d99d94d7e284c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "samber",
-        "repo": "cc-skills-golang",
-        "type": "github"
-      }
-    },
     "cl-nix-lite": {
       "inputs": {
         "flake-parts": "flake-parts_3",
@@ -135,11 +119,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790547581,
-        "narHash": "sha256-u2z+Y/gKSNztEs6wJpOjq/GYjCLaB5+3XWrggLGpVrU=",
+        "lastModified": 1790587038,
+        "narHash": "sha256-zPJQRyv51hrc4hsNIs8m02w+wLceXciJdySF2/HkDic=",
         "owner": "cterence",
         "repo": "clowder",
-        "rev": "c46a26328c5048081932e3d8ac25a5aaebbb6e39",
+        "rev": "8fed122403138fb2321f7a55d0f0d3292405e36e",
         "type": "github"
       },
       "original": {
@@ -1081,7 +1065,6 @@
     "root": {
       "inputs": {
         "caveman-skills": "caveman-skills",
-        "cc-skills-golang": "cc-skills-golang",
         "clowder": "clowder",
         "comin": "comin",
         "direnv-instant": "direnv-instant",
@@ -1117,6 +1100,7 @@
         "pre-commit-hooks": "pre-commit-hooks",
         "secrets": "secrets",
         "sops-nix": "sops-nix",
+        "spf13-go-skills": "spf13-go-skills",
         "tailcat": "tailcat",
         "terraform-skills": "terraform-skills"
       }
@@ -1150,6 +1134,22 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "spf13-go-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789691817,
+        "narHash": "sha256-fuPmSggycGmRPXdGjF1WHHwebNS4QGgBG7qqnNXslHI=",
+        "owner": "spf13",
+        "repo": "go-skills",
+        "rev": "9ac6eca43161163bb21621a520a57df50d5ad464",
+        "type": "github"
+      },
+      "original": {
+        "owner": "spf13",
+        "repo": "go-skills",
         "type": "github"
       }
     },

@@ -8,10 +8,6 @@
       url = "github:JuliusBrussee/caveman";
       flake = false;
     };
-    cc-skills-golang = {
-      url = "github:samber/cc-skills-golang";
-      flake = false;
-    };
     clowder = {
       url = "github:cterence/clowder";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -124,6 +120,10 @@
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    spf13-go-skills = {
+      url = "github:spf13/go-skills";
+      flake = false;
     };
     tailcat = {
       url = "github:tailscale/tailcat";
