@@ -37,10 +37,7 @@ in
             entry = "${pkgs.gitleaks}/bin/gitleaks protect -v --staged";
           };
           nil.enable = true;
-          nixfmt-rfc-style = {
-            package = pkgs.nixfmt;
-            enable = true;
-          };
+          nixfmt.enable = true;
           trufflehog = {
             name = "trufflehog";
             enable = true;
