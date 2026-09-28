@@ -57,6 +57,10 @@ in
 
       sops = {
         age.keyFile = "/Users/${username}/.config/sops/age/keys.txt";
+        secrets.nixos-access-tokens = {
+          mode = "0440";
+          group = "staff";
+        };
       };
     };
 
