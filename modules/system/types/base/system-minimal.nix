@@ -92,16 +92,19 @@
         };
         optimise.automatic = true;
 
-        # Weekly garbage collection on darwin (NixOS gets it via programs.nh)
         gc = {
           automatic = true;
           interval = {
-            Weekday = 0;
             Hour = 3;
-            Minute = 0;
+            Minute = 30;
           };
           options = "--delete-older-than 7d";
         };
+      };
+
+      launchd.daemons.nix-gc.serviceConfig = {
+        StandardOutPath = "/var/log/nix-gc.log";
+        StandardErrorPath = "/var/log/nix-gc.log";
       };
     };
 

@@ -256,10 +256,6 @@
 
           nh = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
             enable = true;
-            clean = {
-              enable = true;
-              extraArgs = "--keep-since 4d --keep 3";
-            };
           };
         };
 
