@@ -22,6 +22,12 @@
       ];
     };
 
+    nixos = { pkgs, ... }: {
+      environment.systemPackages = with pkgs; [
+        wl-clipboard
+      ];
+    };
+
     homeManager =
       {
         config,

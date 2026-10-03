@@ -76,7 +76,7 @@ system-personal (composable extra)
 | `macbook`           | `aarch64-darwin` | `mkDarwin` | system-macos, system-desktop, system-personal, terence-desktop, ssh | `stateVersion = 7`                              |
 | `homelab2`          | `x86_64-linux`   | `mkNixos`  | system-server, k0s (controller), comin, terence-server              | k0s leader at 192.168.1.54; openbao unseal keys |
 | `homelab3`          | `x86_64-linux`   | `mkNixos`  | system-server, k0s (worker, disabled), development, terence-server  | NFS server; k0s-token via sops                  |
-| `stronghold`        | `x86_64-linux`   | `mkNixos`  | system-desktop, system-personal, comin, terence-desktop             | AMD GPU (RX 6600), kopia-sync                   |
+| `stronghold`        | `x86_64-linux`   | `mkNixos`  | system-desktop, system-personal, comin, terence-desktop             | AMD GPU (RX 6600), kopia-sync; monitor must stay 120 Hz — 144 Hz locks amdgpu MCLK at 96 MHz (game stutter, DS3) |
 | `free-oracle-arm-1` | `aarch64-linux`  | `mkNixos`  | system-oracle, terence-server                                       | disko; WireGuard; Oracle Cloud                  |
 | `free-oracle-amd-1` | `x86_64-linux`   | `mkNixos`  | system-oracle, terence-server                                       | disko; zramSwap; docker-compose-gatus           |
 | `free-oracle-amd-2` | `x86_64-linux`   | `mkNixos`  | system-oracle, terence-server                                       | disko; zramSwap                                 |
