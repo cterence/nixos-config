@@ -827,22 +827,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-kernel": {
-      "locked": {
-        "lastModified": 1787736819,
-        "narHash": "sha256-cV5xEJJK3BvhU8rEd4mC9UsmDi5qscv/kzGPhBRC5WA=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "9fbb54b33e91ee4ca368e35a78e0613c720600b3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "9fbb54b33e91ee4ca368e35a78e0613c720600b3",
-        "type": "github"
-      }
-    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1790477367,
@@ -1107,7 +1091,6 @@
         "nixpkgs": "nixpkgs_7",
         "nixpkgs-discord-darwin": "nixpkgs-discord-darwin",
         "nixpkgs-emulationstation": "nixpkgs-emulationstation",
-        "nixpkgs-kernel": "nixpkgs-kernel",
         "packages": "packages",
         "paperasse-skills": "paperasse-skills",
         "patches": "patches",
