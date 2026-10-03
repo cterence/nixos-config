@@ -20,6 +20,10 @@
       flake = false;
       url = "github:forrestchang/andrej-karpathy-skills";
     };
+    mattpocock-skills = {
+      flake = false;
+      url = "github:mattpocock/skills";
+    };
     paperasse-skills = {
       flake = false;
       url = "github:romainsimon/paperasse";
@@ -118,6 +122,16 @@
       source = "${inputs.ponytail-skills}/skills";
       agents = [ "vibe" ];
       flatten = true;
+    }
+    {
+      name = "grill-me";
+      source = "${inputs.mattpocock-skills}/skills/productivity/grill-me";
+      agents = [ "vibe" ];
+    }
+    {
+      name = "grilling";
+      source = "${inputs.mattpocock-skills}/skills/productivity/grilling";
+      agents = [ "vibe" ];
     }
   ];
 }
