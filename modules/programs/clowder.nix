@@ -26,7 +26,7 @@
           inputs.clowder.homeManagerModules.default
         ];
 
-        services.clowder.enable = true;
+        services.clowder.instances.default.enable = true;
 
         home.packages = [
           inputs.clowder.packages.${pkgs.stdenv.hostPlatform.system}.default
