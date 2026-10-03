@@ -35,6 +35,7 @@
             lsof
             nano
             net-tools
+            nix-output-monitor
             openssl
             ripgrep
             tcpdump
