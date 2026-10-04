@@ -119,11 +119,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791121134,
-        "narHash": "sha256-7K0H8njn3STpFEQ+SoMEIB3J+J4/PaejwPyGxciZxD8=",
+        "lastModified": 1791124567,
+        "narHash": "sha256-/7p00Jnye2EuPjtTWKYaYBCjGSwt5L9IXRUEH4VNqIg=",
         "owner": "cterence",
         "repo": "clowder",
-        "rev": "aaa74d9479ba5c3c36a972b0996cd7fabd3ac575",
+        "rev": "fb2195beb4d8429096a12453692ba6b7cb1a82cf",
         "type": "github"
       },
       "original": {
