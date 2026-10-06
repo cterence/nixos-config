@@ -93,11 +93,11 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
         with:
           determinate: false # plain Nix, no FlakeHub cache/login (see eval job)
-          extra-conf: |
-            extra-substituters = https://niks3.terence.cloud
-            extra-trusted-public-keys = niks3.terence.cloud-1:YBjuY7HeSjKk5wmvw8N+vq/us2GxQPCHRn871lL7XL4=
-      - name: Setup binary cache
-        uses: Mic92/hestia@dfed9ced335d28978ba74e513939a10db1f71025 # v3
+      - name: Setup niks3 cache
+        uses: Mic92/niks3-action@67fab75197ed42248f3d113d26a722439d3aee39 # v1.3.0
+        with:
+          server-url: https://niks3.terence.cloud
+          max-concurrent-uploads: 8
       - name: Build
         run: |
           if [ "${{ runner.os }}" = "Linux" ]; then
@@ -133,19 +133,6 @@ jobs:
             echo "No changes found" | tee "$DIFF_OUTPUT"
           fi
           echo -e "## Closures difference\n\`\`\`\n$(<"$DIFF_OUTPUT")\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
-      - name: Push to cache
-        uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
-        with:
-          max_attempts: 5
-          timeout_minutes: 25
-          retry_wait_seconds: 5
-          command: |
-            nix build -o niks3 github:Mic92/niks3
-            niks3/bin/niks3 push \
-              --server-url https://niks3.terence.cloud \
-              --auth-token-script "$PWD/.github/scripts/niks3-token.sh" \
-              --max-concurrent-uploads 8 \
-              ./result ./niks3
       - name: Add job summary to PR
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         if: github.event_name == 'pull_request'
