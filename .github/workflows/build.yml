@@ -94,7 +94,7 @@ jobs:
         with:
           determinate: false # plain Nix, no FlakeHub cache/login (see eval job)
       - name: Setup niks3 cache
-        uses: Mic92/niks3-action@67fab75197ed42248f3d113d26a722439d3aee39 # v1.3.0
+        uses: Mic92/niks3-action@f0743610fddd7d96239c78d9e457440fc15019e2 # v1.4.0
         with:
           server-url: https://niks3.terence.cloud
           max-concurrent-uploads: 8
