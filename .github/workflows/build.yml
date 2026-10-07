@@ -97,7 +97,6 @@ jobs:
         uses: Mic92/niks3-action@f0743610fddd7d96239c78d9e457440fc15019e2 # v1.4.0
         with:
           server-url: https://niks3.terence.cloud
-          max-concurrent-uploads: 8
       - name: Build
         run: |
           if [ "${{ runner.os }}" = "Linux" ]; then
