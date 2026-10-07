@@ -9,6 +9,7 @@
       system-server = {
         includes = with aspects; [
           system-cli
+          catbox
           clowder
           networking
           tmux

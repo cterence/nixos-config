@@ -43,6 +43,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    homelab-gitops = {
+      url = "github:cterence/homelab-gitops";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     import-tree.url = "github:denful/import-tree";
     k0s = {
       url = "github:nix-community/k0s-nix";

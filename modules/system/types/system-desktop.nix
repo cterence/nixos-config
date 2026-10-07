@@ -11,6 +11,7 @@
           system-cli
           audio
           bluetooth
+          catbox
           clowder
           homebrew
           networking
