@@ -36,6 +36,10 @@
       flake = false;
       url = "github:spf13/go-skills";
     };
+    wshobson-skills = {
+      flake = false;
+      url = "github:wshobson/agents";
+    };
   };
 
   # Shared skill catalog consumed by the per-agent home.file builders in
@@ -122,6 +126,11 @@
       source = "${inputs.ponytail-skills}/skills";
       agents = [ "vibe" ];
       flatten = true;
+    }
+    {
+      name = "mobile-android-design";
+      source = "${inputs.wshobson-skills}/plugins/ui-design/skills/mobile-android-design";
+      agents = [ "vibe" ];
     }
     {
       name = "grill-me";

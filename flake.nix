@@ -140,5 +140,9 @@
       url = "github:hashicorp/agent-skills";
       flake = false;
     };
+    wshobson-skills = {
+      url = "github:wshobson/agents";
+      flake = false;
+    };
   };
 }

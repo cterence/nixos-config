@@ -1226,7 +1226,8 @@
         "sops-nix": "sops-nix",
         "spf13-go-skills": "spf13-go-skills",
         "tailcat": "tailcat",
-        "terraform-skills": "terraform-skills"
+        "terraform-skills": "terraform-skills",
+        "wshobson-skills": "wshobson-skills"
       }
     },
     "secrets": {
@@ -1539,6 +1540,22 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "wshobson-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791146571,
+        "narHash": "sha256-vKawxqxGv0QygVztpMai7h4SXtK2JmmLEqCZ8hFr+qE=",
+        "owner": "wshobson",
+        "repo": "agents",
+        "rev": "46891e7e60da0e52baf1050b7b6391b64e84c6d9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "wshobson",
+        "repo": "agents",
         "type": "github"
       }
     }
