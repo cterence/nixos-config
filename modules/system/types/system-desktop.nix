@@ -12,7 +12,6 @@
           audio
           bluetooth
           catbox
-          clowder
           homebrew
           networking
           kde

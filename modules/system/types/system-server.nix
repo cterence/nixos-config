@@ -10,7 +10,6 @@
         includes = with aspects; [
           system-cli
           catbox
-          clowder
           networking
           tmux
           settings-homelab
