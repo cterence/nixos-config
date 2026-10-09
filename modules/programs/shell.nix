@@ -77,6 +77,7 @@
 
           localVariables = {
             PATH = "$PATH:$HOME/.krew/bin";
+            VIBE_CLI = "rust";
           };
 
           history.size = 10000;
