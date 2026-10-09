@@ -8,10 +8,6 @@
       url = "github:JuliusBrussee/caveman";
       flake = false;
     };
-    clowder = {
-      url = "github:cterence/clowder";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     comin = {
       url = "github:nlewo/comin";
       inputs.nixpkgs.follows = "nixpkgs";

@@ -104,6 +104,14 @@ supports_images = true
 auto_compact_threshold = 200000
 
 [[models]]
+name = "mistral-large-4"
+provider = "mistral"
+thinking = "high"
+alias = "Mistral Large 4"
+auto_compact_threshold = 1000000
+supports_images = true
+
+[[models]]
 name = "zai-glm-5-2"
 provider = "mistral"
 thinking = "high"
