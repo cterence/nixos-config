@@ -1,79 +1,88 @@
-{ self, ... }:
+{ self, lib, ... }:
 {
   flake.aspects.system-macos.darwin =
+    { config, ... }:
     let
-      username = self.lib.username;
+      username = config.terence.username;
     in
     {
-      security.pam.services.sudo_local.touchIdAuth = true;
-      system = {
-        primaryUser = username;
-        defaults = {
-          dock = {
-            autohide = true;
-            autohide-time-modifier = 0.50;
-            autohide-delay = 0.0;
-            minimize-to-application = true;
-            show-recents = false;
-            orientation = "right";
-            static-only = false;
-            tilesize = 40;
-          };
-          finder = {
-            AppleShowAllFiles = true;
-            AppleShowAllExtensions = true;
-            ShowPathbar = true;
-            FXEnableExtensionChangeWarning = false;
-            FXPreferredViewStyle = "clmv";
-            ShowStatusBar = true;
-          };
-          trackpad = {
-            Clicking = true;
-          };
-          NSGlobalDomain = {
-            ApplePressAndHoldEnabled = false;
-            KeyRepeat = 2;
-            InitialKeyRepeat = 15;
-            NSAutomaticCapitalizationEnabled = false;
-            NSAutomaticSpellingCorrectionEnabled = false;
-            NSAutomaticQuoteSubstitutionEnabled = false;
-            NSAutomaticInlinePredictionEnabled = false;
-            NSAutomaticPeriodSubstitutionEnabled = false;
-            AppleInterfaceStyle = "Dark";
-          };
-          CustomUserPreferences = {
-            ".GlobalPreferences" = {
-              NSUserQuotesArray = [
-                "\""
-                "\""
-                "'"
-                "'"
-              ];
-              NSQuitAlwaysKeepsWindows = false;
+      # Overridable so consumer flakes can set their own username.
+      options.terence.username = lib.mkOption {
+        type = lib.types.str;
+        default = self.lib.username;
+      };
+
+      config = {
+        security.pam.services.sudo_local.touchIdAuth = true;
+        system = {
+          primaryUser = username;
+          defaults = {
+            dock = {
+              autohide = true;
+              autohide-time-modifier = 0.50;
+              autohide-delay = 0.0;
+              minimize-to-application = true;
+              show-recents = false;
+              orientation = "right";
+              static-only = false;
+              tilesize = 40;
             };
-            "com.apple.WindowManager" = {
-              RestorePersistentStateOnLaunch = false;
+            finder = {
+              AppleShowAllFiles = true;
+              AppleShowAllExtensions = true;
+              ShowPathbar = true;
+              FXEnableExtensionChangeWarning = false;
+              FXPreferredViewStyle = "clmv";
+              ShowStatusBar = true;
             };
-            # Settings of plist in /Users/${username}/Library/Preferences/
-            "com.apple.finder" = {
-              # Set home directory as startup window
-              NewWindowTargetPath = "file:///Users/${username}/";
-              NewWindowTarget = "PfHm";
-              # Set search scope to directory
-              FXDefaultSearchScope = "SCcf";
-              # Multi-file tab view
-              FinderSpawnTab = true;
+            trackpad = {
+              Clicking = true;
             };
-            "com.apple.desktopservices" = {
-              # Disable creating .DS_Store files in network an USB volumes
-              DSDontWriteNetworkStores = true;
-              DSDontWriteUSBStores = true;
+            NSGlobalDomain = {
+              ApplePressAndHoldEnabled = false;
+              KeyRepeat = 2;
+              InitialKeyRepeat = 15;
+              NSAutomaticCapitalizationEnabled = false;
+              NSAutomaticSpellingCorrectionEnabled = false;
+              NSAutomaticQuoteSubstitutionEnabled = false;
+              NSAutomaticInlinePredictionEnabled = false;
+              NSAutomaticPeriodSubstitutionEnabled = false;
+              AppleInterfaceStyle = "Dark";
             };
-            # Show battery percentage
-            "/Users/${username}/Library/Preferences/ByHost/com.apple.controlcenter".BatteryShowPercentage =
-              true;
-            # Privacy
-            "com.apple.AdLib".allowApplePersonalizedAdvertising = false;
+            CustomUserPreferences = {
+              ".GlobalPreferences" = {
+                NSUserQuotesArray = [
+                  "\""
+                  "\""
+                  "'"
+                  "'"
+                ];
+                NSQuitAlwaysKeepsWindows = false;
+              };
+              "com.apple.WindowManager" = {
+                RestorePersistentStateOnLaunch = false;
+              };
+              # Settings of plist in /Users/${username}/Library/Preferences/
+              "com.apple.finder" = {
+                # Set home directory as startup window
+                NewWindowTargetPath = "file:///Users/${username}/";
+                NewWindowTarget = "PfHm";
+                # Set search scope to directory
+                FXDefaultSearchScope = "SCcf";
+                # Multi-file tab view
+                FinderSpawnTab = true;
+              };
+              "com.apple.desktopservices" = {
+                # Disable creating .DS_Store files in network an USB volumes
+                DSDontWriteNetworkStores = true;
+                DSDontWriteUSBStores = true;
+              };
+              # Show battery percentage
+              "/Users/${username}/Library/Preferences/ByHost/com.apple.controlcenter".BatteryShowPercentage =
+                true;
+              # Privacy
+              "com.apple.AdLib".allowApplePersonalizedAdvertising = false;
+            };
           };
         };
       };
