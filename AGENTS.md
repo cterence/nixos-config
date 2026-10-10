@@ -150,6 +150,13 @@ input next to the module that uses it:
 | `nixpkgs-emulationstation` | emulationstation-de build break           | `modules/overlays/emulationstation.nix` |
 | `nixpkgs-kernel`           | amdgpu RDNA2 sclk regression in 7.2.1+ (GPU stuck at low clock under load, stronghold) | `modules/hosts/stronghold/configuration.nix` |
 
+Version pins (any historical version of a package, no new input per pin) can
+use the `multiverse` flake instead — input declared in
+`modules/nix/tools/multiverse/`, pin applied via
+`inputs.multiverse.lib.pinOverlay` next to the module that installs the
+package, e.g. picard 2.13.3 in `modules/programs/desktop-apps.nix`
+(nixpkgs#572435).
+
 Find the last good revision: `nix shell nixpkgs#hydra-check -c hydra-check --channel unstable <pkg>`.
 
 ## Custom packages

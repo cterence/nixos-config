@@ -64,6 +64,7 @@
       url = "github:mattpocock/skills";
       flake = false;
     };
+    multiverse.url = "github:fzakaria/nixpkgs-multiverse";
     niks3 = {
       url = "github:Mic92/niks3";
       inputs.nixpkgs.follows = "nixpkgs";

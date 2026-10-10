@@ -3,6 +3,10 @@
     darwin = { config, lib, ... }: {
       nixpkgs.overlays = [
         self.overlays.discord-pinned
+        # picard 3.0 fails to build on darwin (nixpkgs#572435); last good 2.13.3
+        (inputs.multiverse.lib.pinOverlay {
+          pins.picard = "2.13.3";
+        })
       ];
 
       services.skhd = {
