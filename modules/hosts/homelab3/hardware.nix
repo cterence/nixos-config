@@ -105,6 +105,11 @@
 
     environment.systemPackages = [ pkgs.mergerfs ];
 
+    services.prometheus.exporters.smartctl = {
+      enable = true;
+      openFirewall = true; # 9633
+    };
+
     swapDevices = [
       { device = "/dev/disk/by-uuid/04352eda-e976-48d1-822b-450cc6638d7a"; }
     ];
