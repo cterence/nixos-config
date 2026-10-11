@@ -37,7 +37,7 @@ jobs:
             extra-trusted-public-keys = niks3.terence.cloud-1:YBjuY7HeSjKk5wmvw8N+vq/us2GxQPCHRn871lL7XL4=
       - name: Evaluate all hosts
         run: |
-          nix flake check --all-systems --no-build --option access-tokens github.com=${{ steps.generate-token.outputs.token }} --option access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }}
+          nix flake check --all-systems --no-build --option access-tokens github.com=${{ steps.generate-token.outputs.token }} --extra-access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }}
           # darwinConfigurations only gets a shallow check from flake check
           nix eval --raw .#darwinConfigurations.macbook.system.drvPath >/dev/null
   build:
@@ -104,7 +104,7 @@ jobs:
             sudo systemctl set-environment NIX_GITHUB_PRIVATE_PASSWORD=${{ steps.generate-token.outputs.token }}
             sudo systemctl daemon-reload && sudo systemctl restart nix-daemon
           fi
-          OUT_PATH="$(nix build .#${{ matrix.attr }} --print-out-paths --option access-tokens github.com=${{ steps.generate-token.outputs.token }} --option access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }})"
+          OUT_PATH="$(nix build .#${{ matrix.attr }} --print-out-paths --option access-tokens github.com=${{ steps.generate-token.outputs.token }} --extra-access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }})"
           echo -e "\x1b[32;1mSuccessfully built .#${{ matrix.host }}\x1b[0m"
           echo -e "## Build ${{ matrix.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Diff closures
@@ -120,7 +120,7 @@ jobs:
           PREV_FLAKE="github:${GITHUB_REPOSITORY}"
           NEXT_FLAKE="."
           DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
-          nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" --option access-tokens github.com=${{ steps.generate-token.outputs.token }} --option access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }} --no-write-lock-file | tee "$DIFF_OUTPUT"
+          nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" --option access-tokens github.com=${{ steps.generate-token.outputs.token }} --extra-access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }} --no-write-lock-file | tee "$DIFF_OUTPUT"
 
           if [[ -s "$DIFF_OUTPUT" ]]; then
             if [ "${{ runner.os }}" = "macOS" ]; then
