@@ -38,7 +38,7 @@ jobs:
             automated
             automerge
             dependencies
-          nix-options: "--access-tokens github.com=${{ steps.generate-token.outputs.token }} --access-tokens gitlab.com=${{ secrets.GITLAB_TOKEN }}"
+          nix-options: "--access-tokens github.com=${{ steps.generate-token.outputs.token }} --access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }}"
           token: ${{ steps.generate-token.outputs.token }}
       - name: Create compare URLs
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
