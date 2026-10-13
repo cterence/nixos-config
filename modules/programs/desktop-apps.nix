@@ -56,6 +56,7 @@
               audacity
               appimage-run
               calibre
+              discord
               gpu-screen-recorder
               libreoffice-stable
               qemu
