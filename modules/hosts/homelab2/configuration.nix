@@ -13,7 +13,6 @@ in
           system-server
           systemd-boot
           k0s
-          comin
           terence-server
         ];
 

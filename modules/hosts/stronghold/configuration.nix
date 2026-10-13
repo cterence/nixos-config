@@ -17,7 +17,6 @@ in
           system-desktop
           system-personal
           systemd-boot
-          comin
           terence-desktop
         ];
 
