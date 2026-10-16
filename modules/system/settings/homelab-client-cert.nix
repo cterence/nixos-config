@@ -65,10 +65,10 @@
               echo "Certificate installed to $NSSDB_DIR"
             fi
 
-            # Install to Firefox profiles
-            FIREFOX_DIR="$HOME/.config/mozilla/firefox"
+            # Install to Firefox profiles (standard and XDG locations)
+            for FIREFOX_DIR in "$HOME/.mozilla/firefox" "$HOME/.config/mozilla/firefox"; do
+              [ -d "$FIREFOX_DIR" ] && [ -f "$CERT_FILE" ] || continue
 
-            if [ -d "$FIREFOX_DIR" ] && [ -f "$CERT_FILE" ]; then
               for profile in "$FIREFOX_DIR"/*.default*; do
                 if [ -d "$profile" ]; then
                   echo "Installing certificate to Firefox profile: $(basename "$profile")"
@@ -83,10 +83,11 @@
                   ${pkgs.nssTools}/bin/pk12util -i "$CERT_FILE" \
                     -d sql:"$profile" \
                     -w "$PKCS12_PASS" \
-                    -n "terence.cloud homelab certificate (client auth)" 2>/dev/null || true
+                    -n "terence.cloud homelab certificate (client auth)" \
+                    || echo "homelab-client-cert: pk12util import failed for $profile"
                 fi
               done
-            fi
+            done
           '';
         };
       };
