@@ -23,6 +23,7 @@ in
         nixos = {
           home-manager.users.terence.imports = with self.modules.homeManager; [
             kopia-sync
+            rea
           ];
 
           boot.kernel.sysctl = {

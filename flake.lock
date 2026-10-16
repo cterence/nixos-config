@@ -1116,6 +1116,23 @@
         "type": "github"
       }
     },
+    "rea-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791981105,
+        "narHash": "sha256-fPe+tqkSRR5K+zSVWb6kjI6/HbQSJ8DHjLJwSWu8NzI=",
+        "owner": "morluto",
+        "repo": "rea",
+        "rev": "3b79af28e80785afce9f5998d8f03289402a1847",
+        "type": "github"
+      },
+      "original": {
+        "owner": "morluto",
+        "ref": "rea-agents-6.5.0",
+        "repo": "rea",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "caveman-skills": "caveman-skills",
@@ -1153,6 +1170,7 @@
         "plasma-manager": "plasma-manager",
         "ponytail-skills": "ponytail-skills",
         "pre-commit-hooks": "pre-commit-hooks_2",
+        "rea-skills": "rea-skills",
         "secrets": "secrets",
         "sops-nix": "sops-nix",
         "spf13-cli-style-skills": "spf13-cli-style-skills",

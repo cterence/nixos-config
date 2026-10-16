@@ -117,6 +117,10 @@
       url = "github:cachix/git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    rea-skills = {
+      url = "github:morluto/rea/rea-agents-6.5.0";
+      flake = false;
+    };
     secrets = {
       url = "path:./secrets";
       flake = false;

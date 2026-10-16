@@ -44,6 +44,10 @@
       flake = false;
       url = "github:wshobson/agents";
     };
+    rea-skills = {
+      flake = false;
+      url = "github:morluto/rea/rea-agents-6.5.0";
+    };
   };
 
   # Shared skill catalog consumed by the per-agent home.file builders in
@@ -150,6 +154,17 @@
       name = "grilling";
       source = "${inputs.mattpocock-skills}/skills/productivity/grilling";
       agents = [ "vibe" ];
+    }
+    {
+      name = "rea";
+      source = "${inputs.rea-skills}/.agents/skills";
+      agents = [ "vibe" ];
+      flatten = true;
+      exclude = [
+        "rea-changelog-update"
+        "rea-ci-tests-audit"
+        "rea-tool-design"
+      ];
     }
   ];
 }
