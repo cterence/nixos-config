@@ -1155,6 +1155,7 @@
         "pre-commit-hooks": "pre-commit-hooks_2",
         "secrets": "secrets",
         "sops-nix": "sops-nix",
+        "spf13-cli-style-skills": "spf13-cli-style-skills",
         "spf13-go-skills": "spf13-go-skills",
         "tailcat": "tailcat",
         "terraform-skills": "terraform-skills",
@@ -1190,6 +1191,22 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "spf13-cli-style-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792002893,
+        "narHash": "sha256-6NtDFkFOppl1CxivPyy+57ign+6navAfMCw5F13EwUQ=",
+        "owner": "spf13",
+        "repo": "cli-style",
+        "rev": "0e365eaceb5f652b9ade24497146e93bcc099601",
+        "type": "github"
+      },
+      "original": {
+        "owner": "spf13",
+        "repo": "cli-style",
         "type": "github"
       }
     },

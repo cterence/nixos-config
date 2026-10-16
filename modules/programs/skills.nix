@@ -36,6 +36,10 @@
       flake = false;
       url = "github:spf13/go-skills";
     };
+    spf13-cli-style-skills = {
+      flake = false;
+      url = "github:spf13/cli-style";
+    };
     wshobson-skills = {
       flake = false;
       url = "github:wshobson/agents";
@@ -69,6 +73,11 @@
         "opencode"
         "vibe"
       ];
+    }
+    {
+      name = "cli-style";
+      source = "${inputs.spf13-cli-style-skills}/cli-style";
+      agents = [ "vibe" ];
     }
     {
       name = "terraform";

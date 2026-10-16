@@ -125,6 +125,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    spf13-cli-style-skills = {
+      url = "github:spf13/cli-style";
+      flake = false;
+    };
     spf13-go-skills = {
       url = "github:spf13/go-skills";
       flake = false;

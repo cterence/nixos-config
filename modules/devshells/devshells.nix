@@ -31,11 +31,7 @@ in
         hooks = {
           deadnix.enable = true;
           flake-checker.enable = true;
-          gitleaks = {
-            name = "gitleaks";
-            enable = true;
-            entry = "${pkgs.gitleaks}/bin/gitleaks protect -v --staged";
-          };
+          gitleaks.enable = true;
           nil.enable = true;
           nixfmt.enable = true;
           trufflehog = {
