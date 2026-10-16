@@ -1,3 +1,11 @@
+# Updating the cert (secrets/homelab-client-cert.json is sops binary format):
+#   cp <new>.p12 /tmp/x-cert.p12   # name must match .sops.yaml `path_regex: cert.p12`
+#   sops -e --input-type binary --output secrets/homelab-client-cert.json /tmp/x-cert.p12
+#   sops -d --output-type binary --output /tmp/check.p12 secrets/homelab-client-cert.json
+#   cmp /tmp/check.p12 <new>.p12 && rm /tmp/x-cert.p12 /tmp/check.p12
+# If the p12 password changed, also update secrets/homelab-client-cert-password.yaml.
+# Export with `openssl pkcs12 -export -legacy ...`: Android's installer hangs
+# ("extract in progress") on OpenSSL 3 defaults (SHA-256 MAC, PBES2/AES).
 { inputs, ... }:
 {
   flake.aspects.homelab-client-cert = {
