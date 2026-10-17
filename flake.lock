@@ -77,11 +77,11 @@
     "caveman-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1791914888,
-        "narHash": "sha256-2xZHdWkWJrPAJ8++qW0Xmb3eORZ41e+GsZjIphqTtlI=",
+        "lastModified": 1792217816,
+        "narHash": "sha256-E7Fc2JLMhlMU4ILFG8xBESM6dlpq1AyMVnLZDoz40Ro=",
         "owner": "JuliusBrussee",
         "repo": "caveman",
-        "rev": "d262ab3882952a59312ff3537cd86d894523c5ab",
+        "rev": "81958ad82f2e2da4417778f81f8a3c838d81b798",
         "type": "github"
       },
       "original": {
@@ -479,11 +479,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1792116791,
-        "narHash": "sha256-10I8ZhEG3ryvfW1tXfdvH4wBdv2+liD+zSsq+0eCVJI=",
+        "lastModified": 1792224188,
+        "narHash": "sha256-OTOaINrf7vc44oKx58HFHHFWyDN+0ruYir3CAJs04jI=",
         "owner": "cterence",
         "repo": "homelab-gitops",
-        "rev": "0c6a56fa80329c55a311723b066964e1679e5933",
+        "rev": "ce3d0056bad7099eeffb842fd769f6ad96188f08",
         "type": "github"
       },
       "original": {
@@ -554,11 +554,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1792122878,
-        "narHash": "sha256-CYqNqBS35ufrMhHsctPB6uh3RcJczPCCelosuf9j05M=",
+        "lastModified": 1792222045,
+        "narHash": "sha256-ArQPrH+4UinKlwYOq6YG4LNwOgg8IqlBwDaOhwiFWiQ=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "9a42f4ff5f09e7ebaef8b8940b0a2637121b63f3",
+        "rev": "ef3189d3d36be9dd77426f2acfc06c7a18b7cf17",
         "type": "github"
       },
       "original": {
@@ -610,11 +610,11 @@
     },
     "multiverse": {
       "locked": {
-        "lastModified": 1792070559,
-        "narHash": "sha256-4d8+EEeZRQK6km9y7QE4KWI4dSY7iGzabQSpZDvPdL0=",
+        "lastModified": 1792128668,
+        "narHash": "sha256-auzzfo/5dogrVxg70lpAJ/1qcTToGLdHV2fh0Vvhzok=",
         "owner": "fzakaria",
         "repo": "nixpkgs-multiverse",
-        "rev": "34e0ee10043ece20f6355e9c58d83d403c8ea0fc",
+        "rev": "cefb2cd3ef8ae6710fb90117c106a1fe2817830c",
         "type": "github"
       },
       "original": {
@@ -891,11 +891,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1791637130,
-        "narHash": "sha256-TuvwvSjJrpqyIYdjhQ7Wu+ADVfeOpO2Um21/V7TOubw=",
+        "lastModified": 1791966044,
+        "narHash": "sha256-t1hT8UW97rFCWCJO7/pClvu0AhLN5V3uir2M0ic4w/Q=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "ca1659429c950a11a565b5764e37a1b704e17ec8",
+        "rev": "319e4cebef10cbb636c6ea392137b52ad105336a",
         "type": "github"
       },
       "original": {
@@ -1060,11 +1060,11 @@
     "ponytail-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1792026135,
-        "narHash": "sha256-rHFO5SqvOM7r8b8TDXUP7Wvf/HnqH+h9HbIAZWhHQVw=",
+        "lastModified": 1792191853,
+        "narHash": "sha256-IJlhfkdXI6pMZZCZO7XBRg88LBiNfzc5Gnm4ofGybL8=",
         "owner": "DietrichGebert",
         "repo": "ponytail",
-        "rev": "84740e3d344b69b4a133201fa519eb37a62a2b2a",
+        "rev": "16352ac229eb08a9598dcae48fe9f2b342567d86",
         "type": "github"
       },
       "original": {
