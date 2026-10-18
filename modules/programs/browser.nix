@@ -6,6 +6,7 @@
   flake.aspects.browser = {
     homeManager =
       {
+        config,
         lib,
         pkgs,
         ...
@@ -14,6 +15,8 @@
         programs = {
           firefox = {
             enable = true;
+            # XDG profile dir; migrate ~/.mozilla/firefox on existing hosts.
+            configPath = "${config.xdg.configHome}/mozilla/firefox";
             # The wrapped Firefox renames the real binary to .firefox-old, so
             # macOS 27 cannot resolve it as frontmost (breaks window managers).
             package = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin pkgs.firefox-unwrapped;
