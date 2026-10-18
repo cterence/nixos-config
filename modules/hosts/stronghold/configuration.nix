@@ -22,6 +22,7 @@ in
 
         nixos = {
           home-manager.users.terence.imports = with self.modules.homeManager; [
+            homelab-client-cert
             kopia-sync
             rea
           ];

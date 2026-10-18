@@ -26,6 +26,9 @@ in
         ];
 
         darwin = {
+          home-manager.users."${self.lib.username}".imports = [
+            self.modules.homeManager.homelab-client-cert
+          ];
           networking.hostName = hostname;
           system.stateVersion = 7;
         };
