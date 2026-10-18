@@ -479,11 +479,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1792319534,
-        "narHash": "sha256-p106RvupBHxsYVYALvN3mhWbALUPaGLMNxmUiU+6fgc=",
+        "lastModified": 1792340446,
+        "narHash": "sha256-ZnW7FleCG1lLOXH29+WhZkXMyi/dTa2+CdKuxXXf9j0=",
         "owner": "cterence",
         "repo": "homelab-gitops",
-        "rev": "2e97e123ae49df741d1febb83f53cbb0632adf4d",
+        "rev": "1ea761ac76d8ce7b90243bd977aa24a601debac6",
         "type": "github"
       },
       "original": {
