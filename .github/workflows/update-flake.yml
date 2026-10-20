@@ -24,6 +24,14 @@ jobs:
           client-id: ${{ secrets.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
+      - name: Delete stale update branch
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        run: |
+          prs=$(gh pr list --repo "$GITHUB_REPOSITORY" --head update_flake_lock_action --state open --json number --jq 'length')
+          if [ "$prs" = "0" ]; then
+            git push origin --delete update_flake_lock_action || true
+          fi
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@da03c0f078bc4b2c37ee4f7e072d34bf8f188bb3 # v29
         id: update-flake-lock
