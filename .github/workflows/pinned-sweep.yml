@@ -1,0 +1,100 @@
+name: Pinned package sweep
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+  push:
+    branches:
+      - update_flake_lock_action
+    paths:
+      - flake.lock
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: pinned-sweep-${{ matrix.system }}
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            system: x86_64-linux
+          - os: macos-latest
+            system: aarch64-darwin
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Generate Github app token
+        id: generate-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        with:
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+        with:
+          determinate: false
+
+      - name: Setup niks3 cache
+        uses: Mic92/niks3-action@f0743610fddd7d96239c78d9e457440fc15019e2 # v1.4.0
+        with:
+          server-url: https://niks3.terence.cloud
+
+      - name: Build pinned packages from current nixos-unstable
+        id: build
+        run: |
+          results=""
+          for pkg in qbittorrent calibre; do
+            if nix build "github:NixOS/nixpkgs/nixos-unstable#${pkg}" \
+              --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
+              --no-link; then
+              results="${results}| ${pkg} | ✅ |\n"
+            else
+              results="${results}| ${pkg} | ❌ |\n"
+            fi
+          done
+          {
+            echo "results<<SWEEP_EOF"
+            printf '%s' "$results"
+            echo "SWEEP_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Check upstream fix status
+        id: upstream
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        run: |
+          gh_api() { gh api "repos/NixOS/nixpkgs/$1" --jq '.state' 2>/dev/null || echo unknown; }
+          echo "pyopenjtalk=$(gh_api pulls/576063)" >> "$GITHUB_OUTPUT"
+          echo "qbittorrent_darwin=$(gh_api issues/576182)" >> "$GITHUB_OUTPUT"
+
+      - name: Sweep report comment
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          github-token: ${{ steps.generate-token.outputs.token }}
+          script: |
+            const comment = require('./.github/scripts/sweep-comment')
+            await comment({
+              github,
+              context,
+              core,
+              system: '${{ matrix.system }}',
+              results: process.env.RESULTS,
+              pyopenjtalk: '${{ steps.upstream.outputs.pyopenjtalk }}',
+              qbittorrentDarwin: '${{ steps.upstream.outputs.qbittorrent_darwin }}',
+            })
+        env:
+          RESULTS: ${{ steps.build.outputs.results }}
