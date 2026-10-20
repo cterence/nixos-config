@@ -32,9 +32,13 @@
 
     nixos = { pkgs, ... }: {
       # pin: calibre 9.14.0 | tracker: https://github.com/NixOS/nixpkgs/pull/576063 | reason: 9.15+ fails via pyopenjtalk-plus + Cython 3.3.0
+      # pin: audacity 3.7.9 | tracker: https://github.com/NixOS/nixpkgs/issues/572942 | reason: 4.0.0 fails against qtdeclarative 6.12
       nixpkgs.overlays = [
         (inputs.multiverse.lib.pinOverlay {
-          pins.calibre = "9.14.0";
+          pins = {
+            calibre = "9.14.0";
+            audacity = "3.7.9";
+          };
         })
       ];
       environment.systemPackages = with pkgs; [
