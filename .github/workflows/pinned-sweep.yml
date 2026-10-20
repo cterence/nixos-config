@@ -15,12 +15,11 @@ permissions:
   pull-requests: write
   issues: write
 
-concurrency:
-  group: pinned-sweep-${{ matrix.system }}
-  cancel-in-progress: false
-
 jobs:
   sweep:
+    concurrency:
+      group: pinned-sweep-${{ matrix.system }}
+      cancel-in-progress: false
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
     strategy:
