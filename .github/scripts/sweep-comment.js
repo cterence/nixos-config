@@ -54,15 +54,39 @@ module.exports = async ({ github, context, core, system, results, pyopenjtalk, q
     per_page: 100,
   });
   const lockPr = prs.find((pr) => /^chore\(flake\.lock\): update/.test(pr.title));
-  if (!lockPr) {
-    core.info("no open flake.lock PR to report on");
-    return;
+
+  let issueNumber = lockPr ? lockPr.number : null;
+  if (!issueNumber) {
+    const { data: issues } = await github.rest.issues.list({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      state: "open",
+      labels: "pinned-sweep",
+      per_page: 1,
+    });
+    const tracking = issues.find((i) => i.pull_request === undefined);
+    if (tracking) {
+      issueNumber = tracking.number;
+    } else {
+      const { data: created } = await github.rest.issues.create({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        title: "Pinned package sweep tracker",
+        labels: ["pinned-sweep"],
+        body: [
+          "Tracking issue for the `Pinned package sweep` workflow.",
+          "Each run reports whether the multiverse-pinned packages (see `modules/programs/desktop-apps.nix`) build against current nixos-unstable.",
+          "When a row turns ✅, drop the matching pin there.",
+        ].join("\n"),
+      });
+      issueNumber = created.number;
+    }
   }
 
   const { data: comments } = await github.rest.issues.listComments({
     owner: context.repo.owner,
     repo: context.repo.repo,
-    issue_number: lockPr.number,
+    issue_number: issueNumber,
     per_page: 100,
   });
   const existing = comments.find((c) => c.body.startsWith(HEADER));
@@ -88,7 +112,7 @@ module.exports = async ({ github, context, core, system, results, pyopenjtalk, q
     await github.rest.issues.createComment({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      issue_number: lockPr.number,
+      issue_number: issueNumber,
       body,
     });
   }

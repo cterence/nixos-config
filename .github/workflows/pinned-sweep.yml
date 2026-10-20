@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - update_flake_lock_action
+      - main
     paths:
       - flake.lock
 
