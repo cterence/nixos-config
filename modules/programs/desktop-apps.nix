@@ -3,8 +3,8 @@
     darwin = { config, lib, ... }: {
       nixpkgs.overlays = [
         self.overlays.discord-pinned
-        # picard 3.0 fails to build on darwin (nixpkgs#572435); last good 2.13.3
-        # qbittorrent 5.2.4 fails on darwin against qtbase 6.12 (nixpkgs#576182); last good 5.2.2
+        # pin: picard 2.13.3 | tracker: https://github.com/NixOS/nixpkgs/issues/572435 | reason: 3.0 fails to build on darwin
+        # pin: qbittorrent 5.2.2 | tracker: https://github.com/NixOS/nixpkgs/issues/576182 | reason: 5.2.4 fails on darwin against qtbase 6.12
         (inputs.multiverse.lib.pinOverlay {
           pins = {
             picard = "2.13.3";
@@ -31,7 +31,7 @@
     };
 
     nixos = { pkgs, ... }: {
-      # calibre 9.15+ fails via pyopenjtalk-plus + Cython 3.3.0 (nixpkgs#576063); last good 9.14.0
+      # pin: calibre 9.14.0 | tracker: https://github.com/NixOS/nixpkgs/pull/576063 | reason: 9.15+ fails via pyopenjtalk-plus + Cython 3.3.0
       nixpkgs.overlays = [
         (inputs.multiverse.lib.pinOverlay {
           pins.calibre = "9.14.0";

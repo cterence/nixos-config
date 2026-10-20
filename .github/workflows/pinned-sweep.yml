@@ -9,6 +9,7 @@ on:
       - main
     paths:
       - flake.lock
+      - modules/**/*.nix
 
 permissions:
   contents: read
@@ -34,6 +35,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
+      - name: Collect multiverse pins from comments
+        id: pins
+        run: |
+          pins=""
+          trackers=""
+          while IFS= read -r line; do
+            pin=$(printf '%s' "$line" | sed -nE 's/.*# pin: ([A-Za-z0-9_.-]+) [^ |]+.*/\1/p')
+            [ -z "$pin" ] && continue
+            tracker=$(printf '%s' "$line" | sed -nE 's/.*\| tracker: (https:\/\/github\.com\/NixOS\/nixpkgs\/(pull|issues)\/[0-9]+).*/\1/p')
+            pins="${pins}${pin}\n"
+            if [ -n "$tracker" ]; then
+              trackers="${trackers}${pin} ${tracker}\n"
+            fi
+          done < <(grep -rE '# pin: .* \| tracker: ' --include='*.nix' modules)
+          if [ -z "$pins" ]; then
+            echo "No multiverse pins found" >&2
+          fi
+          {
+            echo "pins<<PINS_EOF"
+            printf '%s' "$pins"
+            echo "PINS_EOF"
+            echo "trackers<<TRACKERS_EOF"
+            printf '%s' "$trackers"
+            echo "TRACKERS_EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Generate Github app token
         id: generate-token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
@@ -56,29 +83,40 @@ jobs:
         id: build
         run: |
           results=""
-          for pkg in qbittorrent calibre; do
+          while IFS= read -r pkg; do
+            [ -z "$pkg" ] && continue
             if nix build "github:NixOS/nixpkgs/nixos-unstable#${pkg}" \
               --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
               --no-link; then
-              results="${results}| ${pkg} | ✅ |\n"
+              results="${results}| ${pkg} | ✅ |\\n"
             else
-              results="${results}| ${pkg} | ❌ |\n"
+              results="${results}| ${pkg} | ❌ |\\n"
             fi
-          done
+          done < <(printf '%s' "${{ steps.pins.outputs.pins }}")
           {
             echo "results<<SWEEP_EOF"
             printf '%s' "$results"
             echo "SWEEP_EOF"
           } >> "$GITHUB_OUTPUT"
 
-      - name: Check upstream fix status
-        id: upstream
+      - name: Check upstream tracker status
+        id: trackers
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
-          gh_api() { gh api "repos/NixOS/nixpkgs/$1" --jq '.state' 2>/dev/null || echo unknown; }
-          echo "pyopenjtalk=$(gh_api pulls/576063)" >> "$GITHUB_OUTPUT"
-          echo "qbittorrent_darwin=$(gh_api issues/576182)" >> "$GITHUB_OUTPUT"
+          states=""
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            pkg="${line%% *}"
+            url="${line#* }"
+            state=$(gh api "${url#https://github.com/}" --jq '.state' 2>/dev/null || echo unknown)
+            states="${states}${pkg} ${url} ${state}\n"
+          done < <(printf '%s' "${{ steps.pins.outputs.trackers }}")
+          {
+            echo "states<<STATES_EOF"
+            printf '%s' "$states"
+            echo "STATES_EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Sweep report comment
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
@@ -92,8 +130,8 @@ jobs:
               core,
               system: '${{ matrix.system }}',
               results: process.env.RESULTS,
-              pyopenjtalk: '${{ steps.upstream.outputs.pyopenjtalk }}',
-              qbittorrentDarwin: '${{ steps.upstream.outputs.qbittorrent_darwin }}',
+              trackers: process.env.STATES,
             })
         env:
           RESULTS: ${{ steps.build.outputs.results }}
+          STATES: ${{ steps.trackers.outputs.states }}

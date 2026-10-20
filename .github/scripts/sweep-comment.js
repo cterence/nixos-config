@@ -1,32 +1,28 @@
 const HEADER = "# Pinned package sweep";
 
-const upstreamHint = (pkg, state) => {
-  if (pkg === "calibre") {
-    return state === "closed"
-      ? "nixpkgs#576063 merged — pin can be dropped"
-      : "tracked in https://github.com/NixOS/nixpkgs/pull/576063";
+const sectionFor = (system, date, results, trackers) => {
+  const trackerByPkg = {};
+  for (const line of String(trackers).split("\n")) {
+    const m = line.trim().match(/^(\S+)\s+(\S+)\s+(\S+)$/);
+    if (m) trackerByPkg[m[1]] = { url: m[2], state: m[3] };
   }
-  if (pkg === "qbittorrent") {
-    return state === "closed"
-      ? "nixpkgs#576182 closed — pin can be dropped"
-      : "tracked in https://github.com/NixOS/nixpkgs/issues/576182";
-  }
-  return "";
-};
-
-const sectionFor = (system, date, results, pyopenjtalk, qbittorrentDarwin) => {
   const rows = String(results)
     .split("\n")
     .filter((line) => line.trim())
     .map((line) => {
-      const pkg = line.includes("qbittorrent")
-        ? "qbittorrent"
-        : line.includes("calibre")
-          ? "calibre"
-          : null;
-      const state = pkg === "calibre" ? pyopenjtalk : qbittorrentDarwin;
-      const hint = line.includes("❌") && pkg ? ` _(${upstreamHint(pkg, state)})_` : "";
-      return `${line}${hint}`;
+      const pkg = line.match(/\|\s*([A-Za-z0-9_.-]+)\s*\|/)?.[1];
+      const t = pkg && trackerByPkg[pkg];
+      if (t && line.includes("❌")) {
+        return stateIsClosed(t.state)
+          ? `${line} _(${shortLink(t.url)} merged — pin can be dropped)_`
+          : `${line} _(${shortLink(t.url)} still open)_`;
+      }
+      if (t) {
+        return stateIsClosed(t.state)
+          ? `${line} _(${shortLink(t.url)} merged)_`
+          : `${line} _(${shortLink(t.url)} open)_`;
+      }
+      return line;
     });
   return [
     `### ${system} — ${date}`,
@@ -37,15 +33,26 @@ const sectionFor = (system, date, results, pyopenjtalk, qbittorrentDarwin) => {
   ].join("\n");
 };
 
+const stateIsClosed = (state) => state === "closed" || state === "merged";
+
+const shortLink = (url) => {
+  const m = url.match(/github\.com\/NixOS\/nixpkgs\/(pull|issues)\/(\d+)/);
+  return m ? `nixpkgs#${m[2]}` : url;
+};
+
 const FOOTER = [
   "",
-  "Pins live in `modules/programs/desktop-apps.nix` (nixpkgs-multiverse `pinOverlay`).",
-  "When a row turns ✅, drop the matching pin there.",
+  "Pins are declared in nix source comments (`# pin: <pkg> <version> | tracker: <nixpkgs PR/issue> | reason: <text>`),",
+  "resolved via nixpkgs-multiverse `pinOverlay`. When a row turns ✅, drop the matching pin.",
 ].join("\n");
 
-module.exports = async ({ github, context, core, system, results, pyopenjtalk, qbittorrentDarwin }) => {
+module.exports = async ({ github, context, core, system, results, trackers }) => {
+  if (!String(results).trim()) {
+    core.info("no pins to report on");
+    return;
+  }
   const date = new Date().toISOString().slice(0, 10);
-  const section = sectionFor(system, date, results, pyopenjtalk, qbittorrentDarwin);
+  const section = sectionFor(system, date, results, trackers);
 
   const { data: prs } = await github.rest.pulls.list({
     owner: context.repo.owner,
@@ -75,8 +82,7 @@ module.exports = async ({ github, context, core, system, results, pyopenjtalk, q
         labels: ["pinned-sweep"],
         body: [
           "Tracking issue for the `Pinned package sweep` workflow.",
-          "Each run reports whether the multiverse-pinned packages (see `modules/programs/desktop-apps.nix`) build against current nixos-unstable.",
-          "When a row turns ✅, drop the matching pin there.",
+          "Each run reports whether the multiverse-pinned packages build against current nixos-unstable.",
         ].join("\n"),
       });
       issueNumber = created.number;
