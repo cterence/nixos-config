@@ -44,9 +44,9 @@ jobs:
             pin=$(printf '%s' "$line" | sed -nE 's/.*# pin: ([A-Za-z0-9_.-]+) [^ |]+.*/\1/p')
             [ -z "$pin" ] && continue
             tracker=$(printf '%s' "$line" | sed -nE 's/.*\| tracker: (https:\/\/github\.com\/NixOS\/nixpkgs\/(pull|issues)\/[0-9]+).*/\1/p')
-            pins="${pins}${pin}\n"
+            pins="${pins}${pin}"$'\n'
             if [ -n "$tracker" ]; then
-              trackers="${trackers}${pin} ${tracker}\n"
+              trackers="${trackers}${pin} ${tracker}"$'\n'
             fi
           done < <(grep -rE '# pin: .* \| tracker: ' --include='*.nix' modules)
           if [ -z "$pins" ]; then
@@ -88,9 +88,9 @@ jobs:
             if nix build "github:NixOS/nixpkgs/nixos-unstable#${pkg}" \
               --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
               --no-link; then
-              results="${results}| ${pkg} | ✅ |\\n"
+              results="${results}| ${pkg} | ✅ |"$'\n'
             else
-              results="${results}| ${pkg} | ❌ |\\n"
+              results="${results}| ${pkg} | ❌ |"$'\n'
             fi
           done < <(printf '%s' "${{ steps.pins.outputs.pins }}")
           {
@@ -110,7 +110,7 @@ jobs:
             pkg="${line%% *}"
             url="${line#* }"
             state=$(gh api "${url#https://github.com/}" --jq '.state' 2>/dev/null || echo unknown)
-            states="${states}${pkg} ${url} ${state}\n"
+            states="${states}${pkg} ${url} ${state}"$'\n'
           done < <(printf '%s' "${{ steps.pins.outputs.trackers }}")
           {
             echo "states<<STATES_EOF"
