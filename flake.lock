@@ -1141,6 +1141,7 @@
         "disko": "disko",
         "dotfiles": "dotfiles",
         "emulationstation-de": "emulationstation-de",
+        "fast-resume": "fast-resume",
         "flake-aspects": "flake-aspects",
         "flake-file": "flake-file",
         "flake-parts": "flake-parts_2",
@@ -1507,6 +1508,40 @@
       "original": {
         "owner": "wshobson",
         "repo": "agents",
+        "type": "github"
+      }
+    },
+    "fast-resume": {
+      "locked": {
+        "lastModified": 1792244370,
+        "narHash": "sha256-J8KCli0q7BiUU1eXbbWfkYWvKaNgMY0GtfG+nwb8qOg=",
+        "owner": "angristan",
+        "repo": "fast-resume",
+        "rev": "cebea9fb2d3a60315c1e5889485f11cd0bbf49e2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "angristan",
+        "repo": "fast-resume",
+        "type": "github"
+      },
+      "inputs": {
+        "nixpkgs": "nixpkgs_fast-resume"
+      }
+    },
+    "nixpkgs_fast-resume": {
+      "locked": {
+        "lastModified": 1787964612,
+        "narHash": "sha256-0N9nghg3nwzX6b6qc77EzjR9cu/Z+UR66FlfsCqiURs=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e8be7818e19ada32105a8af937a6a473b38167ca",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
         "type": "github"
       }
     }
