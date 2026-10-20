@@ -28,6 +28,7 @@
       url = "gitlab:es-de/emulationstation-de/v3.4.1";
       flake = false;
     };
+    fast-resume.url = "github:angristan/fast-resume";
     flake-aspects.url = "github:denful/flake-aspects";
     flake-file.url = "github:denful/flake-file";
     flake-parts.url = "github:hercules-ci/flake-parts";

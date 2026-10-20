@@ -1,5 +1,7 @@
 { inputs, ... }:
 {
+  flake-file.inputs.fast-resume.url = "github:angristan/fast-resume";
+
   flake.aspects =
     { aspects, ... }:
     {
@@ -26,6 +28,10 @@
                 "(builtins.getFlake \"${nixdFlakePath}\").nixosConfigurations.\${env:HOST}.options";
           in
           {
+            home.packages = [
+              inputs.fast-resume.packages.${pkgs.stdenv.hostPlatform.system}.default
+            ];
+
             # The Android emulator's physical-keyboard setting lives in
             # each AVD's generated config.ini (no global file), so it
             # cannot be mounted as a managed dotfile without clobbering
