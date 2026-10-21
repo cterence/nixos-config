@@ -79,7 +79,7 @@ jobs:
   sweep:
     name: Sweep pins (Hydra)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     permissions:
       contents: read
     concurrency:
@@ -101,12 +101,15 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
         with:
           determinate: false
-      - name: Check pins against Hydra
+      - name: Check pins and closures against Hydra
         id: check
         run: |
           nix run \
             --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
             .#pinned-sweep -- check --json \
+            --closure stronghold=nixosConfigurations.stronghold.config.system.build.toplevel \
+            --closure homelab2=nixosConfigurations.homelab2.config.system.build.toplevel \
+            --closure macbook=darwinConfigurations.macbook.system \
             > "$RUNNER_TEMP/verdict.json"
           echo "unknown=$(jq '[.pins[] | select([.platforms[].status] | index("unknown"))] | length' "$RUNNER_TEMP/verdict.json")" >> "$GITHUB_OUTPUT"
       - name: Upload verdict
