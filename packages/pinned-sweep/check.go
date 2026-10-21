@@ -108,7 +108,8 @@ func cmdCheck(args []string) int {
 			return 1
 		}
 	} else {
-		fmt.Print(renderReport(v))
+		// Piped (CI, tee to step summary) → markdown; terminal → plain.
+		fmt.Print(renderReport(v, !isTTY(os.Stdout)))
 	}
 	// Red closures fail the gate; red pins are expected (that is why they
 	// are pinned) and only reported.

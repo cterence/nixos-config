@@ -196,3 +196,24 @@ func TestStripVersion(t *testing.T) {
 		t.Errorf("stripVersion fallback = %q", got)
 	}
 }
+
+func TestRenderReportModes(t *testing.T) {
+	v := Verdict{Pins: []PinVerdict{{
+		Package: "picard", Class: "darwin", Version: "2.13.3",
+		Platforms: []PlatformVerdict{{System: darwinPlatform, Status: "pending"}},
+	}}}
+	plain := renderReport(v, false)
+	if strings.Contains(plain, "](http") || strings.Contains(plain, "| ---") {
+		t.Errorf("plain mode must have no markdown links/tables:\n%s", plain)
+	}
+	if !strings.Contains(plain, "⏳ pending") {
+		t.Errorf("plain mode missing status:\n%s", plain)
+	}
+	md := renderReport(v, true)
+	if !strings.Contains(md, "[pending](https://hydra.nixos.org/job/nixpkgs/unstable/picard.aarch64-darwin)") {
+		t.Errorf("markdown mode missing linked status:\n%s", md)
+	}
+	if !strings.Contains(md, "| ---") {
+		t.Errorf("markdown mode missing table separators:\n%s", md)
+	}
+}

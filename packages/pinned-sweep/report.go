@@ -2,17 +2,28 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strings"
+	"text/tabwriter"
 	"time"
 )
 
 const hydraBaseURL = "https://hydra.nixos.org"
 
-// renderReport renders the verdict as a markdown report: stdout locally,
-// step summary / PR body in CI.
-func renderReport(v Verdict) string {
+// isTTY reports whether the file is a character device (a terminal).
+func isTTY(f *os.File) bool {
+	fi, err := f.Stat()
+	if err != nil {
+		return false
+	}
+	return fi.Mode()&os.ModeCharDevice != 0
+}
+
+// renderReport renders the verdict for humans (plain, aligned) or for
+// markdown sinks (step summary, PR body: links, tables).
+func renderReport(v Verdict, markdown bool) string {
 	var b strings.Builder
-	fmt.Fprintf(&b, "# Pinned package sweep — %s\n\n", time.Now().Format("2006-01-02"))
+	fmt.Fprintf(&b, "Pinned package sweep — %s\n\n", time.Now().Format("2006-01-02"))
 
 	if len(v.Pins) == 0 && len(v.Closures) == 0 {
 		b.WriteString("No pins and no closure checks to report.\n")
@@ -20,38 +31,72 @@ func renderReport(v Verdict) string {
 	}
 
 	if len(v.Pins) > 0 {
-		b.WriteString("## Pins\n\n")
-		b.WriteString("| Package | Class | Pinned | Unstable | Status |\n")
-		b.WriteString("| --- | --- | --- | --- | --- |\n")
+		if markdown {
+			b.WriteString("## Pins\n\n")
+		} else {
+			b.WriteString("Pins\n\n")
+		}
+		w := tabwriter.NewWriter(&b, 2, 4, 2, ' ', 0)
+		if markdown {
+			fmt.Fprintln(w, "| Package\t| Class\t| Pinned\t| Unstable\t| Status\t|")
+			fmt.Fprintln(w, "| ---\t| ---\t| ---\t| ---\t| ---\t|")
+		} else {
+			fmt.Fprintln(w, "Package\tClass\tPinned\tUnstable\tStatus")
+		}
 		for _, p := range v.Pins {
 			for _, pl := range p.Platforms {
 				jobURL := hydraJobURL(p.Package, pl.System)
-				status := statusCell(pl.Status, pl.BuildURL, jobURL)
-				fmt.Fprintf(&b, "| %s | %s | %s | %s | %s |\n",
-					p.Package, p.Class, p.Version, orDash(pl.Version), status)
+				status := statusCell(pl.Status, pl.BuildURL, jobURL, markdown)
+				if markdown {
+					fmt.Fprintf(w, "| %s\t| %s\t| %s\t| %s\t| %s\t|\n",
+						p.Package, p.Class, p.Version, orDash(pl.Version), status)
+				} else {
+					fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\n",
+						p.Package, p.Class, p.Version, orDash(pl.Version), status)
+				}
 			}
 			if len(p.Platforms) == 0 {
-				fmt.Fprintf(&b, "| %s | %s | %s | — | ❔ no Hydra data |\n", p.Package, p.Class, p.Version)
+				if markdown {
+					fmt.Fprintf(w, "| %s\t| %s\t| %s\t| —\t| ❔ no Hydra data\t|\n", p.Package, p.Class, p.Version)
+				} else {
+					fmt.Fprintf(w, "%s\t%s\t%s\t—\t❔ no Hydra data\n", p.Package, p.Class, p.Version)
+				}
 			}
 		}
+		w.Flush()
 		b.WriteString("\n")
 		writePinSummary(&b, v)
 	}
 
 	if len(v.Closures) > 0 {
-		b.WriteString("## Closure gate\n\n")
-		b.WriteString("| Host | Package | Version | Status | Last good |\n")
-		b.WriteString("| --- | --- | --- | --- | --- |\n")
+		if markdown {
+			b.WriteString("## Closure gate\n\n")
+		} else {
+			b.WriteString("Closure gate\n\n")
+		}
+		w := tabwriter.NewWriter(&b, 2, 4, 2, ' ', 0)
+		if markdown {
+			fmt.Fprintln(w, "| Host\t| Package\t| Version\t| Status\t| Last good\t|")
+			fmt.Fprintln(w, "| ---\t| ---\t| ---\t| ---\t| ---\t|")
+		} else {
+			fmt.Fprintln(w, "Host\tPackage\tVersion\tStatus\tLast good")
+		}
 		skipped := 0
 		for _, c := range v.Closures {
 			if c.Status == "skipped" {
 				skipped++
 				continue
 			}
-			status := statusCell(c.Status, c.BuildURL, "")
-			fmt.Fprintf(&b, "| %s | %s | %s | %s | %s |\n",
-				c.Host, c.Package, orDash(c.Version), status, orDash(c.LastGood))
+			status := statusCell(c.Status, c.BuildURL, "", markdown)
+			if markdown {
+				fmt.Fprintf(w, "| %s\t| %s\t| %s\t| %s\t| %s\t|\n",
+					c.Host, c.Package, orDash(c.Version), status, orDash(c.LastGood))
+			} else {
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\n",
+					c.Host, c.Package, orDash(c.Version), status, orDash(c.LastGood))
+			}
 		}
+		w.Flush()
 		if skipped > 0 {
 			fmt.Fprintf(&b, "\n%d closure packages skipped (no Hydra verdict for their derivation: local packages, wrappers, scoped attrs).\n", skipped)
 		}
@@ -76,7 +121,7 @@ func writePinSummary(b *strings.Builder, v Verdict) {
 		fmt.Fprintf(b, "Safe to unpin: %s.\n", strings.Join(names, ", "))
 	}
 	if names := byStatus["pending"]; len(names) > 0 {
-		fmt.Fprintf(b, "Pending — Hydra hasn't delivered a verdict for the derivation current unstable builds yet; nothing to do, rerun later or watch the job links: %s.\n",
+		fmt.Fprintf(b, "Pending — Hydra hasn't delivered a verdict for the derivation current unstable builds yet; nothing to do, rerun later: %s.\n",
 			strings.Join(names, ", "))
 	}
 	if names := byStatus["failed"]; len(names) > 0 {
@@ -92,22 +137,22 @@ func hydraJobURL(pkg, system string) string {
 	return fmt.Sprintf("%s/job/nixpkgs/unstable/%s.%s", hydraBaseURL, pkg, system)
 }
 
-func statusCell(status, buildURL, jobURL string) string {
+func statusCell(status, buildURL, jobURL string, markdown bool) string {
+	link := func(text, url string) string {
+		if markdown && url != "" {
+			return fmt.Sprintf("[%s](%s)", text, url)
+		}
+		return text
+	}
 	switch status {
 	case "success":
 		return "✅ green"
 	case "failed":
-		if buildURL != "" {
-			return fmt.Sprintf("❌ [failed](%s)", buildURL)
-		}
-		return "❌ failed"
+		return "❌ " + link("failed", buildURL)
 	case "pending":
-		return fmt.Sprintf("⏳ [pending](%s) — Hydra hasn't built this derivation yet", jobURL)
+		return "⏳ " + link("pending", jobURL)
 	default:
-		if jobURL != "" {
-			return fmt.Sprintf("❔ [no Hydra data](%s)", jobURL)
-		}
-		return "❔ no Hydra data"
+		return "❔ " + link("no Hydra data", jobURL)
 	}
 }
 
