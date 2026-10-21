@@ -46,12 +46,13 @@ jobs:
       # such packages at their last good version.
       - name: Gate on Hydra-failed packages
         run: |
-          nix run .#pinned-sweep -- check \
+          nix run \
+            --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
+            --extra-access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }} \
+            .#pinned-sweep -- check \
             --closure stronghold=nixosConfigurations.stronghold.config.system.build.toplevel \
             --closure homelab2=nixosConfigurations.homelab2.config.system.build.toplevel \
             --closure macbook=darwinConfigurations.macbook.system \
-            --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
-            --extra-access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }} \
             | tee "$GITHUB_STEP_SUMMARY"
   build:
     needs: eval

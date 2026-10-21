@@ -104,8 +104,9 @@ jobs:
       - name: Check pins against Hydra
         id: check
         run: |
-          nix run .#pinned-sweep -- check --json \
+          nix run \
             --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
+            .#pinned-sweep -- check --json \
             > "$RUNNER_TEMP/verdict.json"
           echo "unknown=$(jq '[.pins[] | select([.platforms[].status] | index("unknown"))] | length' "$RUNNER_TEMP/verdict.json")" >> "$GITHUB_OUTPUT"
       - name: Upload verdict
@@ -142,8 +143,9 @@ jobs:
           determinate: false
       - name: Check pins with build fallback
         run: |
-          nix run .#pinned-sweep -- check --json --build-unknown \
+          nix run \
             --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
+            .#pinned-sweep -- check --json --build-unknown \
             > "$RUNNER_TEMP/verdict-fallback.json"
       - name: Upload fallback verdict
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -192,8 +194,9 @@ jobs:
         run: |
           git config user.name "pinned-sweep[bot]"
           git config user.email "pinned-sweep[bot]@users.noreply.github.com"
-          nix run .#pinned-sweep -- apply --pr \
+          nix run \
+            --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
+            .#pinned-sweep -- apply --pr \
             --verdict "$RUNNER_TEMP/verdict.json" \
             --verdict "$RUNNER_TEMP/verdict-fallback.json" \
-            --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
             | tee "$GITHUB_STEP_SUMMARY"
