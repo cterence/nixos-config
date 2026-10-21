@@ -25,7 +25,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          count=$(gh pr list --base main --label automerge --state open --json number --jq 'length')
+          # No checkout in this job — tell gh which repo to talk to.
+          count=$(gh pr list -R "$GITHUB_REPOSITORY" --base main --label automerge --state open --json number --jq 'length')
           echo "count=$count" >> "$GITHUB_OUTPUT"
       - id: automerge
         name: automerge
