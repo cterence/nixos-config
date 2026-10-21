@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path"
 	"regexp"
 	"strings"
 )
@@ -51,6 +52,7 @@ type ClosureVerdict struct {
 	Package  string `json:"package"`
 	Status   string `json:"status"` // failed | success | skipped
 	Version  string `json:"version,omitempty"`
+	DrvPath  string `json:"drvPath,omitempty"`
 	BuildURL string `json:"buildUrl,omitempty"`
 	LastGood string `json:"lastGood,omitempty"`
 }
@@ -106,7 +108,8 @@ func cmdCheck(args []string) int {
 			return 1
 		}
 	} else {
-		fmt.Print(renderReport(v))
+		// Piped (CI, tee to step summary) → markdown; terminal → plain.
+		fmt.Print(renderReport(v, !isTTY(os.Stdout)))
 	}
 	// Red closures fail the gate; red pins are expected (that is why they
 	// are pinned) and only reported.
@@ -134,7 +137,10 @@ func (c *closureFlags) Set(s string) error {
 	return nil
 }
 
-// checkPins Hydra-checks every pin on the platform its class needs.
+// checkPins Hydra-checks every pin on the platform its class needs. A
+// Hydra verdict only counts when the build's drvpath equals the derivation
+// current nixos-unstable would build — Hydra's "latest build" is often from
+// an older eval (deps changed since), and trusting it unpins broken packages.
 func checkPins(hydra *Hydra, pins PinSets, buildUnknown bool) (Verdict, error) {
 	v := Verdict{}
 	for _, class := range []struct {
@@ -144,44 +150,73 @@ func checkPins(hydra *Hydra, pins PinSets, buildUnknown bool) (Verdict, error) {
 		for _, name := range sortedKeys(class.pins) {
 			pin := class.pins[name]
 			pv := PinVerdict{Package: name, Class: class.name, Version: pin.Version, Tracker: pin.Tracker}
-			job := name + "." + platformFor(class.name)
-			fmt.Fprintf(os.Stderr, "checking %s (%s)\n", job, pin.Version)
+			platform := platformFor(class.name)
+			job := name + "." + platform
+			currentDrv, err := currentDrvPath(name, platform)
+			if err != nil {
+				return v, err
+			}
+			fmt.Fprintf(os.Stderr, "%s ...", job)
 			b, err := hydra.LatestBuild(job)
 			if err != nil {
 				return v, err
 			}
-			status := "unknown"
-			if b != nil {
-				status = b.Status()
-				pv.Platforms = append(pv.Platforms, PlatformVerdict{
-					System:   platformFor(class.name),
-					Status:   status,
-					Version:  stripVersion(b.NixName, job),
-					BuildURL: b.URL(),
-				})
-			} else {
-				pv.Platforms = append(pv.Platforms, PlatformVerdict{
-					System: platformFor(class.name),
-					Status: "unknown",
-				})
-			}
-			// Fallback: no Hydra signal, try a real build of the unstable
-			// version on the native system.
-			if status == "unknown" && buildUnknown {
-				if s, err := buildUnstable(name); err != nil {
-					fmt.Fprintf(os.Stderr, "build fallback for %s failed: %v\n", name, err)
-				} else if s {
-					pv.Platforms[0].Status = "success"
-					pv.Platforms[0].Version = "unstable (built locally)"
-				} else {
-					pv.Platforms[0].Status = "failed"
+			pv.Platforms = append(pv.Platforms, verdictFor(job, platform, b, currentDrv))
+			// Fallback: no Hydra verdict for the current drv — try a real
+			// native build of it.
+			if pv.Platforms[0].Status == "pending" || pv.Platforms[0].Status == "unknown" {
+				if buildUnknown {
+					if s, err := buildUnstable(name); err != nil {
+						fmt.Fprintf(os.Stderr, "build fallback for %s failed: %v\n", name, err)
+					} else if s {
+						pv.Platforms[0].Status = "success"
+						pv.Platforms[0].Version = "unstable (built locally)"
+					} else {
+						pv.Platforms[0].Status = "failed"
+					}
 				}
 			}
-			pv.Green = status == "success"
+			pv.Green = greenPlatforms(pv.Platforms)
+			fmt.Fprintf(os.Stderr, " %s\n", pv.Platforms[0].Status)
 			v.Pins = append(v.Pins, pv)
 		}
 	}
 	return v, nil
+}
+
+// verdictFor classifies a Hydra build against the drv we care about.
+func verdictFor(job, platform string, b *Build, currentDrv string) PlatformVerdict {
+	pv := PlatformVerdict{System: platform}
+	if b == nil {
+		pv.Status = "unknown"
+		return pv
+	}
+	pv.Version = stripVersion(b.NixName, job)
+	pv.BuildURL = b.URL()
+	if b.DrvPath != "" && currentDrv != "" && b.DrvPath != currentDrv {
+		// Hydra's verdict is for an older derivation: no signal for the
+		// current one (yet).
+		pv.Status = "pending"
+		if base := strings.TrimSuffix(path.Base(currentDrv), ".drv"); base != "" {
+			if _, ver := splitPkgName(base); ver != "" {
+				pv.Version = ver
+			}
+		}
+		return pv
+	}
+	pv.Status = b.Status()
+	return pv
+}
+
+// currentDrvPath evaluates the drv path current nixos-unstable builds for a
+// package on the given system.
+func currentDrvPath(pkg, system string) (string, error) {
+	out, err := exec.Command("nix", "eval", "--raw", "--system", system,
+		"github:NixOS/nixpkgs/nixos-unstable#"+pkg+".drvPath").Output()
+	if err != nil {
+		return "", fmt.Errorf("nix eval %s.drvPath (%s): %w", pkg, system, err)
+	}
+	return strings.TrimSpace(string(out)), nil
 }
 
 // buildUnstable builds a package from current nixos-unstable natively.
@@ -196,18 +231,18 @@ func buildUnstable(pkg string) (bool, error) {
 
 var drvRe = regexp.MustCompile(`^\s*/nix/store/[a-z0-9]+-(.+)\.drv$`)
 
-// parseDryRun extracts derivation names from `nix build --dry-run` output,
+// parseDryRun extracts derivation paths from `nix build --dry-run` output,
 // deduplicated in order (fetched sections may repeat built drvs).
 func parseDryRun(out string) []string {
 	seen := map[string]bool{}
-	var names []string
+	var paths []string
 	for _, line := range strings.Split(out, "\n") {
-		if m := drvRe.FindStringSubmatch(line); m != nil && !seen[m[1]] {
-			seen[m[1]] = true
-			names = append(names, m[1])
+		if m := drvRe.FindStringSubmatch(line); m != nil && !seen[m[0]] {
+			seen[m[0]] = true
+			paths = append(paths, strings.TrimSpace(m[0]))
 		}
 	}
-	return names
+	return paths
 }
 
 // splitPkgName splits "picard-3.0.2" into ("picard", "3.0.2"). Scoped names
@@ -245,36 +280,37 @@ func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr string) (
 
 	seen := map[string]bool{}
 	var out []ClosureVerdict
-	for _, drv := range parseDryRun(stderr.String()) {
-		pkg, version := splitPkgName(drv)
+	for _, drvPath := range parseDryRun(stderr.String()) {
+		pkg, version := splitPkgName(path.Base(drvPath))
 		if pkg == "" || seen[pkg] || pinned[pkg].Version != "" {
 			continue
 		}
 		seen[pkg] = true
 		job := pkg + "." + system
-		fmt.Fprintf(os.Stderr, "checking %s\n", job)
+		fmt.Fprintf(os.Stderr, "%s ...", job)
 		b, err := hydra.LatestBuild(job)
 		if err != nil {
 			return nil, err
 		}
-		cv := ClosureVerdict{Host: host, System: system, Package: pkg, Version: version, Status: "skipped"}
+		cv := ClosureVerdict{Host: host, System: system, Package: pkg, Version: version, DrvPath: drvPath, Status: "skipped"}
 		switch {
 		case b == nil:
 			// Not a Hydra job (local package, scoped attr): no signal, skip.
+		case b.DrvPath != "" && b.DrvPath != drvPath:
+			// Hydra's verdict is for a different derivation (older eval or
+			// different nixpkgs snapshot): no signal for this drv.
 		case b.Status() == "failed":
 			cv.Status = "failed"
 			cv.BuildURL = b.URL()
-			lastGood, lb, err := hydra.LastGood(job, 25)
+			lastGood, _, err := hydra.LastGood(job, 25)
 			if err != nil {
 				return nil, err
-			}
-			if lastGood == "" && lb != nil {
-				lastGood = stripVersion(lb.NixName, job)
 			}
 			cv.LastGood = lastGood
 		default:
 			cv.Status = "success"
 		}
+		fmt.Fprintf(os.Stderr, " %s\n", cv.Status)
 		out = append(out, cv)
 	}
 	return out, nil

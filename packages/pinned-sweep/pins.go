@@ -49,14 +49,17 @@ func loadPins(flake string) (PinSets, error) {
 	return pins, nil
 }
 
-// emitPins renders modules/pins.nix. Deterministic: keys sorted, fixed style.
+// emitPins renders modules/pins.nix: the pin data plus the sidecar overlay
+// wiring (the tool owns the whole file). Deterministic: keys sorted, fixed
+// style.
 func emitPins(p PinSets) string {
 	var b strings.Builder
 	b.WriteString(`# Single source of truth for multiverse pins. Machine-managed by
 # ` + "`packages/pinned-sweep`" + ` (` + "`pinned-sweep apply`" + `) — it regenerates this file.
 # Each pin: version to pin, upstream nixpkgs tracker, and why.
-{
-  flake.pins = {
+{ inputs, ... }:
+let
+  pins = {
 `)
 	for _, class := range []struct {
 		name string
@@ -77,7 +80,27 @@ func emitPins(p PinSets) string {
 		}
 		b.WriteString("    };\n")
 	}
-	b.WriteString("  };\n}\n")
+	b.WriteString(`  };
+in
+{
+  flake.pins = pins;
+
+  # Sidecar overlay: applies every pin to the matching platform's package
+  # set, so modules use ` + "`pkgs.<pkg>`" + ` without knowing pins exist. Wired in
+  # system-minimal's darwin/nixos classes; home-manager follows via
+  # useGlobalPkgs.
+  flake.overlays.multiverse-pins =
+    final: _prev:
+    let
+      overlay = inputs.multiverse.lib.pinOverlay {
+        pins = builtins.mapAttrs (_: pin: pin.version) (
+          if final.stdenv.hostPlatform.isDarwin then pins.darwin else pins.nixos
+        );
+      };
+    in
+    overlay final _prev;
+}
+`)
 	return b.String()
 }
 
