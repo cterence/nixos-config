@@ -11,7 +11,7 @@ defaults:
 jobs:
   eval:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     permissions:
       id-token: write
       contents: read
@@ -40,6 +40,19 @@ jobs:
           nix flake check --all-systems --no-build --option access-tokens github.com=${{ steps.generate-token.outputs.token }} --extra-access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }}
           # darwinConfigurations only gets a shallow check from flake check
           nix eval --raw .#darwinConfigurations.macbook.system.drvPath >/dev/null
+      # Fail fast before the build matrix spins up: if a package a host would
+      # actually build (cache miss) is already failing on Hydra, the local
+      # build will fail too. The daily sweep in update-flake.yml auto-pins
+      # such packages at their last good version.
+      - name: Gate on Hydra-failed packages
+        run: |
+          nix run .#pinned-sweep -- check \
+            --closure stronghold=nixosConfigurations.stronghold.config.system.build.toplevel \
+            --closure homelab2=nixosConfigurations.homelab2.config.system.build.toplevel \
+            --closure macbook=darwinConfigurations.macbook.system \
+            --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
+            --extra-access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }} \
+            | tee "$GITHUB_STEP_SUMMARY"
   build:
     needs: eval
     env:

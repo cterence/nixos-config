@@ -150,12 +150,20 @@ input next to the module that uses it:
 | `nixpkgs-emulationstation` | emulationstation-de build break           | `modules/overlays/emulationstation.nix` |
 | `nixpkgs-kernel`           | amdgpu RDNA2 sclk regression in 7.2.1+ (GPU stuck at low clock under load, stronghold) | `modules/hosts/stronghold/configuration.nix` |
 
-Version pins (any historical version of a package, no new input per pin) can
-use the `multiverse` flake instead — input declared in
-`modules/nix/tools/multiverse/`, pin applied via
-`inputs.multiverse.lib.pinOverlay` next to the module that installs the
-package, e.g. picard 2.13.3 in `modules/programs/desktop-apps.nix`
-(nixpkgs#572435).
+Version pins (any historical version of a package, no new input per pin) use
+the `multiverse` flake, driven by the **pins sidecar**:
+
+- `modules/pins.nix` is the single source of truth: `flake.pins` with
+  `darwin` / `nixos` classes, each pin `{ version, tracker, reason }`.
+  Machine-managed by `pinned-sweep apply` — regenerate, don't hand-edit.
+- The overlay is wired once in `modules/system/types/base/system-minimal.nix`
+  (darwin/nixos classes); modules just use `pkgs.<pkg>` and never mention
+  pins. Home-manager follows via `useGlobalPkgs`.
+- `pinned-sweep` (see Custom packages) sweeps pins against Hydra's
+  `nixpkgs/unstable` builds daily (jobs in `.github/workflows/update-flake.yml`):
+  green pins are dropped, red closure packages are pinned at their last good
+  version, both via an automerge PR. `build.yml`'s eval job gates the build
+  matrix on Hydra-failed closure packages.
 
 Find the last good revision: `nix shell nixpkgs#hydra-check -c hydra-check --channel unstable <pkg>`.
 
@@ -168,6 +176,7 @@ Auto-discovered by `pkgs-by-name-for-flake-parts` from `packages/`:
 | `todoist-electron` | aarch64/x86_64-darwin | Todoist 9.20.0, patched + re-signed DMG  |
 | `iterm2-ai-plugin` | darwin                | iTermAI 1.1 app                          |
 | `linear-linux`     | linux                 | Linear desktop app (dpkg + autoPatchelf) |
+| `pinned-sweep`     | all                   | Go CLI sweeping multiverse pins against Hydra (`check` / `apply`) |
 
 Exposed as `.#<name>` and via `pkgs.local.<name>` overlay.
 
