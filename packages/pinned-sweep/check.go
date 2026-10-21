@@ -73,8 +73,9 @@ func cmdCheck(args []string) int {
 	flake := fs.String("flake", ".", "flake to read pins from")
 	asJSON := fs.Bool("json", false, "print verdict JSON on stdout")
 	buildUnknown := fs.Bool("build-unknown", false, "nix-build pins Hydra has no data for, natively")
+	reportOut := fs.String("report-out", "", "also write the markdown report to this file")
 	var closures closureFlags
-	fs.Var(&closures, "closure", "host=attr closure to gate, repeatable")
+	fs.Var(&closures, "closure", "host=attr closure to gate, repeatable; exit 1 on red")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -110,6 +111,12 @@ func cmdCheck(args []string) int {
 	} else {
 		// Piped (CI, tee to step summary) → markdown; terminal → plain.
 		fmt.Print(renderReport(v, !isTTY(os.Stdout)))
+	}
+	if *reportOut != "" {
+		if err := os.WriteFile(*reportOut, []byte(renderReport(v, true)), 0o644); err != nil {
+			fmt.Fprintln(os.Stderr, "pinned-sweep:", err)
+			return 1
+		}
 	}
 	// Red closures fail the gate; red pins are expected (that is why they
 	// are pinned) and only reported.

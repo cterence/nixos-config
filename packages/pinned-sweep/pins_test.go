@@ -235,3 +235,26 @@ note: keeping build directory '/nix/store/xyz-keepme-2.0.drv'`
 		}
 	}
 }
+
+func TestPinFromVerdict(t *testing.T) {
+	pins := PinSets{Nixos: map[string]Pin{"calibre": {Version: "9.14.0"}}}
+	v := Verdict{Closures: []ClosureVerdict{
+		{Host: "stronghold", System: linuxPlatform, Package: "foo", Status: "failed",
+			Version: "1.2.3", LastGood: "1.1.0", BuildURL: "https://hydra.nixos.org/build/1"},
+		{Host: "stronghold", System: linuxPlatform, Package: "calibre", Status: "failed",
+			Version: "9.16.0", LastGood: "9.15.0"},
+	}}
+	changed, report := pinFromVerdict(pins, v)
+	if !changed {
+		t.Fatal("expected changes")
+	}
+	if pins.Nixos["foo"].Version != "1.1.0" {
+		t.Errorf("foo pinned at %q, want 1.1.0", pins.Nixos["foo"].Version)
+	}
+	if _, ok := pins.Nixos["calibre"]; !ok {
+		t.Error("already-pinned calibre must be left alone")
+	}
+	if !strings.Contains(report, "already pinned") {
+		t.Errorf("report must note the already-pinned package:\n%s", report)
+	}
+}

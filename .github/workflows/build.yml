@@ -45,15 +45,28 @@ jobs:
       # build will fail too. The daily sweep in update-flake.yml auto-pins
       # such packages at their last good version.
       - name: Gate on Hydra-failed packages
+        id: gate
         run: |
-          nix run \
+          if ! nix run \
             --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
             --extra-access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }} \
             .#pinned-sweep -- check \
             --closure stronghold=nixosConfigurations.stronghold.config.system.build.toplevel \
             --closure homelab2=nixosConfigurations.homelab2.config.system.build.toplevel \
             --closure macbook=darwinConfigurations.macbook.system \
-            | tee "$GITHUB_STEP_SUMMARY"
+            --json --report-out "$RUNNER_TEMP/gate-report.md" \
+            > "$RUNNER_TEMP/gate-verdict.json"; then
+            cat "$RUNNER_TEMP/gate-report.md" >> "$GITHUB_STEP_SUMMARY" || true
+            exit 1
+          fi
+          cat "$RUNNER_TEMP/gate-report.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload gate verdict
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: gate-verdict
+          path: ${{ runner.temp }}/gate-verdict.json
+          if-no-files-found: ignore
   build:
     needs: eval
     env:
@@ -178,11 +191,15 @@ jobs:
 
   # A failed build is itself the verdict: extract the failing derivations
   # from the build log and pin them at their last good Hydra version, so a
-  # broken nixpkgs bump can't stall its lock PR behind a manual fix.
+  # broken nixpkgs bump can't stall its lock PR behind a manual fix. A failed
+  # gate (Hydra already knows the drv is red) carries the same information in
+  # its verdict.
   pin:
     name: Pin failing packages
-    needs: build
-    if: ${{ always() && needs.build.result == 'failure' }}
+    needs: [eval, build]
+    if: >-
+      ${{ always() &&
+      (needs.eval.result == 'failure' || needs.build.result == 'failure') }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -213,6 +230,12 @@ jobs:
         with:
           pattern: build-log-*
           path: ${{ runner.temp }}/logs
+      - name: Download gate verdict
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+        continue-on-error: true
+        with:
+          pattern: gate-verdict
+          path: ${{ runner.temp }}/logs
       - name: Pin failing packages
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
@@ -220,6 +243,11 @@ jobs:
         run: |
           git config user.name "pinned-sweep[bot]"
           git config user.email "pinned-sweep[bot]@users.noreply.github.com"
+          if [ -f "$RUNNER_TEMP/logs/gate-verdict.json" ]; then
+            nix run \
+              --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
+              .#pinned-sweep -- pin --from-verdict "$RUNNER_TEMP/logs/gate-verdict.json" --pr
+          fi
           shopt -s nullglob
           for log in "$RUNNER_TEMP"/logs/*/build-*.log; do
             system="${log##*build-}"

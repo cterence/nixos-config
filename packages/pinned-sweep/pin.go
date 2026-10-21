@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -21,11 +22,12 @@ func cmdPin(args []string) int {
 	system := fs.String("system", "", "platform the failed build ran on (x86_64-linux, aarch64-darwin)")
 	var logs pathFlags
 	fs.Var(&logs, "from-log", "CI build log to extract failing drvs from, repeatable")
+	verdictFile := fs.String("from-verdict", "", "check verdict JSON whose red closure packages to pin")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
-	if *system == "" {
-		fmt.Fprintln(os.Stderr, "pinned-sweep: pin requires --system")
+	if *system == "" && *verdictFile == "" {
+		fmt.Fprintln(os.Stderr, "pinned-sweep: pin requires --system (with --from-log) or --from-verdict")
 		return 2
 	}
 
@@ -36,8 +38,25 @@ func cmdPin(args []string) int {
 		return 1
 	}
 
-	changed := false
 	var b strings.Builder
+	changed := false
+
+	if *verdictFile != "" {
+		data, err := os.ReadFile(*verdictFile)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "pinned-sweep:", err)
+			return 1
+		}
+		var v Verdict
+		if err := json.Unmarshal(data, &v); err != nil {
+			fmt.Fprintln(os.Stderr, "pinned-sweep: parsing verdict:", err)
+			return 1
+		}
+		c, report := pinFromVerdict(pins, v)
+		changed = changed || c
+		b.WriteString(report)
+	}
+
 	for _, log := range logs {
 		data, err := os.ReadFile(log)
 		if err != nil {
@@ -124,6 +143,47 @@ func buildRef(build *Build) string {
 		return ""
 	}
 	return ", see " + build.URL()
+}
+
+// pinFromVerdict pins every red closure package of a check verdict — the
+// verdicts already carry the last good version from the Hydra walk.
+// Only closures are considered: unpinning is the nightly apply's job.
+func pinFromVerdict(pins PinSets, v Verdict) (bool, string) {
+	var b strings.Builder
+	changed := false
+	for _, c := range v.Red() {
+		class := "nixos"
+		if c.System == darwinPlatform {
+			class = "darwin"
+		}
+		set := pins.Class(class)
+		if existing, ok := set[c.Package]; ok {
+			fmt.Fprintf(&b, "%s is already pinned at %s on %s and still fails; manual fix needed.\n",
+				c.Package, existing.Version, class)
+			continue
+		}
+		if c.LastGood == "" {
+			fmt.Fprintf(&b, "Cannot pin %s (%s, %s): no last good version in Hydra history; manual fix needed.\n",
+				c.Package, c.Host, c.System)
+			continue
+		}
+		set[c.Package] = Pin{
+			Version: c.LastGood,
+			Reason: fmt.Sprintf("%s fails on %s (auto-pinned from gate%s)",
+				orDash(c.Version), c.System, buildURLSuffix(c.BuildURL)),
+		}
+		changed = true
+		fmt.Fprintf(&b, "Pinned %s at %s on %s (was %s).\n",
+			c.Package, c.LastGood, class, orDash(c.Version))
+	}
+	return changed, b.String()
+}
+
+func buildURLSuffix(url string) string {
+	if url == "" {
+		return ""
+	}
+	return ", see " + url
 }
 
 type pathFlags []string
