@@ -14,3 +14,4 @@
 - Avoid huge code comments. Keep them under 20 words.
 - ALWAYS use the `gh` CLI for any GitHub actions (repos, issues, PRs, releases).
 - Do not resort to python script or sed for file editing, use edit tool. Prefer read tool as well instead of sed.
+- Before pushing to a branch you already opened a PR for, check whether that PR was merged; if it was, open a new PR from a fresh branch instead of pushing to the merged one.
