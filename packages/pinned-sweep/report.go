@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+const hydraBaseURL = "https://hydra.nixos.org"
+
 // renderReport renders the verdict as a markdown report: stdout locally,
 // step summary / PR body in CI.
 func renderReport(v Verdict) string {
@@ -19,25 +21,21 @@ func renderReport(v Verdict) string {
 
 	if len(v.Pins) > 0 {
 		b.WriteString("## Pins\n\n")
-		b.WriteString("| Package | Class | Pinned | Platform | Unstable | Status |\n")
-		b.WriteString("| --- | --- | --- | --- | --- | --- |\n")
+		b.WriteString("| Package | Class | Pinned | Unstable | Status |\n")
+		b.WriteString("| --- | --- | --- | --- | --- |\n")
 		for _, p := range v.Pins {
 			for _, pl := range p.Platforms {
-				status := statusCell(pl.Status, pl.BuildURL)
-				fmt.Fprintf(&b, "| %s | %s | %s | %s | %s | %s |\n",
-					p.Package, p.Class, p.Version, pl.System, orDash(pl.Version), status)
+				jobURL := hydraJobURL(p.Package, pl.System)
+				status := statusCell(pl.Status, pl.BuildURL, jobURL)
+				fmt.Fprintf(&b, "| %s | %s | %s | %s | %s |\n",
+					p.Package, p.Class, p.Version, orDash(pl.Version), status)
 			}
 			if len(p.Platforms) == 0 {
-				fmt.Fprintf(&b, "| %s | %s | %s | — | — | ❔ unknown |\n", p.Package, p.Class, p.Version)
+				fmt.Fprintf(&b, "| %s | %s | %s | — | ❔ no Hydra data |\n", p.Package, p.Class, p.Version)
 			}
 		}
 		b.WriteString("\n")
-		green := greenPins(v)
-		if len(green) > 0 {
-			fmt.Fprintf(&b, "Green on every needed platform, safe to unpin: %s.\n",
-				strings.Join(green, ", "))
-		}
-		b.WriteString("\n")
+		writePinSummary(&b, v)
 	}
 
 	if len(v.Closures) > 0 {
@@ -50,12 +48,12 @@ func renderReport(v Verdict) string {
 				skipped++
 				continue
 			}
-			status := statusCell(c.Status, c.BuildURL)
+			status := statusCell(c.Status, c.BuildURL, "")
 			fmt.Fprintf(&b, "| %s | %s | %s | %s | %s |\n",
 				c.Host, c.Package, orDash(c.Version), status, orDash(c.LastGood))
 		}
 		if skipped > 0 {
-			fmt.Fprintf(&b, "\n%d closure packages skipped (no Hydra job: local packages, wrappers, scoped attrs).\n", skipped)
+			fmt.Fprintf(&b, "\n%d closure packages skipped (no Hydra verdict for their derivation: local packages, wrappers, scoped attrs).\n", skipped)
 		}
 		b.WriteString("\n")
 	}
@@ -64,18 +62,51 @@ func renderReport(v Verdict) string {
 	return b.String()
 }
 
-func statusCell(status, url string) string {
+// writePinSummary groups pins by verdict and says what each means.
+func writePinSummary(b *strings.Builder, v Verdict) {
+	byStatus := map[string][]string{}
+	for _, p := range v.Pins {
+		status := "unknown"
+		if len(p.Platforms) > 0 {
+			status = p.Platforms[0].Status
+		}
+		byStatus[status] = append(byStatus[status], p.Package)
+	}
+	if names := byStatus["success"]; len(names) > 0 {
+		fmt.Fprintf(b, "Safe to unpin: %s.\n", strings.Join(names, ", "))
+	}
+	if names := byStatus["pending"]; len(names) > 0 {
+		fmt.Fprintf(b, "Pending — Hydra hasn't delivered a verdict for the derivation current unstable builds yet; nothing to do, rerun later or watch the job links: %s.\n",
+			strings.Join(names, ", "))
+	}
+	if names := byStatus["failed"]; len(names) > 0 {
+		fmt.Fprintf(b, "Failing on unstable, pin stays: %s.\n", strings.Join(names, ", "))
+	}
+	if names := byStatus["unknown"]; len(names) > 0 {
+		fmt.Fprintf(b, "No Hydra data (unfree or not built by Hydra), needs the build fallback or a manual call: %s.\n", strings.Join(names, ", "))
+	}
+	b.WriteString("\n")
+}
+
+func hydraJobURL(pkg, system string) string {
+	return fmt.Sprintf("%s/job/nixpkgs/unstable/%s.%s", hydraBaseURL, pkg, system)
+}
+
+func statusCell(status, buildURL, jobURL string) string {
 	switch status {
 	case "success":
 		return "✅ green"
 	case "failed":
-		if url != "" {
-			return fmt.Sprintf("❌ [failed](%s)", url)
+		if buildURL != "" {
+			return fmt.Sprintf("❌ [failed](%s)", buildURL)
 		}
 		return "❌ failed"
 	case "pending":
-		return "⏳ pending"
+		return fmt.Sprintf("⏳ [pending](%s) — Hydra hasn't built this derivation yet", jobURL)
 	default:
+		if jobURL != "" {
+			return fmt.Sprintf("❔ [no Hydra data](%s)", jobURL)
+		}
 		return "❔ no Hydra data"
 	}
 }
@@ -85,21 +116,4 @@ func orDash(s string) string {
 		return "—"
 	}
 	return s
-}
-
-// greenPins lists pins green on every platform verdict.
-func greenPins(v Verdict) []string {
-	var out []string
-	for _, p := range v.Pins {
-		ok := len(p.Platforms) > 0
-		for _, pl := range p.Platforms {
-			if pl.Status != "success" {
-				ok = false
-			}
-		}
-		if ok {
-			out = append(out, p.Package)
-		}
-	}
-	return out
 }

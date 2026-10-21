@@ -155,7 +155,7 @@ func checkPins(hydra *Hydra, pins PinSets, buildUnknown bool) (Verdict, error) {
 			if err != nil {
 				return v, err
 			}
-			fmt.Fprintf(os.Stderr, "checking %s (%s)\n", job, pin.Version)
+			fmt.Fprintf(os.Stderr, "%s ...", job)
 			b, err := hydra.LatestBuild(job)
 			if err != nil {
 				return v, err
@@ -176,6 +176,7 @@ func checkPins(hydra *Hydra, pins PinSets, buildUnknown bool) (Verdict, error) {
 				}
 			}
 			pv.Green = greenPlatforms(pv.Platforms)
+			fmt.Fprintf(os.Stderr, " %s\n", pv.Platforms[0].Status)
 			v.Pins = append(v.Pins, pv)
 		}
 	}
@@ -285,7 +286,7 @@ func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr string) (
 		}
 		seen[pkg] = true
 		job := pkg + "." + system
-		fmt.Fprintf(os.Stderr, "checking %s\n", job)
+		fmt.Fprintf(os.Stderr, "%s ...", job)
 		b, err := hydra.LatestBuild(job)
 		if err != nil {
 			return nil, err
@@ -308,6 +309,7 @@ func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr string) (
 		default:
 			cv.Status = "success"
 		}
+		fmt.Fprintf(os.Stderr, " %s\n", cv.Status)
 		out = append(out, cv)
 	}
 	return out, nil
