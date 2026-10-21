@@ -197,10 +197,8 @@ func verdictFor(job, platform string, b *Build, currentDrv string) PlatformVerdi
 		// Hydra's verdict is for an older derivation: no signal for the
 		// current one (yet).
 		pv.Status = "pending"
-		if base := strings.TrimSuffix(path.Base(currentDrv), ".drv"); base != "" {
-			if _, ver := splitPkgName(base); ver != "" {
-				pv.Version = ver
-			}
+		if _, ver := drvPkg(currentDrv); ver != "" {
+			pv.Version = ver
 		}
 		return pv
 	}
@@ -256,6 +254,16 @@ func splitPkgName(name string) (string, string) {
 	return name[:i], name[i+1:]
 }
 
+// drvPkg extracts the package name and version from a store drv path:
+// "/nix/store/<hash>-picard-3.0.2.drv" -> ("picard", "3.0.2").
+func drvPkg(drvPath string) (string, string) {
+	base := strings.TrimSuffix(path.Base(drvPath), ".drv")
+	if i := strings.Index(base, "-"); i >= 0 {
+		base = base[i+1:]
+	}
+	return splitPkgName(base)
+}
+
 // checkClosure dry-runs a host closure and Hydra-checks every package the
 // host would actually build (cache miss). Pinned packages are skipped: their
 // Hydra job reflects current unstable, not the pinned version.
@@ -281,7 +289,7 @@ func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr string) (
 	seen := map[string]bool{}
 	var out []ClosureVerdict
 	for _, drvPath := range parseDryRun(stderr.String()) {
-		pkg, version := splitPkgName(path.Base(drvPath))
+		pkg, version := drvPkg(drvPath)
 		if pkg == "" || seen[pkg] || pinned[pkg].Version != "" {
 			continue
 		}

@@ -217,3 +217,21 @@ func TestRenderReportModes(t *testing.T) {
 		t.Errorf("markdown mode missing table separators:\n%s", md)
 	}
 }
+
+func TestParseFailedDrvs(t *testing.T) {
+	log := `build flags: -j8
+error: builder for '/nix/store/abc-qbittorrent-5.2.4.drv' failed with exit code 1;
+       another line /nix/store/def-notafailure-1.0.drv ignored
+error: 1 dependencies of derivation '/nix/store/ghi-darwin-system-26.11.drv' failed to build
+note: keeping build directory '/nix/store/xyz-keepme-2.0.drv'`
+	got := parseFailedDrvs(log)
+	want := []string{"/nix/store/abc-qbittorrent-5.2.4.drv", "/nix/store/ghi-darwin-system-26.11.drv"}
+	if len(got) != len(want) {
+		t.Fatalf("parseFailedDrvs = %v, want %v", got, want)
+	}
+	for i := range want {
+		if got[i] != want[i] {
+			t.Fatalf("parseFailedDrvs[%d] = %q, want %q", i, got[i], want[i])
+		}
+	}
+}

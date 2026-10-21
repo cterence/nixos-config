@@ -176,7 +176,7 @@ Auto-discovered by `pkgs-by-name-for-flake-parts` from `packages/`:
 | `todoist-electron` | aarch64/x86_64-darwin | Todoist 9.20.0, patched + re-signed DMG  |
 | `iterm2-ai-plugin` | darwin                | iTermAI 1.1 app                          |
 | `linear-linux`     | linux                 | Linear desktop app (dpkg + autoPatchelf) |
-| `pinned-sweep`     | all                   | Go CLI sweeping multiverse pins against Hydra (`check` / `apply`) |
+| `pinned-sweep`     | all                   | Go CLI sweeping multiverse pins against Hydra (`check` / `apply` / `pin`) |
 
 Exposed as `.#<name>` and via `pkgs.local.<name>` overlay.
 
