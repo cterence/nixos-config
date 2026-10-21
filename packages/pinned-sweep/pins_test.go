@@ -38,7 +38,11 @@ these 3 paths will be fetched:
   /nix/store/abc123-picard-3.0.2.drv
 warning: something unrelated`
 	got := parseDryRun(out)
-	want := []string{"picard-3.0.2", "qbittorrent-5.2.4", "somethingelse-1.0"}
+	want := []string{
+		"/nix/store/abc123-picard-3.0.2.drv",
+		"/nix/store/def456-qbittorrent-5.2.4.drv",
+		"/nix/store/ghi789-somethingelse-1.0.drv",
+	}
 	if len(got) != len(want) {
 		t.Fatalf("parseDryRun = %v, want %v", got, want)
 	}
@@ -58,12 +62,16 @@ func TestEmitPinsRoundTrip(t *testing.T) {
 	}
 	out := emitPins(p)
 	for _, want := range []string{
-		`flake.pins = {`,
+		`{ inputs, ... }:`,
+		`flake.pins = pins;`,
 		`darwin = {`,
 		`version = "2.13.3";`,
 		`tracker = "https://github.com/NixOS/nixpkgs/issues/572435";`,
 		`reason = "says \"hi\" \${now}";`,
 		`nixos = { };`,
+		`flake.overlays.multiverse-pins =`,
+		`inputs.multiverse.lib.pinOverlay`,
+		`overlay final _prev;`,
 	} {
 		if !strings.Contains(out, want) {
 			t.Errorf("emitPins missing %q in:\n%s", want, out)
@@ -71,6 +79,24 @@ func TestEmitPinsRoundTrip(t *testing.T) {
 	}
 	if strings.Index(out, "darwin = {") > strings.Index(out, "nixos = {") {
 		t.Error("emitPins must emit darwin before nixos")
+	}
+}
+
+func TestVerdictFor(t *testing.T) {
+	current := "/nix/store/aaa-qbittorrent-5.2.4.drv"
+	stale := &Build{NixName: "qbittorrent-5.2.4", BuildStatus: statusSuccess, Finished: 1, DrvPath: "/nix/store/bbb-qbittorrent-5.2.4.drv"}
+	if got := verdictFor("qbittorrent.aarch64-darwin", darwinPlatform, stale, current); got.Status != "pending" {
+		t.Errorf("stale drv must be pending, got %q", got.Status)
+	}
+	if got := verdictFor("qbittorrent.aarch64-darwin", darwinPlatform, stale, current); got.Version != "5.2.4" {
+		t.Errorf("pending verdict should carry the current drv version, got %q", got.Version)
+	}
+	fresh := &Build{NixName: "qbittorrent-5.2.4", BuildStatus: statusSuccess, Finished: 1, DrvPath: current}
+	if got := verdictFor("qbittorrent.aarch64-darwin", darwinPlatform, fresh, current); got.Status != "success" {
+		t.Errorf("matching drv must use the build status, got %q", got.Status)
+	}
+	if got := verdictFor("qbittorrent.aarch64-darwin", darwinPlatform, nil, current); got.Status != "unknown" {
+		t.Errorf("no build must be unknown, got %q", got.Status)
 	}
 }
 
