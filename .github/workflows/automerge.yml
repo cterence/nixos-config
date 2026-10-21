@@ -19,10 +19,22 @@ jobs:
       group: automerge
       cancel-in-progress: false
     steps:
+      - name: Check for automerge PRs
+        id: prs
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          count=$(gh pr list --base main --label automerge --state open --json number --jq 'length')
+          echo "count=$count" >> "$GITHUB_OUTPUT"
       - id: automerge
         name: automerge
         uses: "pascalgn/automerge-action@7961b8b5eec56cc088c140b56d864285eabd3f67" # v0.16.4
-        if: ${{ github.event_name == 'push' || github.event.workflow_run.conclusion == 'success' }}
+        # The action throws on a push with no matching PRs, so only run it
+        # then when there is something to process.
+        if: >-
+          ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
+          (github.event_name == 'push' && steps.prs.outputs.count != '0') }}
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_METHOD: "rebase"
