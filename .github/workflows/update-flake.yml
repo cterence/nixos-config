@@ -71,3 +71,132 @@ jobs:
             }
 
             await comment({ github, context, header, body, issueNumber })
+
+  # Pinned package sweep: runs alongside the lockfile job. Checks every pin
+  # in modules/pins.nix against Hydra's nixpkgs/unstable builds, then drops
+  # green pins and pins red closure packages at their last good version via
+  # an automerge PR.
+  sweep:
+    name: Sweep pins (Hydra)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    concurrency:
+      group: pinned-sweep-check
+      cancel-in-progress: false
+    outputs:
+      unknown: ${{ steps.check.outputs.unknown }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Generate Github app token
+        id: generate-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
+        with:
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+        with:
+          determinate: false
+      - name: Check pins against Hydra
+        id: check
+        run: |
+          nix run \
+            --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
+            .#pinned-sweep -- check --json \
+            > "$RUNNER_TEMP/verdict.json"
+          echo "unknown=$(jq '[.pins[] | select([.platforms[].status] | index("unknown"))] | length' "$RUNNER_TEMP/verdict.json")" >> "$GITHUB_OUTPUT"
+      - name: Upload verdict
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: verdict
+          path: ${{ runner.temp }}/verdict.json
+          if-no-files-found: error
+
+  # Fallback for pins Hydra has no data on (unfree, hydraPlatforms = []):
+  # build them from nixos-unstable natively. Only spins a macOS runner when
+  # such pins exist.
+  fallback:
+    name: Build unknown pins
+    needs: sweep
+    if: needs.sweep.outputs.unknown != '0'
+    runs-on: macos-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Generate Github app token
+        id: generate-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
+        with:
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+        with:
+          determinate: false
+      - name: Check pins with build fallback
+        run: |
+          nix run \
+            --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
+            .#pinned-sweep -- check --json --build-unknown \
+            > "$RUNNER_TEMP/verdict-fallback.json"
+      - name: Upload fallback verdict
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: verdict-fallback
+          path: ${{ runner.temp }}/verdict-fallback.json
+          if-no-files-found: error
+
+  apply:
+    name: Apply pin sweep
+    needs: [sweep, fallback]
+    if: >-
+      always() &&
+      needs.sweep.result == 'success' &&
+      (needs.fallback.result == 'success' || needs.fallback.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Generate Github app token
+        id: generate-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
+        with:
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+        with:
+          determinate: false
+      - name: Download verdicts
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+        continue-on-error: true
+        with:
+          pattern: verdict*
+          path: ${{ runner.temp }}
+          merge-multiple: true
+      - name: Apply sweep
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          git config user.name "pinned-sweep[bot]"
+          git config user.email "pinned-sweep[bot]@users.noreply.github.com"
+          nix run \
+            --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
+            .#pinned-sweep -- apply --pr \
+            --verdict "$RUNNER_TEMP/verdict.json" \
+            --verdict "$RUNNER_TEMP/verdict-fallback.json" \
+            | tee "$GITHUB_STEP_SUMMARY"

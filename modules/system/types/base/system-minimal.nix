@@ -1,4 +1,20 @@
-{ self, ... }: {
+{ inputs, self, lib, ... }:
+let
+  # Sidecar multiverse pins (modules/pins.nix): every host sees pinned
+  # versions without modules referencing pins; home-manager follows via
+  # useGlobalPkgs. Selected per class so the overlay never touches `final`
+  # outside package values — the bootstrapper applies overlays strictly.
+  pinOverlay =
+    pins:
+    final: _prev:
+    let
+      overlay = inputs.multiverse.lib.pinOverlay {
+        pins = builtins.mapAttrs (_: pin: pin.version) pins;
+      };
+    in
+    overlay final _prev;
+in
+{
   flake-file.inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -52,6 +68,8 @@
         self.modules.generic.system-minimal
       ];
 
+      nixpkgs.overlays = [ (pinOverlay self.pins.nixos) ];
+
       # boot.kernelPackages = pkgs.linuxPackages_6_18;
       boot.kernelPackages = pkgs.linuxPackages_latest;
       console.useXkbConfig = true;
@@ -81,6 +99,8 @@
       imports = [
         self.modules.generic.system-minimal
       ];
+
+      nixpkgs.overlays = [ (pinOverlay self.pins.darwin) ];
 
       nix = {
         settings = {
