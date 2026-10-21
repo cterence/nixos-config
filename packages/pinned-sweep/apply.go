@@ -123,22 +123,23 @@ func mergeVerdicts(files []string) (Verdict, error) {
 }
 
 // greenPlatforms: every system must have a success verdict and none may
-// have a failure or pending build. A success supersedes an unknown from an
-// earlier verdict file (the fallback build is stronger evidence).
+// have a failure. A success for a system outweighs pending/unknown verdicts
+// for it (the fallback build is a real verdict on the current drv); a
+// failure anywhere is a veto.
 func greenPlatforms(platforms []PlatformVerdict) bool {
 	if len(platforms) == 0 {
 		return false
 	}
-	bySystem := map[string]bool{} // system -> has success
+	ok := map[string]bool{}
 	for _, pl := range platforms {
 		switch pl.Status {
-		case "failed", "pending":
+		case "failed":
 			return false
 		case "success":
-			bySystem[pl.System] = true
+			ok[pl.System] = true
 		}
 	}
-	return len(bySystem) > 0
+	return len(ok) > 0
 }
 
 // applyVerdicts mutates pins in place: drops green pins, adds pins for red

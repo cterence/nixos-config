@@ -25,6 +25,7 @@ type Build struct {
 	Finished    int    `json:"finished"`
 	NixName     string `json:"nixname"`
 	Job         string `json:"job"`
+	DrvPath     string `json:"drvpath"`
 }
 
 // URL is the human-facing build page.
