@@ -4,17 +4,25 @@ on:
     workflows: [Build]
     types:
       - completed
+  # Rebases outdated automerge PRs (e.g. the lock PR picking up a pin) as
+  # soon as anything lands on main, not just after a successful Build run.
+  push:
+    branches:
+      - main
 permissions:
   contents: write
   pull-requests: write
 jobs:
   automerge:
     runs-on: ubuntu-latest
+    concurrency:
+      group: automerge
+      cancel-in-progress: false
     steps:
       - id: automerge
         name: automerge
         uses: "pascalgn/automerge-action@7961b8b5eec56cc088c140b56d864285eabd3f67" # v0.16.4
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        if: ${{ github.event_name == 'push' || github.event.workflow_run.conclusion == 'success' }}
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_METHOD: "rebase"
