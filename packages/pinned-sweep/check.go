@@ -73,8 +73,9 @@ func cmdCheck(args []string) int {
 	flake := fs.String("flake", ".", "flake to read pins from")
 	asJSON := fs.Bool("json", false, "print verdict JSON on stdout")
 	buildUnknown := fs.Bool("build-unknown", false, "nix-build pins Hydra has no data for, natively")
+	reportOut := fs.String("report-out", "", "also write the markdown report to this file")
 	var closures closureFlags
-	fs.Var(&closures, "closure", "host=attr closure to gate, repeatable")
+	fs.Var(&closures, "closure", "host=attr closure to gate, repeatable; exit 1 on red")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
@@ -110,6 +111,12 @@ func cmdCheck(args []string) int {
 	} else {
 		// Piped (CI, tee to step summary) → markdown; terminal → plain.
 		fmt.Print(renderReport(v, !isTTY(os.Stdout)))
+	}
+	if *reportOut != "" {
+		if err := os.WriteFile(*reportOut, []byte(renderReport(v, true)), 0o644); err != nil {
+			fmt.Fprintln(os.Stderr, "pinned-sweep:", err)
+			return 1
+		}
 	}
 	// Red closures fail the gate; red pins are expected (that is why they
 	// are pinned) and only reported.
@@ -197,10 +204,8 @@ func verdictFor(job, platform string, b *Build, currentDrv string) PlatformVerdi
 		// Hydra's verdict is for an older derivation: no signal for the
 		// current one (yet).
 		pv.Status = "pending"
-		if base := strings.TrimSuffix(path.Base(currentDrv), ".drv"); base != "" {
-			if _, ver := splitPkgName(base); ver != "" {
-				pv.Version = ver
-			}
+		if _, ver := drvPkg(currentDrv); ver != "" {
+			pv.Version = ver
 		}
 		return pv
 	}
@@ -256,6 +261,16 @@ func splitPkgName(name string) (string, string) {
 	return name[:i], name[i+1:]
 }
 
+// drvPkg extracts the package name and version from a store drv path:
+// "/nix/store/<hash>-picard-3.0.2.drv" -> ("picard", "3.0.2").
+func drvPkg(drvPath string) (string, string) {
+	base := strings.TrimSuffix(path.Base(drvPath), ".drv")
+	if i := strings.Index(base, "-"); i >= 0 {
+		base = base[i+1:]
+	}
+	return splitPkgName(base)
+}
+
 // checkClosure dry-runs a host closure and Hydra-checks every package the
 // host would actually build (cache miss). Pinned packages are skipped: their
 // Hydra job reflects current unstable, not the pinned version.
@@ -281,7 +296,7 @@ func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr string) (
 	seen := map[string]bool{}
 	var out []ClosureVerdict
 	for _, drvPath := range parseDryRun(stderr.String()) {
-		pkg, version := splitPkgName(path.Base(drvPath))
+		pkg, version := drvPkg(drvPath)
 		if pkg == "" || seen[pkg] || pinned[pkg].Version != "" {
 			continue
 		}

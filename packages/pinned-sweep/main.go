@@ -16,6 +16,8 @@ const usage = `pinned-sweep — sweep multiverse pins against Hydra build status
 Usage:
   pinned-sweep check [flags]        report pin + closure build status
   pinned-sweep apply [flags]        drop green pins, pin red closure packages
+  pinned-sweep pin [flags]          pin packages whose derivations failed a
+                                    real build (drv extracted from a CI log)
   pinned-sweep version
 
 Check flags:
@@ -32,6 +34,15 @@ Apply flags:
   --pr                    commit to pinned-sweep/sweep, push and open/update
                           an automerge PR (needs GH_TOKEN); without it the
                           working tree is edited in place
+  --preview               show what would change, write nothing
+  --flake <path>          flake to read pins from (default ".")
+
+Pin flags:
+  --from-log <file>       CI build log to extract failing drvs from,
+                          repeatable
+  --system <system>       platform the failed build ran on (required)
+  --pr                    commit to pinned-sweep/sweep, push and open/update
+                          an automerge PR (needs GH_TOKEN)
   --preview               show what would change, write nothing
   --flake <path>          flake to read pins from (default ".")
 
@@ -61,6 +72,8 @@ func run(args []string) int {
 		return cmdCheck(args[1:])
 	case "apply":
 		return cmdApply(args[1:])
+	case "pin":
+		return cmdPin(args[1:])
 	case "version", "--version":
 		fmt.Println("pinned-sweep", version)
 		return 0

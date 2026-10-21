@@ -45,15 +45,28 @@ jobs:
       # build will fail too. The daily sweep in update-flake.yml auto-pins
       # such packages at their last good version.
       - name: Gate on Hydra-failed packages
+        id: gate
         run: |
-          nix run \
+          if ! nix run \
             --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
             --extra-access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }} \
             .#pinned-sweep -- check \
             --closure stronghold=nixosConfigurations.stronghold.config.system.build.toplevel \
             --closure homelab2=nixosConfigurations.homelab2.config.system.build.toplevel \
             --closure macbook=darwinConfigurations.macbook.system \
-            | tee "$GITHUB_STEP_SUMMARY"
+            --json --report-out "$RUNNER_TEMP/gate-report.md" \
+            > "$RUNNER_TEMP/gate-verdict.json"; then
+            cat "$RUNNER_TEMP/gate-report.md" >> "$GITHUB_STEP_SUMMARY" || true
+            exit 1
+          fi
+          cat "$RUNNER_TEMP/gate-report.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload gate verdict
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: gate-verdict
+          path: ${{ runner.temp }}/gate-verdict.json
+          if-no-files-found: ignore
   build:
     needs: eval
     env:
@@ -95,6 +108,14 @@ jobs:
           remove-swapfile: true
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Determine system
+        id: sys
+        run: |
+          if [[ "${{ matrix.attr }}" == *darwinConfigurations* ]]; then
+            echo "system=aarch64-darwin" >> "$GITHUB_OUTPUT"
+          else
+            echo "system=x86_64-linux" >> "$GITHUB_OUTPUT"
+          fi
       - name: Generate Github app token
         id: generate-token
         uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
@@ -118,9 +139,19 @@ jobs:
             sudo systemctl set-environment NIX_GITHUB_PRIVATE_PASSWORD=${{ steps.generate-token.outputs.token }}
             sudo systemctl daemon-reload && sudo systemctl restart nix-daemon
           fi
-          OUT_PATH="$(nix build .#${{ matrix.attr }} --print-out-paths --option access-tokens github.com=${{ steps.generate-token.outputs.token }} --extra-access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }})"
+          if ! nix build .#${{ matrix.attr }} --print-out-paths --option access-tokens github.com=${{ steps.generate-token.outputs.token }} --extra-access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }} 2>&1 | tee "$RUNNER_TEMP/build-${{ steps.sys.outputs.system }}.log"; then
+            exit 1
+          fi
+          OUT_PATH="$(tail -n1 "$RUNNER_TEMP/build-${{ steps.sys.outputs.system }}.log")"
           echo -e "\x1b[32;1mSuccessfully built .#${{ matrix.host }}\x1b[0m"
           echo -e "## Build ${{ matrix.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
+      - name: Upload build log
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: build-log-${{ matrix.host }}
+          path: ${{ runner.temp }}/build-${{ steps.sys.outputs.system }}.log
+          if-no-files-found: ignore
       - name: Diff closures
         if: github.event_name == 'pull_request'
         continue-on-error: true
@@ -157,3 +188,71 @@ jobs:
             const header = '# ${{ matrix.host }}'
             const body = await readFile('${{ runner.temp }}/${{ env.PR_JOB_SUMMARY }}', { encoding: 'utf8' })
             await comment({ github, context, header, body })
+
+  # A failed build is itself the verdict: extract the failing derivations
+  # from the build log and pin them at their last good Hydra version, so a
+  # broken nixpkgs bump can't stall its lock PR behind a manual fix. A failed
+  # gate (Hydra already knows the drv is red) carries the same information in
+  # its verdict.
+  pin:
+    name: Pin failing packages
+    needs: [eval, build]
+    if: >-
+      ${{ always() &&
+      (needs.eval.result == 'failure' || needs.build.result == 'failure') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+    concurrency:
+      group: pinned-sweep-apply
+      cancel-in-progress: false
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+      - name: Generate Github app token
+        id: generate-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
+        with:
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+        with:
+          determinate: false
+      - name: Download build logs
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+        continue-on-error: true
+        with:
+          pattern: build-log-*
+          path: ${{ runner.temp }}/logs
+      - name: Download gate verdict
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4
+        continue-on-error: true
+        with:
+          pattern: gate-verdict
+          path: ${{ runner.temp }}/logs
+      - name: Pin failing packages
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          git config user.name "pinned-sweep[bot]"
+          git config user.email "pinned-sweep[bot]@users.noreply.github.com"
+          if [ -f "$RUNNER_TEMP/logs/gate-verdict.json" ]; then
+            nix run \
+              --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
+              .#pinned-sweep -- pin --from-verdict "$RUNNER_TEMP/logs/gate-verdict.json" --pr
+          fi
+          shopt -s nullglob
+          for log in "$RUNNER_TEMP"/logs/*/build-*.log; do
+            system="${log##*build-}"
+            system="${system%.log}"
+            nix run \
+              --option access-tokens github.com=${{ steps.generate-token.outputs.token }} \
+              .#pinned-sweep -- pin --from-log "$log" --system "$system" --pr
+          done
