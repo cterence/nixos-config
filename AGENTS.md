@@ -30,7 +30,8 @@ Personal nix flake managing NixOS and nix-darwin hosts. Uses
 - `modules/services/` — service aspects (audio, bluetooth, tailscale, niks3,
   comin, printing, fingerprint, kopia-sync)
 - `modules/containers/` — container configs (gatus docker-compose stack)
-- `modules/overlays/` — nixpkgs overlays (discord pin, emulationstation pin)
+- `modules/overlays/` — nixpkgs overlays (discord pin, emulationstation pin,
+  opencloud-desktop finder-ext skip)
 - `modules/nix/` — flake-parts bootstrap, home-manager, lib helpers, sops,
   disko, nixos-anywhere, pkgs-by-name
 - `modules/devshells/` — devShells + pre-commit hooks

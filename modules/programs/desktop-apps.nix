@@ -3,6 +3,7 @@
     darwin = { config, lib, ... }: {
       nixpkgs.overlays = [
         self.overlays.discord-pinned
+        self.overlays.opencloud-desktop
       ];
 
       services.skhd = {
@@ -43,6 +44,7 @@
               darktable
               localsend
               obsidian
+              opencloud-desktop
               picard
               signal-desktop
               supersonic
