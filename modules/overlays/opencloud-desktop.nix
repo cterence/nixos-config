@@ -4,6 +4,8 @@
   flake.overlays.opencloud-desktop = _final: prev: {
     opencloud-desktop = prev.opencloud-desktop.overrideAttrs (_: {
       cmakeFlags = [ "-DBUILD_SHELL_INTEGRATION=OFF" ];
+    } // prev.lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
+      versionCheckProgram = "${placeholder "out"}/Applications/KDE/OpenCloud.app/Contents/MacOS/opencloudcmd";
     });
   };
 }
