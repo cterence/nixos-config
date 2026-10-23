@@ -145,12 +145,28 @@ jobs:
           OUT_PATH="$(tail -n1 "$RUNNER_TEMP/build-${{ steps.sys.outputs.system }}.log")"
           echo -e "\x1b[32;1mSuccessfully built .#${{ matrix.host }}\x1b[0m"
           echo -e "## Build ${{ matrix.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
+      - name: Dump failed derivation logs
+        if: failure()
+        run: |
+          LOG="$RUNNER_TEMP/build-${{ steps.sys.outputs.system }}.log"
+          OUT="$RUNNER_TEMP/drv-logs-${{ steps.sys.outputs.system }}.txt"
+          grep -B1 "builder failed with exit code" "$LOG" \
+            | grep -oE "/nix/store/[a-z0-9]+-[^' ]+\.drv" | sort -u \
+            | while read -r drv; do
+                {
+                  echo "===== nix log $drv (tail) ====="
+                  nix log "$drv" 2>&1 | tail -c 200000
+                  echo
+                } >> "$OUT"
+              done
       - name: Upload build log
         if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         with:
           name: build-log-${{ matrix.host }}
-          path: ${{ runner.temp }}/build-${{ steps.sys.outputs.system }}.log
+          path: |
+            ${{ runner.temp }}/build-${{ steps.sys.outputs.system }}.log
+            ${{ runner.temp }}/drv-logs-${{ steps.sys.outputs.system }}.txt
           if-no-files-found: ignore
       - name: Diff closures
         if: github.event_name == 'pull_request'
