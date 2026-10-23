@@ -102,6 +102,7 @@
             bat
             btop
             cmctl
+            comma
             docker-buildx
             dust
             entr
