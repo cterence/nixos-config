@@ -16,7 +16,10 @@
           firefox = {
             enable = true;
             # XDG profile dir; migrate ~/.mozilla/firefox on existing hosts.
-            configPath = "${config.xdg.configHome}/mozilla/firefox";
+            # Darwin keeps HM's default: the unwrapped package can't apply it.
+            configPath = lib.mkIf (
+              !pkgs.stdenv.hostPlatform.isDarwin
+            ) "${config.xdg.configHome}/mozilla/firefox";
             # The wrapped Firefox renames the real binary to .firefox-old, so
             # macOS 27 cannot resolve it as frontmost (breaks window managers).
             package = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin pkgs.firefox-unwrapped;

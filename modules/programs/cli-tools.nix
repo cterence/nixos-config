@@ -111,6 +111,7 @@
             fastfetch
             fd
             ffmpeg
+            gh-dash
             golangci-lint
             google-cloud-sdk
             go-tools
