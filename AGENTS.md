@@ -88,6 +88,14 @@ system-personal (composable extra)
 2. `git add` the file immediately (import-tree needs it in the tree).
 3. Add the aspect name to the relevant host's `includes` list.
 
+## Git workflow
+
+For any modifications, ask the user whether to edit on the main branch
+without committing or use git worktrees. If using worktrees:
+
+- use the worktree skill and place them in the `.worktrees` directory.
+- create a PR using gh CLI when finished.
+
 ## Applying changes
 
 Agents should NOT run the rebuild/switch themselves. After making changes,
