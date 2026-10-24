@@ -10,32 +10,17 @@ let
         tracker = "https://github.com/NixOS/nixpkgs/issues/572435";
         reason = "3.0 fails to build on darwin";
       };
-      qbittorrent = {
-        version = "5.2.2";
-        tracker = "https://github.com/NixOS/nixpkgs/issues/576182";
-        reason = "5.2.4 fails on darwin against qtbase 6.12";
-      };
     };
-    nixos = {
-      audacity = {
-        version = "3.7.9";
-        tracker = "https://github.com/NixOS/nixpkgs/issues/572942";
-        reason = "4.0.0 fails against qtdeclarative 6.12";
-      };
-      calibre = {
-        version = "9.14.0";
-        tracker = "https://github.com/NixOS/nixpkgs/pull/576063";
-        reason = "9.15+ fails via pyopenjtalk-plus + Cython 3.3.0";
-      };
-    };
+    nixos = { };
   };
 in
 {
   flake.pins = pins;
 
-  # Sidecar overlay: applies every pin to the matching platform's package set,
-  # so modules use `pkgs.<pkg>` without knowing pins exist. Applied once in
-  # system-minimal's generic class; home-manager follows via useGlobalPkgs.
+  # Sidecar overlay: applies every pin to the matching platform's package
+  # set, so modules use `pkgs.<pkg>` without knowing pins exist. Wired in
+  # system-minimal's darwin/nixos classes; home-manager follows via
+  # useGlobalPkgs.
   flake.overlays.multiverse-pins =
     final: _prev:
     let
