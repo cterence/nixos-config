@@ -19,11 +19,19 @@ jobs:
       group: automerge
       cancel-in-progress: false
     steps:
+      - name: Generate Github app token
+        id: generate-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
+        with:
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          # scope to all installation repos, not just this one (private inputs)
+          owner: ${{ github.repository_owner }}
       - name: Check for automerge PRs
         id: prs
         if: github.event_name == 'push'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
           # No checkout in this job — tell gh which repo to talk to.
           count=$(gh pr list -R "$GITHUB_REPOSITORY" --base main --label automerge --state open --json number --jq 'length')
@@ -36,7 +44,10 @@ jobs:
         if: >-
           ${{ (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
           (github.event_name == 'push' && steps.prs.outputs.count != '0') }}
+        # Push-triggered runs only rebase; update-only exits non-zero
+        # (pascalgn/automerge-action#191).
+        continue-on-error: ${{ github.event_name == 'push' }}
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ steps.generate-token.outputs.token }}"
           MERGE_METHOD: "rebase"
           UPDATE_METHOD: "rebase"
