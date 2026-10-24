@@ -96,16 +96,18 @@ jobs:
     steps:
       - name: Free up disk space
         if: runner.os == 'Linux'
-        uses: AdityaGarg8/remove-unwanted-software@90e01b21170618765a73370fcc3abbd1684a7793
-        with:
-          remove-android: true
-          remove-cached-tools: true
-          remove-codeql: true
-          remove-docker-images: true
-          remove-dotnet: true
-          remove-haskell: true
-          remove-large-packages: true
-          remove-swapfile: true
+        run: |
+          sudo docker image prune --all --force > /dev/null
+          # tolerate packages absent from newer runner images (powershell is gone on 26.04)
+          sudo apt-get remove -y '^aspnetcore-.*' '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' \
+            '^mysql-.*' google-chrome-stable microsoft-edge-stable google-cloud-cli powershell \
+            azure-cli firefox mono-devel libgl1-mesa-dri > /dev/null 2>&1 || true
+          sudo apt-get autoremove -y > /dev/null
+          sudo apt-get clean
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/.ghcup \
+            /opt/hostedtoolcache/CodeQL "$AGENT_TOOLSDIRECTORY"
+          sudo swapoff -a
+          sudo rm -f /mnt/swapfile
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Determine system
