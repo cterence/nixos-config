@@ -63,6 +63,7 @@
             ]
             ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
               ghostty-bin
+              iina
               pkgs.local.art
               pkgs.local.todoist-electron
             ];
