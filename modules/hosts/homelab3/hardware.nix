@@ -50,6 +50,8 @@
           "nofail"
           "noatime"
           "x-systemd.automount"
+          "x-systemd.device-timeout=1"
+          "x-systemd.idle-timeout=1min"
           "noauto"
         ];
       };
