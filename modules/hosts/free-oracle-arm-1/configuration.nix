@@ -14,7 +14,12 @@ in
           systemd-boot
           terence-server
         ];
+
         nixos = {
+          home-manager.users.terence.imports = with self.modules.homeManager; [
+            docker-compose-gatus
+          ];
+
           networking.hostName = hostname;
           system.stateVersion = "25.11";
         };

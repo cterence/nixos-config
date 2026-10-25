@@ -23,6 +23,7 @@
                 # placeholder if DRM outputs aren't ready. bazzite#4826.
                 # Session stays Wayland.
                 wayland.enable = false;
+                settings.General.InputMethod = "";
               };
               desktopManager.plasma6.enable = true;
             };

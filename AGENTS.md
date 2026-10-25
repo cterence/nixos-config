@@ -23,7 +23,7 @@ Personal nix flake managing NixOS and nix-darwin hosts. Uses
 ## Key directories
 
 - `modules/hosts/` — per-host config (macbook, homelab2, homelab3,
-  stronghold, free-oracle-arm-1, free-oracle-amd-1, free-oracle-amd-2)
+  stronghold, free-oracle-arm-1)
 - `modules/programs/` — program aspects (shell, git, docker, cli-tools, etc.)
 - `modules/system/` — system settings and type profiles (base/, types/, settings/)
 - `modules/users/` — per-user aspects (terence)
@@ -72,15 +72,15 @@ system-personal (composable extra)
 
 ## Hosts
 
-| Host                | System           | Type       | Key aspects                                                         | Notes                                           |
-|---------------------|------------------|------------|---------------------------------------------------------------------|-------------------------------------------------|
-| `macbook`           | `aarch64-darwin` | `mkDarwin` | system-macos, system-desktop, system-personal, terence-desktop, ssh | `stateVersion = 7`                              |
-| `homelab2`          | `x86_64-linux`   | `mkNixos`  | system-server, k0s (controller), comin, terence-server              | k0s leader at 192.168.1.54; openbao unseal keys |
-| `homelab3`          | `x86_64-linux`   | `mkNixos`  | system-server, k0s (worker, disabled), development, terence-server  | NFS server; k0s-token via sops                  |
+| Host                | System           | Type       | Key aspects                                                         | Notes                                                                                                            |
+|---------------------|------------------|------------|---------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| `macbook`           | `aarch64-darwin` | `mkDarwin` | system-macos, system-desktop, system-personal, terence-desktop, ssh | `stateVersion = 7`                                                                                               |
+| `homelab2`          | `x86_64-linux`   | `mkNixos`  | system-server, k0s (controller), comin, terence-server              | k0s leader at 192.168.1.54; openbao unseal keys                                                                  |
+| `homelab3`          | `x86_64-linux`   | `mkNixos`  | system-server, k0s (worker, disabled), development, terence-server  | NFS server; k0s-token via sops                                                                                   |
 | `stronghold`        | `x86_64-linux`   | `mkNixos`  | system-desktop, system-personal, comin, terence-desktop             | AMD GPU (RX 6600), kopia-sync; monitor must stay 120 Hz — 144 Hz locks amdgpu MCLK at 96 MHz (game stutter, DS3) |
-| `free-oracle-arm-1` | `aarch64-linux`  | `mkNixos`  | system-oracle, terence-server                                       | disko; WireGuard; Oracle Cloud                  |
-| `free-oracle-amd-1` | `x86_64-linux`   | `mkNixos`  | system-oracle, terence-server                                       | disko; zramSwap; docker-compose-gatus           |
-| `free-oracle-amd-2` | `x86_64-linux`   | `mkNixos`  | system-oracle, terence-server                                       | disko; zramSwap                                 |
+| `free-oracle-arm-1` | `aarch64-linux`  | `mkNixos`  | system-oracle, terence-server                                       | disko; WireGuard; Oracle Cloud                                                                                   |
+| `free-oracle-amd-1` | `x86_64-linux`   | `mkNixos`  | system-oracle, terence-server                                       | disko; zramSwap; docker-compose-gatus                                                                            |
+| `free-oracle-amd-2` | `x86_64-linux`   | `mkNixos`  | system-oracle, terence-server                                       | disko; zramSwap                                                                                                  |
 
 ## Adding a new module
 
@@ -153,10 +153,10 @@ tell the user to apply them so they can review and control the deployment:
 When a package breaks on unstable, pin a known-good nixpkgs commit as a new
 input next to the module that uses it:
 
-| Input                      | Reason                                    | File                                    |
-|----------------------------|-------------------------------------------|-----------------------------------------|
-| `nixpkgs-discord-darwin`   | macOS Discord corruption (nixpkgs#544338) | `modules/overlays/discord.nix`          |
-| `nixpkgs-emulationstation` | emulationstation-de build break           | `modules/overlays/emulationstation.nix` |
+| Input                      | Reason                                                                                 | File                                         |
+|----------------------------|----------------------------------------------------------------------------------------|----------------------------------------------|
+| `nixpkgs-discord-darwin`   | macOS Discord corruption (nixpkgs#544338)                                              | `modules/overlays/discord.nix`               |
+| `nixpkgs-emulationstation` | emulationstation-de build break                                                        | `modules/overlays/emulationstation.nix`      |
 | `nixpkgs-kernel`           | amdgpu RDNA2 sclk regression in 7.2.1+ (GPU stuck at low clock under load, stronghold) | `modules/hosts/stronghold/configuration.nix` |
 
 Version pins (any historical version of a package, no new input per pin) use
@@ -180,11 +180,11 @@ Find the last good revision: `nix shell nixpkgs#hydra-check -c hydra-check --cha
 
 Auto-discovered by `pkgs-by-name-for-flake-parts` from `packages/`:
 
-| Package            | Platforms             | Description                              |
-|--------------------|-----------------------|------------------------------------------|
-| `todoist-electron` | aarch64/x86_64-darwin | Todoist 9.20.0, patched + re-signed DMG  |
-| `iterm2-ai-plugin` | darwin                | iTermAI 1.1 app                          |
-| `linear-linux`     | linux                 | Linear desktop app (dpkg + autoPatchelf) |
+| Package            | Platforms             | Description                                                               |
+|--------------------|-----------------------|---------------------------------------------------------------------------|
+| `todoist-electron` | aarch64/x86_64-darwin | Todoist 9.20.0, patched + re-signed DMG                                   |
+| `iterm2-ai-plugin` | darwin                | iTermAI 1.1 app                                                           |
+| `linear-linux`     | linux                 | Linear desktop app (dpkg + autoPatchelf)                                  |
 | `pinned-sweep`     | all                   | Go CLI sweeping multiverse pins against Hydra (`check` / `apply` / `pin`) |
 
 Exposed as `.#<name>` and via `pkgs.local.<name>` overlay.
