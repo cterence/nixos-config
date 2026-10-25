@@ -16,5 +16,10 @@ endpoints:
   - name: health.terence.cloud
     url: https://health.terence.cloud
     interval: 2m
+    client:
+      tls:
+        certificate-file: /client.pem
+        private-key-file: /client.key
     conditions:
       - "[STATUS] == 200"
+      - "[BODY].failures == {}"
