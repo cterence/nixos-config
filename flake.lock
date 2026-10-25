@@ -1211,6 +1211,7 @@
         "spf13-cli-style-skills": "spf13-cli-style-skills",
         "spf13-go-skills": "spf13-go-skills",
         "tailcat": "tailcat",
+        "taste-skill": "taste-skill",
         "terraform-skills": "terraform-skills",
         "wshobson-skills": "wshobson-skills"
       }
@@ -1372,6 +1373,22 @@
       "original": {
         "owner": "tailscale",
         "repo": "tailcat",
+        "type": "github"
+      }
+    },
+    "taste-skill": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792885339,
+        "narHash": "sha256-RpdiP+9Rh1sfPTsGnrKMmCiNT7T9l0/jnDrDYoAJukY=",
+        "owner": "Leonxlnx",
+        "repo": "taste-skill",
+        "rev": "12af471f627f866411b4bd785b19646d3672784c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Leonxlnx",
+        "repo": "taste-skill",
         "type": "github"
       }
     },
