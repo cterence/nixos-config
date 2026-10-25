@@ -1,5 +1,6 @@
 {
   inputs,
+  self,
   ...
 }:
 {
@@ -7,6 +8,9 @@
     nixos =
       { config, ... }:
       {
+        # user services (compose unit, rootless docker) must survive logout
+        users.users.${self.lib.username}.linger = true;
+
         sops.secrets = {
           homelab-client-cert = {
             sopsFile = "${inputs.secrets}/homelab-client-cert.json";
