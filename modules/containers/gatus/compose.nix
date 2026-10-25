@@ -6,6 +6,7 @@
     in
     {
       home.file."${directory}/compose.yaml".source = ./compose.yaml;
+      home.file."${directory}/config/config.yaml".source = ./config.yaml;
 
       systemd.user.services.docker-compose-gatus = {
         Unit = {

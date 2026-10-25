@@ -1,0 +1,10 @@
+storage:
+  file:
+    path: /data/data.db
+
+endpoints:
+  - name: health.terence.cloud
+    url: https://health.terence.cloud
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
