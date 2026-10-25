@@ -6,6 +6,7 @@
 - When ponytail conflicts with another skill, ponytail wins.
 - Go features and bugfixes: write the failing test first, then the smallest implementation that passes.
 - Use go skill when doing go work.
+- When using the grilling / grill-me skill, always ask questions with the question tool (ask_user_question).
 - After finishing coding work that left `ponytail:` deferred shortcuts, run the ponytail-debt skill to harvest them.
 
 ## User preferences
