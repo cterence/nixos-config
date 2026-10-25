@@ -10,7 +10,6 @@
     in
     {
       home.file."${directory}/compose.yaml".source = ./compose.yaml;
-      home.file."${directory}/config/config.yaml".source = ./config.yaml;
 
       sops.secrets = {
         telegram-token.sopsFile = "${inputs.secrets}/gatus.yaml";
@@ -35,6 +34,8 @@
         Service = {
           Type = "simple";
           WorkingDirectory = directory;
+          # copy, not symlink: the container can't follow nix store links
+          ExecStartPre = "${pkgs.coreutils}/bin/install -Dm644 ${./config.yaml} ${directory}/config/config.yaml";
           ExecStart = "${pkgs.docker}/bin/docker compose up";
           ExecStop = "${pkgs.docker}/bin/docker compose down";
           Restart = "always";
