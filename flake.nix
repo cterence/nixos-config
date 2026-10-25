@@ -142,6 +142,10 @@
       url = "github:tailscale/tailcat";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    taste-skill = {
+      url = "github:Leonxlnx/taste-skill";
+      flake = false;
+    };
     terraform-skills = {
       url = "github:hashicorp/agent-skills";
       flake = false;

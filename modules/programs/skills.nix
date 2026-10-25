@@ -48,6 +48,10 @@
       flake = false;
       url = "github:morluto/rea/rea-agents-6.5.0";
     };
+    taste-skill = {
+      flake = false;
+      url = "github:Leonxlnx/taste-skill";
+    };
   };
 
   # Shared skill catalog consumed by the per-agent home.file builders in
@@ -165,6 +169,11 @@
         "rea-ci-tests-audit"
         "rea-tool-design"
       ];
+    }
+    {
+      name = "taste-skill";
+      source = "${inputs.taste-skill}/skills/taste-skill";
+      agents = [ "vibe" ];
     }
   ];
 }
