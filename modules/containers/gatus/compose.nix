@@ -1,4 +1,8 @@
 {
+  inputs,
+  ...
+}:
+{
   flake.aspects.docker-compose-gatus.homeManager =
     { pkgs, config, ... }:
     let
@@ -7,6 +11,16 @@
     {
       home.file."${directory}/compose.yaml".source = ./compose.yaml;
       home.file."${directory}/config/config.yaml".source = ./config.yaml;
+
+      sops.secrets = {
+        telegram-token.sopsFile = "${inputs.secrets}/gatus.yaml";
+        telegram-chat-id.sopsFile = "${inputs.secrets}/gatus.yaml";
+      };
+
+      sops.templates."gatus-env".content = ''
+        TELEGRAM_TOKEN=${config.sops.placeholder.telegram-token}
+        TELEGRAM_CHAT_ID=${config.sops.placeholder.telegram-chat-id}
+      '';
 
       systemd.user.services.docker-compose-gatus = {
         Unit = {
@@ -28,6 +42,7 @@
             "DOCKER_HOST=unix://%t/docker.sock"
             "DOCKER_SOCKET_PATH=%t/docker.sock"
           ];
+          EnvironmentFile = config.sops.templates."gatus-env".path;
         };
       };
     };

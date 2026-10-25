@@ -27,6 +27,9 @@ services:
     image: twinproduction/gatus:latest@sha256:b8137c7fc8f9dfd279b71a0dede1768ec2ec3cd2c8a43fe4b3e8ef2eb5f95dd9
     container_name: gatus
     restart: always
+    environment:
+      - "TELEGRAM_TOKEN=${TELEGRAM_TOKEN}"
+      - "TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}"
     volumes:
       - ./config:/config
       - data:/data

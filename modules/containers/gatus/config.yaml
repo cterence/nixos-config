@@ -1,10 +1,20 @@
 storage:
-  file:
-    path: /data/data.db
+  type: sqlite
+  path: /data/data.db
+
+alerting:
+  telegram:
+    token: "${TELEGRAM_TOKEN}"
+    id: "${TELEGRAM_CHAT_ID}"
+    default-alert:
+      enabled: true
+      send-on-resolved: true
+      failure-threshold: 3
+      success-threshold: 3
 
 endpoints:
   - name: health.terence.cloud
     url: https://health.terence.cloud
-    interval: 5m
+    interval: 2m
     conditions:
       - "[STATUS] == 200"
