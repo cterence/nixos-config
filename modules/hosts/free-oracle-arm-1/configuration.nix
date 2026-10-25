@@ -13,6 +13,7 @@ in
           system-oracle
           systemd-boot
           terence-server
+          docker-compose-gatus
         ];
 
         nixos = {
