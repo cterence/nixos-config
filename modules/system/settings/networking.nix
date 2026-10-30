@@ -1,7 +1,27 @@
 let
   StateDirectory = "dnscrypt-proxy";
+
+  # terence.cloud authoritative NS (jaziel/mary); queried directly so
+  # recursive caches never hold 1800s NXDOMAIN for fresh subdomains.
+  terenceCloudNS = [
+    "108.162.195.55"
+    "162.159.44.55"
+    "172.64.35.55"
+    "108.162.192.134"
+    "172.64.32.134"
+    "173.245.58.134"
+  ];
 in
 {
+  flake.aspects.networking.darwin =
+    { lib, ... }:
+    {
+      # Scoped resolver: terence.cloud bypasses MagicDNS and its negative cache.
+      environment.etc."resolver/terence.cloud".text = lib.concatMapStringsSep "\n" (
+        ip: "nameserver ${ip}"
+      ) terenceCloudNS;
+    };
+
   flake.aspects.networking.nixos = {
     networking = {
       # Trying search domain only on domain with < 1 dot
@@ -24,7 +44,10 @@ in
           "/snow-delta.ts.net/100.100.100.100"
           "/ts.net/100.100.100.100"
           "/100.in-addr.arpa/100.100.100.100"
-        ];
+        ]
+        ++ (map (ip: "/terence.cloud/${ip}") terenceCloudNS);
+        # Cap negative caching; Cloudflare SOA minimum is 1800.
+        neg-ttl = 10;
         listen-address = [
           "127.0.0.1"
           "::1"
