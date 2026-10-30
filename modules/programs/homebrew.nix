@@ -41,6 +41,7 @@
       enable = true;
       onActivation.cleanup = "zap";
       casks = [
+        "google-chrome"
         "markedit"
         "nextcloud"
         "steam"
