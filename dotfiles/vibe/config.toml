@@ -146,44 +146,6 @@ allowlist = [
 denylist = []
 sensitive_patterns = []
 
-[tools.grep]
-permission = "always"
-allowlist = []
-denylist = []
-sensitive_patterns = [
-    "**/.env",
-    "**/.env.*",
-]
-max_output_bytes = 64000
-default_max_matches = 100
-default_timeout = 60
-exclude_patterns = [
-    ".venv/",
-    "venv/",
-    ".env/",
-    "env/",
-    "node_modules/",
-    ".git/",
-    "__pycache__/",
-    ".pytest_cache/",
-    ".mypy_cache/",
-    ".tox/",
-    ".nox/",
-    ".coverage/",
-    "htmlcov/",
-    "dist/",
-    "build/",
-    ".idea/",
-    ".vscode/",
-    "*.egg-info",
-    "*.pyc",
-    "*.pyo",
-    "*.pyd",
-    ".DS_Store",
-    "Thumbs.db",
-]
-codeignore_file = ".vibeignore"
-
 [tools.bash]
 permission = "ask"
 allowlist = [

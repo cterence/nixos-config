@@ -12,6 +12,10 @@
       url = "github:nlewo/comin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    cursor-plugins = {
+      url = "github:cursor/plugins";
+      flake = false;
+    };
     direnv-instant = {
       url = "github:Mic92/direnv-instant";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -148,6 +152,10 @@
     };
     terraform-skills = {
       url = "github:hashicorp/agent-skills";
+      flake = false;
+    };
+    trailofbits-skills = {
+      url = "github:trailofbits/skills";
       flake = false;
     };
     wshobson-skills = {

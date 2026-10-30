@@ -52,6 +52,14 @@
       flake = false;
       url = "github:Leonxlnx/taste-skill";
     };
+    cursor-plugins = {
+      flake = false;
+      url = "github:cursor/plugins";
+    };
+    trailofbits-skills = {
+      flake = false;
+      url = "github:trailofbits/skills";
+    };
   };
 
   # Shared skill catalog consumed by the per-agent home.file builders in
@@ -174,6 +182,83 @@
       name = "taste-skill";
       source = "${inputs.taste-skill}/skills/taste-skill";
       agents = [ "vibe" ];
+    }
+    {
+      name = "thermo-nuclear-code-quality-review";
+      source = "${inputs.cursor-plugins}/cursor-team-kit/skills/thermo-nuclear-code-quality-review";
+      agents = [ "vibe" ];
+    }
+    {
+      name = "code-improver";
+      source = "${inputs.trailofbits-skills}/plugins/code-improver/skills";
+      agents = [ "vibe" ];
+      flatten = true;
+    }
+    {
+      name = "patching-bugs";
+      source = "${inputs.trailofbits-skills}/plugins/patching-bugs/skills";
+      agents = [ "vibe" ];
+      flatten = true;
+    }
+    {
+      name = "regression-hunt";
+      source = "${inputs.trailofbits-skills}/plugins/regression-hunt/skills";
+      agents = [ "vibe" ];
+      flatten = true;
+    }
+    {
+      name = "static-analysis";
+      source = "${inputs.trailofbits-skills}/plugins/static-analysis/skills";
+      agents = [ "vibe" ];
+      flatten = true;
+    }
+    {
+      name = "mutation-testing";
+      source = "${inputs.trailofbits-skills}/plugins/mutation-testing/skills";
+      agents = [ "vibe" ];
+      flatten = true;
+    }
+    {
+      name = "property-based-testing";
+      source = "${inputs.trailofbits-skills}/plugins/property-based-testing/skills";
+      agents = [ "vibe" ];
+      flatten = true;
+    }
+    {
+      name = "differential-review";
+      source = "${inputs.trailofbits-skills}/plugins/differential-review/skills";
+      agents = [ "vibe" ];
+      flatten = true;
+    }
+    {
+      name = "second-opinion";
+      source = "${inputs.trailofbits-skills}/plugins/second-opinion/skills";
+      agents = [ "vibe" ];
+      flatten = true;
+    }
+    {
+      name = "sharp-edges";
+      source = "${inputs.trailofbits-skills}/plugins/sharp-edges/skills";
+      agents = [ "vibe" ];
+      flatten = true;
+    }
+    {
+      name = "goal-prompt";
+      source = "${inputs.trailofbits-skills}/plugins/goal-prompt/skills";
+      agents = [ "vibe" ];
+      flatten = true;
+    }
+    {
+      name = "gh-cli";
+      source = "${inputs.trailofbits-skills}/plugins/gh-cli/skills";
+      agents = [ "vibe" ];
+      flatten = true;
+    }
+    {
+      name = "github-triage";
+      source = "${inputs.trailofbits-skills}/plugins/github-triage/skills";
+      agents = [ "vibe" ];
+      flatten = true;
     }
   ];
 }

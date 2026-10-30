@@ -133,6 +133,22 @@
         "type": "github"
       }
     },
+    "cursor-plugins": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793314284,
+        "narHash": "sha256-QW55Vg593fNhoQ2dUlr/HLV/5OkGORLZfencXEInbWk=",
+        "owner": "cursor",
+        "repo": "plugins",
+        "rev": "4dd1d05818d19792e7cd6e818f1667f95f7e1dbe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cursor",
+        "repo": "plugins",
+        "type": "github"
+      }
+    },
     "devshell": {
       "inputs": {
         "nixpkgs": [
@@ -1171,6 +1187,7 @@
       "inputs": {
         "caveman-skills": "caveman-skills",
         "comin": "comin",
+        "cursor-plugins": "cursor-plugins",
         "direnv-instant": "direnv-instant",
         "disko": "disko",
         "dotfiles": "dotfiles",
@@ -1213,6 +1230,7 @@
         "tailcat": "tailcat",
         "taste-skill": "taste-skill",
         "terraform-skills": "terraform-skills",
+        "trailofbits-skills": "trailofbits-skills",
         "wshobson-skills": "wshobson-skills"
       }
     },
@@ -1405,6 +1423,22 @@
       "original": {
         "owner": "hashicorp",
         "repo": "agent-skills",
+        "type": "github"
+      }
+    },
+    "trailofbits-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1793212734,
+        "narHash": "sha256-vQiXAEv3+VsLweirfFaN1nD/PWuiDOlT5LeSLwIa304=",
+        "owner": "trailofbits",
+        "repo": "skills",
+        "rev": "2be6433b39e009cd2b6fd3be1895f6b1faa5af9a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "trailofbits",
+        "repo": "skills",
         "type": "github"
       }
     },
