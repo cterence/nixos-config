@@ -275,6 +275,10 @@
             target = "${config.home.homeDirectory}/.config/containers/policy.json";
             source = "${inputs.dotfiles}/skopeo-policy.json";
           };
+          gh-dash-config = {
+            target = "${config.home.homeDirectory}/.config/gh-dash/config.yml";
+            source = "${inputs.dotfiles}/gh-dash/config.yml";
+          };
         };
       };
   };
