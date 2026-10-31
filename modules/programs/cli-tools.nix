@@ -117,6 +117,7 @@
             go-tools
             gopls
             glab
+            gum
             gws
             htop
             ipcalc
