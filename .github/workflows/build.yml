@@ -28,12 +28,18 @@ jobs:
           client-id: ${{ secrets.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
+      - name: Tailscale
+        uses: tailscale/github-action@064b10558093f38325e838ddea35486bdc6b1d5c # v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          audience: ${{ secrets.TS_AUDIENCE }}
+          tags: tag:github-actions
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
         with:
           determinate: false
           extra-conf: |
-            extra-substituters = https://niks3.terence.cloud
+            extra-substituters = http://niks3.snow-delta.ts.net:5751
             extra-trusted-public-keys = niks3.terence.cloud-1:YBjuY7HeSjKk5wmvw8N+vq/us2GxQPCHRn871lL7XL4=
       - name: Evaluate all hosts
         run: |
@@ -130,10 +136,26 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
         with:
           determinate: false # plain Nix, no FlakeHub cache/login (see eval job)
+      - name: Tailscale
+        uses: tailscale/github-action@064b10558093f38325e838ddea35486bdc6b1d5c # v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          audience: ${{ secrets.TS_AUDIENCE }}
+          tags: tag:github-actions
+      - name: Restore DNS after Tailscale
+        if: runner.os == 'macOS'
+        run: |
+          set -euo pipefail
+          tsip=$(tailscale status --json | jq -r '.Peer[] | select(.DNSName | startswith("niks3.")) | .TailscaleIPs[0]')
+          test -n "$tsip"
+          echo "$tsip niks3.snow-delta.ts.net" | sudo tee -a /etc/hosts
+          sudo networksetup -setdnsservers Ethernet Empty
+          sudo networksetup -setsearchdomains Ethernet Empty
       - name: Setup niks3 cache
         uses: Mic92/niks3-action@f0743610fddd7d96239c78d9e457440fc15019e2 # v1.4.0
         with:
-          server-url: https://niks3.terence.cloud
+          server-url: http://niks3.snow-delta.ts.net:5751
+          substituter: http://niks3.snow-delta.ts.net:5751
       - name: Build
         run: |
           if [ "${{ runner.os }}" = "Linux" ]; then
