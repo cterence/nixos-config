@@ -112,7 +112,7 @@
 
             # Configuration
             BUCKET="velero"
-            PATH_PREFIX="v2/kopia/"
+            PATH_PREFIX="v1/kopia/"
             ENDPOINT_DOMAIN="versity-gw-storage-pool.snow-delta.ts.net:7070"
             ENDPOINT_URL="http://$ENDPOINT_DOMAIN"
             REGION="us-east-1"
@@ -129,7 +129,7 @@
 
             # List all directories (repositories) in the bucket
             echo "Listing repositories in bucket..."
-            REPOSITORIES=$(${pkgs.awscli2}/bin/aws s3 ls "$BUCKET/$PATH_PREFIX" --endpoint-url "$ENDPOINT_URL" --profile versitygw  | ${pkgs.gawk}/bin/awk '/PRE/ {print $2}' | ${pkgs.gnused}/bin/sed 's:/$::')
+            REPOSITORIES=$(${pkgs.awscli2}/bin/aws s3 ls "$BUCKET/$PATH_PREFIX" --endpoint-url "$ENDPOINT_URL" | ${pkgs.gawk}/bin/awk '/PRE/ {print $2}' | ${pkgs.gnused}/bin/sed 's:/$::')
 
             unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
 
