@@ -113,7 +113,7 @@
             # Configuration
             BUCKET="velero"
             PATH_PREFIX="v2/kopia/"
-            ENDPOINT_DOMAIN="versity-gw-nfs.snow-delta.ts.net:7070"
+            ENDPOINT_DOMAIN="versity-gw-storage-pool.snow-delta.ts.net:7070"
             ENDPOINT_URL="http://$ENDPOINT_DOMAIN"
             REGION="us-east-1"
             LOCAL_BASE_DIR="/mnt/elements/kopia-vgw-sync/repositories"
