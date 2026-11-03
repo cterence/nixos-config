@@ -93,7 +93,7 @@ system-personal (composable extra)
 For any modifications, ask the user whether to edit on the main branch
 without committing or use git worktrees. If using worktrees:
 
-- use the worktree skill and place them in the `.worktrees` directory.
+- use the `vibe:worktree` skill; worktrees live under `$VIBE_HOME/worktrees/` (default `~/.vibe/worktrees/`).
 - create a PR using gh CLI when finished.
 
 ## Applying changes
