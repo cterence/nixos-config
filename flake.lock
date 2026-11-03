@@ -120,11 +120,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1793083015,
-        "narHash": "sha256-0siydyIPahJJ38sKCHoRPVfHx+gbksUU55SEGL8Kk+A=",
+        "lastModified": 1793609097,
+        "narHash": "sha256-DKZY5qtYufLG8/t8SIRuiZXhF6oLAU4VAAIl6cnYxZ8=",
         "owner": "nlewo",
         "repo": "comin",
-        "rev": "f95451172287f3cb36249a2cdef56efa9bbeef19",
+        "rev": "119045d0a29da98b7d80d29b5c05d843e7f456f1",
         "type": "github"
       },
       "original": {
@@ -513,11 +513,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1793594672,
-        "narHash": "sha256-jtiyoeQ1oVvFuSkUEY4i1vJYWR8AIFYrVVht1iBy6Mg=",
+        "lastModified": 1793673939,
+        "narHash": "sha256-RBfqCV5mJ/nytiI5EYooY/fUZk8p83d+SVTb4wq3aq0=",
         "owner": "cterence",
         "repo": "homelab-gitops",
-        "rev": "7ed82542ff0b3ba63459c52e3c452a20239a0b0c",
+        "rev": "c6928cf54fc7ff7b452b40a73e83da130e2ba9a1",
         "type": "github"
       },
       "original": {
@@ -548,11 +548,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793568031,
-        "narHash": "sha256-wI0R+UjtCdy5vXYDHDogivPsqM0zoWFEsczloHbETPI=",
+        "lastModified": 1793634601,
+        "narHash": "sha256-J89mMPEfX0GCx+UOE7GuD4V2nsRKqHEuzFwMuCr9JBE=",
         "owner": "nix-community",
         "repo": "k0s-nix",
-        "rev": "330cbd7f85ca8da841091596feed9ace1c4de044",
+        "rev": "fe6a7f24297c92583d7f25d3861892e77f613b62",
         "type": "github"
       },
       "original": {
@@ -588,11 +588,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1793596530,
-        "narHash": "sha256-aIuy2do0b0AQMw6FUzxkG6tWaXFjjiupyNk86AOhURo=",
+        "lastModified": 1793669982,
+        "narHash": "sha256-yCY0C0Ta7jfK0uSssZ3uEOfER9aZuZV0gj9W7bJIK6U=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "ae55ba3dd19e06377d36d067442040eb1905e117",
+        "rev": "5ba207f9d264f531e473a4ea8b3187c9ced912f9",
         "type": "github"
       },
       "original": {
@@ -644,11 +644,11 @@
     },
     "multiverse": {
       "locked": {
-        "lastModified": 1793484873,
-        "narHash": "sha256-+jPfx/We1WIzTusFzxK8BE6Y7OuMQRD8tw4SkUb/96w=",
+        "lastModified": 1793666226,
+        "narHash": "sha256-y71uqy+VaOI347vvGyo2apQAflTheA7N007zCE68tc4=",
         "owner": "fzakaria",
         "repo": "nixpkgs-multiverse",
-        "rev": "0fd073c640ba30ebd9cff2eb119afb463aaf9a74",
+        "rev": "85c2ce5d67d4f061796a363b958ab6963ef419b0",
         "type": "github"
       },
       "original": {
@@ -1018,11 +1018,11 @@
     },
     "nixpkgs_8": {
       "locked": {
-        "lastModified": 1793341285,
-        "narHash": "sha256-LOv16TsMYV2/8BUYnhSxHkOASe7es2ORbqMeLlZJ8Hc=",
-        "rev": "1c89083e451e891152365b799595cf7790a43325",
+        "lastModified": 1793540411,
+        "narHash": "sha256-us2GRWGXbOQpN1blyJGvmdx+g4bv9GoFYq5iiOHRiZ8=",
+        "rev": "0bb2eedc20e4739f29e8045034f2828ad7054f8f",
         "type": "tarball",
-        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1105037.1c89083e451e/nixexprs.tar.xz"
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1106360.0bb2eedc20e4/nixexprs.tar.xz"
       },
       "original": {
         "type": "tarball",
@@ -1253,11 +1253,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793052255,
-        "narHash": "sha256-Y/JIHTnMlOabDfyaSBubWGLDIVGihLEUuoMhFvQKaDo=",
+        "lastModified": 1793657466,
+        "narHash": "sha256-GoOvpdsjO5hqZuO6T6ok9u6sJEjO0iPli2zRr9oNUNw=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "60182817ee048ac94b4c68ea76d5ef2e8aac730d",
+        "rev": "b18e01ce148eb3efff5de2f2d3181ca53b2b2a54",
         "type": "github"
       },
       "original": {
@@ -1429,11 +1429,11 @@
     "trailofbits-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1793212734,
-        "narHash": "sha256-vQiXAEv3+VsLweirfFaN1nD/PWuiDOlT5LeSLwIa304=",
+        "lastModified": 1793652454,
+        "narHash": "sha256-rMlRtB8mQHOEdEeS3f1CjCGW8MzAjmUv0iqp9BdhFII=",
         "owner": "trailofbits",
         "repo": "skills",
-        "rev": "2be6433b39e009cd2b6fd3be1895f6b1faa5af9a",
+        "rev": "711af095215ad4ecde5b90cd1d0124b3f1c4ca9e",
         "type": "github"
       },
       "original": {
