@@ -136,11 +136,11 @@
     "cursor-plugins": {
       "flake": false,
       "locked": {
-        "lastModified": 1793491838,
-        "narHash": "sha256-sX6KIElyFreuDPt4zViNis2nuAn9QG0n38z3uejJU98=",
+        "lastModified": 1793762726,
+        "narHash": "sha256-aTUsfGvIxzmmmQnz+G4ZJRr7Yu1QqjjtZWHROWKkbPg=",
         "owner": "cursor",
         "repo": "plugins",
-        "rev": "ae5650febf4320793844c12c4adaa937f417f8da",
+        "rev": "180939f9e59cc9512e9330649175763e81fad16f",
         "type": "github"
       },
       "original": {
@@ -491,11 +491,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793193205,
-        "narHash": "sha256-X6xa6sGA7RnJQuZGbFMC+K+KToWAlBDCCjJXfTwEPsw=",
+        "lastModified": 1793757180,
+        "narHash": "sha256-gyV7AtCwLnOImcrfSETP4J3Ie96bz19DY47B7m7Y3HM=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "095fef2f265c3c0da4fe315efba8f8a04495ab34",
+        "rev": "b787c48e2ec57a9d098f5c2721882a3bc1e16f97",
         "type": "github"
       },
       "original": {
@@ -513,11 +513,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1793673939,
-        "narHash": "sha256-RBfqCV5mJ/nytiI5EYooY/fUZk8p83d+SVTb4wq3aq0=",
+        "lastModified": 1793762082,
+        "narHash": "sha256-gYxc1uu9V7YJ6beu2RBo/lLW4ru2MqoAbl4HlOTh2Tk=",
         "owner": "cterence",
         "repo": "homelab-gitops",
-        "rev": "c6928cf54fc7ff7b452b40a73e83da130e2ba9a1",
+        "rev": "77961dbc889544d3c9a4c00133ba73decbcb2cad",
         "type": "github"
       },
       "original": {
@@ -588,11 +588,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1793669982,
-        "narHash": "sha256-yCY0C0Ta7jfK0uSssZ3uEOfER9aZuZV0gj9W7bJIK6U=",
+        "lastModified": 1793770482,
+        "narHash": "sha256-tCNNF2NBOjk4QR5spvUopbvzUKEHFfxr4yFcmzxyldw=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "5ba207f9d264f531e473a4ea8b3187c9ced912f9",
+        "rev": "8ae4eb614271ecbbd62e2641a0c2aa1fff3cf9ca",
         "type": "github"
       },
       "original": {
@@ -665,11 +665,11 @@
         "treefmt-nix": "treefmt-nix_6"
       },
       "locked": {
-        "lastModified": 1793555647,
-        "narHash": "sha256-tTcoDWiraSB1FlnYlhdBv9ZylcGhGTiU1lbi5OZN5Gw=",
+        "lastModified": 1793693699,
+        "narHash": "sha256-rJLLSdzk33iyKVIhG0UuCKjI6RGWMSTZD6qhuVIbbqg=",
         "owner": "Mic92",
         "repo": "niks3",
-        "rev": "b8ab8359e51e7f6b70a879a5aae2f778f2e4137d",
+        "rev": "2ae7fce37ce1c8d9029ba0a180bb67606baf151e",
         "type": "github"
       },
       "original": {
@@ -1153,11 +1153,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791909798,
-        "narHash": "sha256-VAhpCOmrun/KXimYfR8NM88bciKCui7CqHHhThSzgag=",
+        "lastModified": 1793686154,
+        "narHash": "sha256-Zb/0L3soxrkfcrywpfp0J++0WFLB3tzh0Xtx9up+VNc=",
         "owner": "cachix",
         "repo": "git-hooks.nix",
-        "rev": "1ba1dbfe28738c9a71c266be6efa5b89e75491a9",
+        "rev": "204b6977e00caac19e2313015a598543ca7be150",
         "type": "github"
       },
       "original": {
@@ -1413,11 +1413,11 @@
     "terraform-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1793211660,
-        "narHash": "sha256-JYWOiyTgMeu8NLsUxkk56/GyeEA2GDV2vUhU8p+WZtk=",
+        "lastModified": 1793755596,
+        "narHash": "sha256-xypoVCxhxgQdoUcy7HyD27r80JZsMqJOfrKhDizT+/k=",
         "owner": "hashicorp",
         "repo": "agent-skills",
-        "rev": "bc6b14b77481c3cbfbb06a0166be7245ed45798c",
+        "rev": "5e30fa5c867ba6777c37e4206babfd08049c396f",
         "type": "github"
       },
       "original": {
