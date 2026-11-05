@@ -101,6 +101,7 @@
             argocd
             bat
             btop
+            cilium-cli
             cmctl
             comma
             docker-buildx
