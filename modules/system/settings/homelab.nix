@@ -55,6 +55,10 @@
           10250 # kubelet API (controller → worker)
           4244 # cilium hubble flow server (relay → agent)
           4240 # cilium health checks (agent → agent)
+          9962 # cilium-agent metrics (prometheus → agent)
+          9963 # cilium-operator metrics
+          9964 # cilium-envoy metrics
+          9965 # hubble flow metrics
         ];
         allowedUDPPorts = [
           8472 # cilium vxlan (pod-to-pod between nodes)
