@@ -53,6 +53,7 @@
           9100 # node exporter
           9443 # k0s controller API (controller ↔ controller)
           10250 # kubelet API (controller → worker)
+          4244 # cilium hubble flow server (relay → agent)
         ];
         allowedUDPPorts = [
           8472 # cilium vxlan (pod-to-pod between nodes)
