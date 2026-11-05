@@ -1,4 +1,4 @@
-active_model = "glm-5-3"
+active_model = "mistral-large-4-0-3"
 theme = "ansi-dark"
 disable_welcome_banner_animation = false
 autocopy_to_clipboard = true
@@ -26,7 +26,6 @@ default_agent = "auto-approve"
 api_timeout = 720.0
 api_retry_max_elapsed_time = 300.0
 auto_compact_threshold = 200000
-tool_paths = []
 applied_migrations = [
     "bash_read_only_defaults_v1",
 ]
@@ -40,6 +39,7 @@ connectors = [
 models = [
     { thinking = "high", alias = "zai-glm-5-3-flash" },
     { thinking = "high", alias = "glm-5-3" },
+    { thinking = "medium", alias = "mistral-large-4-0-3" },
 ]
 
 [[mcp_servers]]
@@ -47,7 +47,6 @@ name = "grafana"
 transport = "streamable-http"
 url = "https://gmcp.terence.cloud/mcp"
 disabled = false
-type = "static"
 
 [mcp_servers.auth]
 type = "static"
@@ -59,7 +58,6 @@ api_key_format = "Basic {token}"
 name = "context7"
 transport = "streamable-http"
 url = "https://mcp.context7.com/mcp"
-type = "static"
 disabled = false
 
 [mcp_servers.auth]
@@ -249,7 +247,6 @@ sensitive_patterns = [
     "sudo",
 ]
 max_output_bytes = 16000
-default_timeout = 300
 denylist_standalone = [
     "python",
     "python3",

@@ -7,7 +7,6 @@
     {
       development = {
         includes = with aspects; [
-          opencode
           vibe
         ];
 

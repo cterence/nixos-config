@@ -62,12 +62,12 @@
     };
   };
 
-  # Shared skill catalog consumed by the per-agent home.file builders in
-  # opencode.nix and vibe.nix. Fields per entry:
+  # Shared skill catalog consumed by the per-agent home.file builder in
+  # vibe.nix. Fields per entry:
   #   name    - unique id
   #   dir     - directory name used when mounted as a whole (defaults to name)
   #   source  - store path of the skill collection
-  #   agents  - agents that should install this skill ("opencode" / "vibe")
+  #   agents  - agents that should install this skill ("vibe")
   #   flatten - vibe expands the collection into one entry per sub-skill
   #   exclude - vibe-only: sub-skill names to skip when flattening
   flake.lib.skills = [
@@ -75,20 +75,14 @@
       name = "caveman";
       dir = "caveman-skills";
       source = "${inputs.caveman-skills}/skills";
-      agents = [
-        "opencode"
-        "vibe"
-      ];
+      agents = [ "vibe" ];
       flatten = true;
     }
     {
       name = "go";
       dir = "go-skills";
       source = "${inputs.spf13-go-skills}/go";
-      agents = [
-        "opencode"
-        "vibe"
-      ];
+      agents = [ "vibe" ];
     }
     {
       name = "cli-style";
@@ -99,52 +93,49 @@
       name = "terraform";
       dir = "terraform-skills";
       source = "${inputs.terraform-skills}/terraform";
-      agents = [ "opencode" ];
+      agents = [ ];
     }
     {
       name = "gws";
       dir = "gws-skills";
       source = "${inputs.gws-skills}/skills";
-      agents = [ "opencode" ];
+      agents = [ ];
     }
     {
       name = "karpathy";
       dir = "karpathy-skills";
       source = "${inputs.karpathy-skills}/skills/karpathy-guidelines";
-      agents = [
-        "opencode"
-        "vibe"
-      ];
+      agents = [ "vibe" ];
     }
     {
       name = "paperasse-syndic";
       source = "${inputs.paperasse-skills}/syndic/";
-      agents = [ "opencode" ];
+      agents = [ ];
     }
     {
       name = "paperasse-notaire";
       source = "${inputs.paperasse-skills}/notaire/";
-      agents = [ "opencode" ];
+      agents = [ ];
     }
     {
       name = "paperasse-comptable";
       source = "${inputs.paperasse-skills}/comptable/";
-      agents = [ "opencode" ];
+      agents = [ ];
     }
     {
       name = "paperasse-fiscaliste";
       source = "${inputs.paperasse-skills}/fiscaliste/";
-      agents = [ "opencode" ];
+      agents = [ ];
     }
     {
       name = "paperasse-controleur-fiscal";
       source = "${inputs.paperasse-skills}/controleur-fiscal/";
-      agents = [ "opencode" ];
+      agents = [ ];
     }
     {
       name = "paperasse-commissaire-aux-comptes";
       source = "${inputs.paperasse-skills}/commissaire-aux-comptes/";
-      agents = [ "opencode" ];
+      agents = [ ];
     }
     {
       name = "ponytail";
