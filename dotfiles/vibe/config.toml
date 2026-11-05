@@ -1,4 +1,4 @@
-active_model = "mistral-large-4-0-3"
+active_model = "glm-5-3"
 theme = "mistral-dark"
 disable_welcome_banner_animation = false
 autocopy_to_clipboard = true

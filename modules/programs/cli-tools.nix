@@ -120,6 +120,7 @@
             glab
             gum
             gws
+            hubble
             htop
             ipcalc
             jq
