@@ -59,6 +59,7 @@
           9963 # cilium-operator metrics
           9964 # cilium-envoy metrics
           9965 # hubble flow metrics
+          9120 # metallb speaker metrics (prometheus → speaker)
         ];
         allowedUDPPorts = [
           8472 # cilium vxlan (pod-to-pod between nodes)
