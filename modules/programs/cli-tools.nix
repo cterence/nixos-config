@@ -95,69 +95,88 @@
         ...
       }:
       {
+        sops = {
+          secrets = {
+            garage-terraform-states-access-key = {
+              mode = "0440";
+              sopsFile = "${inputs.secrets}/shared.yaml";
+            };
+            garage-terraform-states-secret-key = {
+              mode = "0440";
+              sopsFile = "${inputs.secrets}/shared.yaml";
+            };
+          };
+          # credential_process JSON; placeholders must stay quote-free
+          templates.garage-terraform-states-credentials.content = ''
+            {"Version":1,"AccessKeyId":"${config.sops.placeholder.garage-terraform-states-access-key}","SecretAccessKey":"${config.sops.placeholder.garage-terraform-states-secret-key}"}
+          '';
+        };
+
         home = {
-          packages = with pkgs; [
-            age
-            argocd
-            bat
-            btop
-            cilium-cli
-            cmctl
-            comma
-            docker-buildx
-            dust
-            entr
-            eza
-            f3
-            fastfetch
-            fd
-            ffmpeg
-            garage
-            gh-dash
-            golangci-lint
-            google-cloud-sdk
-            go-tools
-            gopls
-            glab
-            gum
-            gws
-            hubble
-            htop
-            ipcalc
-            jq
-            jqp
-            kind
-            kopia
-            krew
-            kubectl
-            kubernetes-helm
-            manix
-            nil
-            nix-init
-            nix-inspect
-            nix-prefetch
-            nix-update
-            nixd
-            nixfmt
-            nmap
-            nurl
-            p7zip
-            postgresql
-            pv-migrate
-            qrencode
-            rclone
-            skopeo
-            socat
-            sops
-            tenv
-            tfautomv
-            tig
-            unzip
-            velero
-            wireguard-tools
-            yq-go
-            zip
-          ];
+          packages =
+            with pkgs;
+            [
+              age
+              argocd
+              bat
+              btop
+              cilium-cli
+              cmctl
+              comma
+              docker-buildx
+              dust
+              entr
+              eza
+              f3
+              fastfetch
+              fd
+              ffmpeg
+              gh-dash
+              golangci-lint
+              google-cloud-sdk
+              go-tools
+              gopls
+              glab
+              gum
+              gws
+              hubble
+              htop
+              ipcalc
+              jq
+              jqp
+              kind
+              kopia
+              krew
+              kubectl
+              kubernetes-helm
+              manix
+              nil
+              nix-init
+              nix-inspect
+              nix-prefetch
+              nix-update
+              nixd
+              nixfmt
+              nmap
+              nurl
+              p7zip
+              postgresql
+              pv-migrate
+              qrencode
+              rclone
+              skopeo
+              socat
+              sops
+              tenv
+              tfautomv
+              tig
+              unzip
+              velero
+              wireguard-tools
+              yq-go
+              zip
+            ]
+            ++ lib.optional pkgs.stdenv.hostPlatform.isLinux garage;
         };
 
         programs = {
@@ -175,6 +194,11 @@
                 sso_account_name = "terence";
                 sso_account_id = "964066691632";
                 sso_role_name = "AdministratorAccess";
+              };
+              "profile garage-terraform-states" = {
+                region = "us-east-1";
+                endpoint_url = "https://grg.terence.cloud";
+                credential_process = "${pkgs.coreutils}/bin/cat ${config.sops.templates.garage-terraform-states-credentials.path}";
               };
             };
           };
