@@ -1,12 +1,15 @@
-{ inputs, self, lib, ... }:
+{
+  inputs,
+  self,
+  ...
+}:
 let
   # Sidecar multiverse pins (modules/pins.nix): every host sees pinned
   # versions without modules referencing pins; home-manager follows via
   # useGlobalPkgs. Selected per class so the overlay never touches `final`
   # outside package values — the bootstrapper applies overlays strictly.
   pinOverlay =
-    pins:
-    final: _prev:
+    pins: final: _prev:
     let
       overlay = inputs.multiverse.lib.pinOverlay {
         pins = builtins.mapAttrs (_: pin: pin.version) pins;
@@ -37,7 +40,7 @@ in
             "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
             "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
             "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
-            "niks3.terence.cloud-1:YBjuY7HeSjKk5wmvw8N+vq/us2GxQPCHRn871lL7XL4="
+            "niks3.terence.cloud-1:NCPzN3IfN1Izs3bAqR+zsOkp1KHjtMvkMRqU7fL5//U=%"
           ];
 
           auto-optimise-store = true;

@@ -40,7 +40,7 @@ jobs:
           determinate: false
           extra-conf: |
             extra-substituters = http://niks3.snow-delta.ts.net:5751
-            extra-trusted-public-keys = niks3.terence.cloud-1:YBjuY7HeSjKk5wmvw8N+vq/us2GxQPCHRn871lL7XL4=
+            extra-trusted-public-keys = niks3.terence.cloud-1:NCPzN3IfN1Izs3bAqR+zsOkp1KHjtMvkMRqU7fL5//U=%
       - name: Evaluate all hosts
         run: |
           nix flake check --all-systems --no-build --option access-tokens github.com=${{ steps.generate-token.outputs.token }} --extra-access-tokens gitlab.com=PAT:${{ secrets.GITLAB_TOKEN }}
