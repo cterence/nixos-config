@@ -112,6 +112,7 @@
             fastfetch
             fd
             ffmpeg
+            garage
             gh-dash
             golangci-lint
             google-cloud-sdk
