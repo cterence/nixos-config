@@ -35,6 +35,7 @@ in
       };
       hosts = {
         "100.115.87.48" = [ "garage.garage" ];
+        "100.100.18.60" = [ "garage-backup.garage-backup" ];
       };
     };
 
