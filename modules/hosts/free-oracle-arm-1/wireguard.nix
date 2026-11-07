@@ -9,8 +9,7 @@ in
       sops = {
         secrets = {
           "wireguard-${hostname}" = {
-            sopsFile = "${inputs.secrets}/wireguard.yaml";
-            key = hostname;
+            sopsFile = "${inputs.secrets}/server.yaml";
           };
         };
       };

@@ -26,7 +26,7 @@ in
               k0s-token = {
                 path = "/etc/k0s/k0stoken";
                 mode = "0440";
-                sopsFile = "${inputs.secrets}/k0s-token.yaml";
+                sopsFile = "${inputs.secrets}/server.yaml";
                 group = config.users.groups.keys.name;
               };
             };

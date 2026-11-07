@@ -140,7 +140,6 @@
             nixfmt
             nmap
             nurl
-            openbao
             p7zip
             postgresql
             pv-migrate
@@ -153,7 +152,6 @@
             tfautomv
             tig
             unzip
-            vault
             velero
             versitygw
             yq-go
@@ -163,7 +161,7 @@
 
         sops.secrets = {
           aws-credentials = {
-            sopsFile = "${inputs.secrets}/aws-credentials.yaml";
+            sopsFile = "${inputs.secrets}/shared.yaml";
             path = config.home.homeDirectory + "/.aws/credentials";
           };
         };

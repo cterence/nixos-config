@@ -14,10 +14,10 @@ in
         sops = {
           secrets = {
             nixos-access-tokens = {
-              sopsFile = "${inputs.secrets}/settings.yaml";
+              sopsFile = "${inputs.secrets}/shared.yaml";
             };
             nix-daemon-environment = {
-              sopsFile = "${inputs.secrets}/settings.yaml";
+              sopsFile = "${inputs.secrets}/shared.yaml";
             };
           };
         };
@@ -70,16 +70,14 @@ in
         sops = {
           age.keyFile = config.home.homeDirectory + "/.config/sops/age/keys.txt";
           secrets = {
-            oracle-config = {
+            oracle-cloud-config = {
               mode = "0440";
-              key = "config";
-              sopsFile = "${inputs.secrets}/oracle-cloud.yaml";
+              sopsFile = "${inputs.secrets}/shared.yaml";
               path = config.home.homeDirectory + "/.oci/config";
             };
-            oracle-private-key = {
+            oracle-cloud-private-key = {
               mode = "0440";
-              key = "private_key";
-              sopsFile = "${inputs.secrets}/oracle-cloud.yaml";
+              sopsFile = "${inputs.secrets}/shared.yaml";
               path = config.home.homeDirectory + "/.oci/private_key.pem";
             };
           };

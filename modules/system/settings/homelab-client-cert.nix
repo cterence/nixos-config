@@ -3,7 +3,7 @@
 #   sops -e --input-type binary --output secrets/homelab-client-cert.json /tmp/x-cert.p12
 #   sops -d --output-type binary --output /tmp/check.p12 secrets/homelab-client-cert.json
 #   cmp /tmp/check.p12 <new>.p12 && rm /tmp/x-cert.p12 /tmp/check.p12
-# If the p12 password changed, also update secrets/homelab-client-cert-password.yaml.
+# If the p12 password changed, also update secrets/shared.yaml.
 # Export with `openssl pkcs12 -export -legacy ...`: Android's installer hangs
 # ("extract in progress") on OpenSSL 3 defaults (SHA-256 MAC, PBES2/AES).
 { inputs, ... }:
@@ -22,7 +22,7 @@
               group = config.users.groups.keys.name;
             };
             homelab-client-cert-password = {
-              sopsFile = "${inputs.secrets}/homelab-client-cert-password.yaml";
+              sopsFile = "${inputs.secrets}/shared.yaml";
               mode = "0440";
               group = config.users.groups.keys.name;
             };

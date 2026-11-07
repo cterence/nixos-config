@@ -20,7 +20,7 @@
             group = config.users.groups.keys.name;
           };
           homelab-client-cert-password = {
-            sopsFile = "${inputs.secrets}/homelab-client-cert-password.yaml";
+            sopsFile = "${inputs.secrets}/shared.yaml";
             mode = "0440";
             group = config.users.groups.keys.name;
           };
@@ -39,13 +39,13 @@
         home.file."${directory}/compose.yaml".source = ./compose.yaml;
 
         sops.secrets = {
-          telegram-token.sopsFile = "${inputs.secrets}/gatus.yaml";
-          telegram-chat-id.sopsFile = "${inputs.secrets}/gatus.yaml";
+          gatus-telegram-token.sopsFile = "${inputs.secrets}/server.yaml";
+          gatus-telegram-chat-id.sopsFile = "${inputs.secrets}/server.yaml";
         };
 
         sops.templates."gatus-env".content = ''
-          TELEGRAM_TOKEN=${config.sops.placeholder.telegram-token}
-          TELEGRAM_CHAT_ID=${config.sops.placeholder.telegram-chat-id}
+          TELEGRAM_TOKEN=${config.sops.placeholder.gatus-telegram-token}
+          TELEGRAM_CHAT_ID=${config.sops.placeholder.gatus-telegram-chat-id}
         '';
 
         systemd.user.services.docker-compose-gatus = {

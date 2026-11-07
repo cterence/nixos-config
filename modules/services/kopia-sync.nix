@@ -10,23 +10,23 @@
       sops.secrets = {
         b2-velero-backup-tch-key-id = {
           mode = "0440";
-          sopsFile = "${inputs.secrets}/kopia-sync.yaml";
+          sopsFile = "${inputs.secrets}/shared.yaml";
         };
         b2-velero-backup-tch-key = {
           mode = "0440";
-          sopsFile = "${inputs.secrets}/kopia-sync.yaml";
+          sopsFile = "${inputs.secrets}/shared.yaml";
         };
         vgw-access-key = {
           mode = "0440";
-          sopsFile = "${inputs.secrets}/kopia-sync.yaml";
+          sopsFile = "${inputs.secrets}/shared.yaml";
         };
         vgw-secret-key = {
           mode = "0440";
-          sopsFile = "${inputs.secrets}/kopia-sync.yaml";
+          sopsFile = "${inputs.secrets}/shared.yaml";
         };
         kopia-password = {
           mode = "0440";
-          sopsFile = "${inputs.secrets}/kopia-sync.yaml";
+          sopsFile = "${inputs.secrets}/shared.yaml";
         };
       };
 

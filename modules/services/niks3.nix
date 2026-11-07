@@ -15,12 +15,10 @@
 
         sops.secrets = {
           niks3-signing-key = {
-            key = "signing-key";
-            sopsFile = "${inputs.secrets}/niks3.yaml";
+            sopsFile = "${inputs.secrets}/shared.yaml";
           };
           niks3-api-token = {
-            key = "api-token";
-            sopsFile = "${inputs.secrets}/niks3.yaml";
+            sopsFile = "${inputs.secrets}/shared.yaml";
           };
         };
 
@@ -50,8 +48,7 @@
       {
         sops.secrets = {
           niks3-api-token = {
-            key = "api-token";
-            sopsFile = "${inputs.secrets}/niks3.yaml";
+            sopsFile = "${inputs.secrets}/shared.yaml";
           };
         };
 

@@ -212,32 +212,22 @@
               zsh.initContent = ''
                 export MISTRAL_API_KEY="$(cat ${config.sops.secrets.mistral-api-key.path})"
                 export CONTEXT7_API_KEY="$(cat ${config.sops.secrets.context7-api-key.path})"
-                export NVIDIA_NIM_API_KEY="$(cat ${config.sops.secrets.nvidia-nim-api-key.path})"
                 export GRAFANA_MCP_AUTH="$(cat ${config.sops.secrets.grafana-mcp-auth.path})"
               '';
             };
 
             sops = {
               secrets = {
-                openbao-root-token = {
-                  sopsFile = "${inputs.secrets}/openbao.yaml";
-                  key = "root-token";
-                  path = config.home.homeDirectory + "/.vault-token";
-                };
                 mistral-api-key = {
                   key = "mistral-api-key";
-                  sopsFile = "${inputs.secrets}/env.yaml";
+                  sopsFile = "${inputs.secrets}/shared.yaml";
                 };
                 context7-api-key = {
                   key = "context7-api-key";
-                  sopsFile = "${inputs.secrets}/env.yaml";
-                };
-                nvidia-nim-api-key = {
-                  key = "nvidia-nim-api-key";
-                  sopsFile = "${inputs.secrets}/env.yaml";
+                  sopsFile = "${inputs.secrets}/shared.yaml";
                 };
                 grafana-mcp-auth = {
-                  sopsFile = "${inputs.secrets}/env.yaml";
+                  sopsFile = "${inputs.secrets}/shared.yaml";
                 };
               };
             };
