@@ -154,6 +154,7 @@
             unzip
             velero
             versitygw
+            wireguard-tools
             yq-go
             zip
           ];
