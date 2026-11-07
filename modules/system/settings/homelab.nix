@@ -64,6 +64,9 @@
         allowedUDPPorts = [
           8472 # cilium vxlan (pod-to-pod between nodes)
         ];
+        extraCommands = ''
+          iptables -w -A nixos-fw -s 192.168.1.0/24 -p udp --dport 32768:60999 -j nixos-fw-accept
+        '';
       };
     };
 }
