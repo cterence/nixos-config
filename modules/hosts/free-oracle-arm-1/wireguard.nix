@@ -47,7 +47,7 @@ in
             privateKeyFile = config.sops.secrets."wireguard-${hostname}".path;
             peers = [
               {
-                publicKey = "toMF/CXlP9L+dEvl5Q+aqNZLqeH1Mpi5o+rwaheHWBc=";
+                publicKey = "ac/q3GZjhk/tRQOFDv/7efEsbstwXNfWw8dm0R7zT30=";
                 allowedIPs = [
                   "192.168.2.2/32"
                 ];
