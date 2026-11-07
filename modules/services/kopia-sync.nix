@@ -16,11 +16,11 @@
           mode = "0440";
           sopsFile = "${inputs.secrets}/shared.yaml";
         };
-        vgw-access-key = {
+        garage-velero-access-key = {
           mode = "0440";
           sopsFile = "${inputs.secrets}/shared.yaml";
         };
-        vgw-secret-key = {
+        garage-velero-secret-key = {
           mode = "0440";
           sopsFile = "${inputs.secrets}/shared.yaml";
         };
@@ -100,12 +100,12 @@
         };
       };
 
-      systemd.user.services.kopia-sync-vgw = {
+      systemd.user.services.kopia-sync-garage = {
         Unit = {
           Description = "Sync remote Kopia repositories to filesystem repositories";
         };
         Service = {
-          ExecStart = "${pkgs.writeShellScript "kopia-sync-vgw" ''
+          ExecStart = "${pkgs.writeShellScript "kopia-sync-garage" ''
             #!/run/current-system/sw/bin/bash
 
             set -eu
@@ -113,19 +113,19 @@
             # Configuration
             BUCKET="velero"
             PATH_PREFIX="v1/kopia/"
-            ENDPOINT_DOMAIN="versity-gw-storage-pool.snow-delta.ts.net:7070"
+            ENDPOINT_DOMAIN="garage.snow-delta.ts.net:3900"
             ENDPOINT_URL="http://$ENDPOINT_DOMAIN"
             REGION="us-east-1"
-            LOCAL_BASE_DIR="/mnt/elements/kopia-vgw-sync/repositories"
-            VGW_KEY_ID="$(${pkgs.coreutils}/bin/cat ${config.sops.secrets.vgw-access-key.path})"
-            VGW_KEY="$(${pkgs.coreutils}/bin/cat ${config.sops.secrets.vgw-secret-key.path})"
+            LOCAL_BASE_DIR="/mnt/elements/kopia-sync-garage/repositories"
+            GARAGE_KEY_ID="$(${pkgs.coreutils}/bin/cat ${config.sops.secrets.garage-velero-access-key.path})"
+            GARAGE_KEY="$(${pkgs.coreutils}/bin/cat ${config.sops.secrets.garage-velero-secret-key.path})"
             KOPIA_PASSWORD="$(${pkgs.coreutils}/bin/cat ${config.sops.secrets.kopia-password.path})"
 
             # Ensure the local base directory exists
             ${pkgs.coreutils}/bin/mkdir -p "$LOCAL_BASE_DIR"
 
-            export AWS_ACCESS_KEY_ID=$VGW_KEY_ID
-            export AWS_SECRET_ACCESS_KEY=$VGW_KEY
+            export AWS_ACCESS_KEY_ID=$GARAGE_KEY_ID
+            export AWS_SECRET_ACCESS_KEY=$GARAGE_KEY
 
             # List all directories (repositories) in the bucket
             echo "Listing repositories in bucket..."
@@ -151,8 +151,8 @@
                     --password="$KOPIA_PASSWORD" \
                     --disable-tls \
                     --region $REGION \
-                    --access-key="$VGW_KEY_ID" \
-                    --secret-access-key="$VGW_KEY" \
+                    --access-key="$GARAGE_KEY_ID" \
+                    --secret-access-key="$GARAGE_KEY" \
                     --endpoint $ENDPOINT_DOMAIN \
                     --prefix="$PATH_PREFIX$REPO/" \
                     --no-check-for-updates

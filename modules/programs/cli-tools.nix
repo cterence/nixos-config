@@ -154,18 +154,10 @@
             tig
             unzip
             velero
-            versitygw
             wireguard-tools
             yq-go
             zip
           ];
-        };
-
-        sops.secrets = {
-          aws-credentials = {
-            sopsFile = "${inputs.secrets}/shared.yaml";
-            path = config.home.homeDirectory + "/.aws/credentials";
-          };
         };
 
         programs = {
@@ -183,10 +175,6 @@
                 sso_account_name = "terence";
                 sso_account_id = "964066691632";
                 sso_role_name = "AdministratorAccess";
-              };
-              "profile versitygw" = {
-                region = "us-east-1";
-                endpoint_url = "https://versity.terence.cloud";
               };
             };
           };

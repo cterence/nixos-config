@@ -33,6 +33,9 @@ in
         enable = true;
         dns = "none";
       };
+      hosts = {
+        "100.115.87.48" = [ "garage.garage" ];
+      };
     };
 
     services.dnsmasq = {

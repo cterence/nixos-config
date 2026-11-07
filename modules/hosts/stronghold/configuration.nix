@@ -34,9 +34,6 @@ in
 
           networking = {
             hostName = hostname;
-            hosts = {
-              "100.114.190.13" = [ "versity-gw-storage-pool.versity-gw" ];
-            };
           };
           system.stateVersion = "25.11";
         };
