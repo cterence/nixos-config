@@ -113,7 +113,7 @@
             # Configuration
             BUCKET="velero"
             PATH_PREFIX="v1/kopia/"
-            ENDPOINT_DOMAIN="garage.snow-delta.ts.net:3900"
+            ENDPOINT_DOMAIN="garage-backup.snow-delta.ts.net:3900"
             ENDPOINT_URL="http://$ENDPOINT_DOMAIN"
             REGION="us-east-1"
             LOCAL_BASE_DIR="/mnt/elements/kopia-sync-garage/repositories"
