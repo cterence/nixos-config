@@ -131,6 +131,7 @@
               fastfetch
               fd
               ffmpeg
+              garage_2
               gh-dash
               golangci-lint
               google-cloud-sdk
@@ -176,7 +177,6 @@
               yq-go
               zip
             ]
-            ++ lib.optional pkgs.stdenv.hostPlatform.isLinux garage;
         };
 
         programs = {
