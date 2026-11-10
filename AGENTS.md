@@ -163,8 +163,13 @@ Version pins (any historical version of a package, no new input per pin) use
 the `multiverse` flake, driven by the **pins sidecar**:
 
 - `modules/pins.nix` is the single source of truth: `flake.pins` with
-  `darwin` / `nixos` classes, each pin `{ version, tracker, reason }`.
+  `darwin` / `nixos` classes, each pin `{ version, revision?, tracker, reason }`.
   Machine-managed by `pinned-sweep apply` — regenerate, don't hand-edit.
+  Version pins resolve to the newest nixpkgs revision shipping that version;
+  when a pinned version still fails (deps relocked without a version bump),
+  `pinned-sweep pin` freezes it with `revision` — a multiverse date selector
+  pinned to the last good Hydra build — until the package goes green on
+  unstable again.
 - The overlay is wired once in `modules/system/types/base/system-minimal.nix`
   (darwin/nixos classes); modules just use `pkgs.<pkg>` and never mention
   pins. Home-manager follows via `useGlobalPkgs`.

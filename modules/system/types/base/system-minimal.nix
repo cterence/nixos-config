@@ -8,14 +8,40 @@ let
   # versions without modules referencing pins; home-manager follows via
   # useGlobalPkgs. Selected per class so the overlay never touches `final`
   # outside package values — the bootstrapper applies overlays strictly.
+  # A pin with `revision` (deps relocked without a version bump) is frozen
+  # to the nixpkgs revision that last built green; version pins resolve to
+  # the newest revision shipping the version and track dep drift.
   pinOverlay =
     pins: final: _prev:
     let
+      revisioned = builtins.listToAttrs (
+        builtins.concatLists (
+          builtins.attrValues (
+            builtins.mapAttrs (
+              name: pin:
+              if pin ? revision then
+                [
+                  {
+                    inherit name;
+                    value = pin;
+                  }
+                ]
+              else
+                [ ]
+            ) pins
+          )
+        )
+      );
       overlay = inputs.multiverse.lib.pinOverlay {
-        pins = builtins.mapAttrs (_: pin: pin.version) pins;
+        pins = builtins.mapAttrs (_: pin: pin.version) (
+          builtins.removeAttrs pins (builtins.attrNames revisioned)
+        );
+      };
+      mv = import "${inputs.multiverse}/multiverse.nix" {
+        system = final.stdenv.hostPlatform.system;
       };
     in
-    overlay final _prev;
+    overlay final _prev // builtins.mapAttrs (name: pin: (mv.at pin.revision).${name}) revisioned;
 in
 {
   flake-file.inputs = {

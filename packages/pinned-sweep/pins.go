@@ -9,11 +9,15 @@ import (
 	"strings"
 )
 
-// Pin is one entry of flake.pins.
+// Pin is one entry of flake.pins. Revision is a multiverse selector
+// (the UTC date of the last good Hydra build): nixpkgs can relock a
+// package's deps without a version bump, and the version pin then
+// tracks the broken rebuild — freezing the revision doesn't.
 type Pin struct {
-	Version string `json:"version"`
-	Tracker string `json:"tracker"`
-	Reason  string `json:"reason"`
+	Version  string `json:"version,omitempty"`
+	Revision string `json:"revision,omitempty"`
+	Tracker  string `json:"tracker"`
+	Reason   string `json:"reason"`
 }
 
 // PinSets mirrors flake.pins: class (darwin/nixos) -> package -> pin.
@@ -57,7 +61,7 @@ func emitPins(p PinSets) string {
 	b.WriteString(`# Single source of truth for multiverse pins. Machine-managed by
 # ` + "`packages/pinned-sweep`" + ` (` + "`pinned-sweep apply`" + `) — it regenerates this file.
 # Each pin: version to pin, upstream nixpkgs tracker, and why.
-{ inputs, ... }:
+{ ... }:
 let
   pins = {
 `)
@@ -74,6 +78,9 @@ let
 			pin := class.pins[name]
 			fmt.Fprintf(&b, "      %s = {\n", name)
 			fmt.Fprintf(&b, "        version = %s;\n", nixStr(pin.Version))
+			if pin.Revision != "" {
+				fmt.Fprintf(&b, "        revision = %s;\n", nixStr(pin.Revision))
+			}
 			fmt.Fprintf(&b, "        tracker = %s;\n", nixStr(pin.Tracker))
 			fmt.Fprintf(&b, "        reason = %s;\n", nixStr(pin.Reason))
 			b.WriteString("      };\n")
@@ -85,20 +92,8 @@ in
 {
   flake.pins = pins;
 
-  # Sidecar overlay: applies every pin to the matching platform's package
-  # set, so modules use ` + "`pkgs.<pkg>`" + ` without knowing pins exist. Wired in
-  # system-minimal's darwin/nixos classes; home-manager follows via
-  # useGlobalPkgs.
-  flake.overlays.multiverse-pins =
-    final: _prev:
-    let
-      overlay = inputs.multiverse.lib.pinOverlay {
-        pins = builtins.mapAttrs (_: pin: pin.version) (
-          if final.stdenv.hostPlatform.isDarwin then pins.darwin else pins.nixos
-        );
-      };
-    in
-    overlay final _prev;
+  # Pins resolve through the multiverse overlay in
+  # modules/system/types/base/system-minimal.nix (per class, darwin/nixos.)
 }
 `)
 	return b.String()
