@@ -198,19 +198,37 @@ func (p *pathFlags) Set(s string) error {
 var drvPathRe = regexp.MustCompile(`/nix/store/[a-z0-9]+-[^\s'"]+\.drv`)
 
 // parseFailedDrvs extracts the derivations a build failed on: drv paths on
-// lines mentioning a failure ("builder for '...drv' failed with exit code").
+// lines mentioning a failure ("builder for '...drv' failed with exit code"),
+// plus "Cannot build '<drv>'" errors whose Reason line says the builder
+// itself failed (dependency-only failures are inherited, not the culprit).
 func parseFailedDrvs(log string) []string {
 	seen := map[string]bool{}
 	var out []string
-	for _, line := range strings.Split(log, "\n") {
+	add := func(drv string) {
+		if !seen[drv] {
+			seen[drv] = true
+			out = append(out, drv)
+		}
+	}
+	lines := strings.Split(log, "\n")
+	for i, line := range lines {
+		if strings.Contains(line, "Cannot build '") {
+			if m := drvPathRe.FindString(line); m != "" {
+				reason := ""
+				if i+1 < len(lines) {
+					reason = lines[i+1]
+				}
+				if strings.Contains(reason, "builder failed") {
+					add(m)
+				}
+			}
+			continue
+		}
 		if !strings.Contains(line, "failed") {
 			continue
 		}
 		for _, m := range drvPathRe.FindAllString(line, -1) {
-			if !seen[m] {
-				seen[m] = true
-				out = append(out, m)
-			}
+			add(m)
 		}
 	}
 	return out

@@ -223,9 +223,15 @@ func TestParseFailedDrvs(t *testing.T) {
 error: builder for '/nix/store/abc-qbittorrent-5.2.4.drv' failed with exit code 1;
        another line /nix/store/def-notafailure-1.0.drv ignored
 error: 1 dependencies of derivation '/nix/store/ghi-darwin-system-26.11.drv' failed to build
+error: Cannot build '/nix/store/jkl-protonup-rs-0.15.1.drv'.
+       Reason: builder failed with exit code 101.
+error: Cannot build '/nix/store/mno-system-path.drv'.
+       Reason: 1 dependency failed.
+error: Cannot build '/nix/store/pqr-nixos-system-26.11.drv'.
+       Reason: 1 dependency failed.
 note: keeping build directory '/nix/store/xyz-keepme-2.0.drv'`
 	got := parseFailedDrvs(log)
-	want := []string{"/nix/store/abc-qbittorrent-5.2.4.drv", "/nix/store/ghi-darwin-system-26.11.drv"}
+	want := []string{"/nix/store/abc-qbittorrent-5.2.4.drv", "/nix/store/ghi-darwin-system-26.11.drv", "/nix/store/jkl-protonup-rs-0.15.1.drv"}
 	if len(got) != len(want) {
 		t.Fatalf("parseFailedDrvs = %v, want %v", got, want)
 	}
