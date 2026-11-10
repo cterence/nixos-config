@@ -1,7 +1,7 @@
 # Single source of truth for multiverse pins. Machine-managed by
 # `packages/pinned-sweep` (`pinned-sweep apply`) — it regenerates this file.
 # Each pin: version to pin, upstream nixpkgs tracker, and why.
-{ inputs, ... }:
+{ ... }:
 let
   pins = {
     darwin = {
@@ -14,8 +14,9 @@ let
     nixos = {
       protonup-rs = {
         version = "0.15.1";
+        revision = "2026-10-20";
         tracker = "";
-        reason = "0.15.1 fails on x86_64-linux (auto-pinned after failed build, see https://hydra.nixos.org/build/350243362)";
+        reason = "0.15.1 fails on x86_64-linux (deps relocked without a version bump; frozen to the last good nixpkgs revision, see https://hydra.nixos.org/build/350243362)";
       };
     };
   };
@@ -23,18 +24,6 @@ in
 {
   flake.pins = pins;
 
-  # Sidecar overlay: applies every pin to the matching platform's package
-  # set, so modules use `pkgs.<pkg>` without knowing pins exist. Wired in
-  # system-minimal's darwin/nixos classes; home-manager follows via
-  # useGlobalPkgs.
-  flake.overlays.multiverse-pins =
-    final: _prev:
-    let
-      overlay = inputs.multiverse.lib.pinOverlay {
-        pins = builtins.mapAttrs (_: pin: pin.version) (
-          if final.stdenv.hostPlatform.isDarwin then pins.darwin else pins.nixos
-        );
-      };
-    in
-    overlay final _prev;
+  # Pins resolve through the multiverse overlay in
+  # modules/system/types/base/system-minimal.nix (per class, darwin/nixos.)
 }
