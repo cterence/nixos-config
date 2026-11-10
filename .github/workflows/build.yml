@@ -296,7 +296,7 @@ jobs:
               .#pinned-sweep -- pin --from-verdict "$RUNNER_TEMP/logs/gate-verdict.json" --pr
           fi
           shopt -s nullglob
-          for log in "$RUNNER_TEMP"/logs/*/build-*.log; do
+          for log in "$RUNNER_TEMP"/logs/build-*.log; do
             system="${log##*build-}"
             system="${system%.log}"
             nix run \
