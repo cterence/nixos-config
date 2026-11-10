@@ -26,6 +26,16 @@ type Build struct {
 	NixName     string `json:"nixname"`
 	Job         string `json:"job"`
 	DrvPath     string `json:"drvpath"`
+	Timestamp   int64  `json:"timestamp"`
+}
+
+// UTCDate is the multiverse selector for the revision pin: the date of
+// the build, which multiverse maps to the nixpkgs revision current then.
+func (b Build) UTCDate() string {
+	if b.Timestamp == 0 {
+		return ""
+	}
+	return time.Unix(b.Timestamp, 0).UTC().Format("2006-01-02")
 }
 
 // URL is the human-facing build page.

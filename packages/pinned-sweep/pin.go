@@ -78,17 +78,29 @@ func cmdPin(args []string) int {
 				class = "darwin"
 			}
 			set := pins.Class(class)
-			if existing, ok := set[pkg]; ok {
-				fmt.Fprintf(&b, "%s is already pinned at %s on %s and still fails; manual fix needed.\n",
-					pkg, existing.Version, class)
-				continue
-			}
 			job := pkg + "." + *system
 			fmt.Fprintf(os.Stderr, "%s ...", job)
 			lastGood, build, err := hydra.LastGood(job, 25)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, "pinned-sweep:", err)
 				return 1
+			}
+			if existing, ok := set[pkg]; ok {
+				if updated, retargeted := retargetPin(existing, lastGood, build); retargeted {
+					updated.Reason = fmt.Sprintf("%s fails on %s (deps relocked without a version bump; frozen to the last good nixpkgs revision%s)",
+						version, *system, buildRef(build))
+					set[pkg] = updated
+					changed = true
+					fmt.Fprintf(&b, "Froze pin %s at %s to nixpkgs revision %s on %s (deps drifted inside the version).\n",
+						pkg, updated.Version, updated.Revision, class)
+				} else if existing.Revision != "" {
+					fmt.Fprintf(&b, "%s is pinned at %s (nixpkgs revision %s) on %s and still fails; manual fix needed.\n",
+						pkg, existing.Version, existing.Revision, class)
+				} else {
+					fmt.Fprintf(&b, "%s is already pinned at %s on %s and still fails; manual fix needed.\n",
+						pkg, existing.Version, class)
+				}
+				continue
 			}
 			if lastGood == "" {
 				fmt.Fprintf(os.Stderr, " no good version found\n")
@@ -143,6 +155,23 @@ func buildRef(build *Build) string {
 		return ""
 	}
 	return ", see " + build.URL()
+}
+
+// retargetPin freezes a pin that already matches the last good version but
+// still fails: same version still red on Hydra means nixpkgs relocked the
+// package's deps under the same version, and the version pin tracks the
+// broken rebuild. Freezing to the last good build's revision pins the
+// derivation that actually built green.
+func retargetPin(existing Pin, lastGood string, build *Build) (Pin, bool) {
+	date := ""
+	if build != nil {
+		date = build.UTCDate()
+	}
+	if lastGood == "" || lastGood != existing.Version || date == "" || date == existing.Revision {
+		return existing, false
+	}
+	existing.Revision = date
+	return existing, true
 }
 
 // pinFromVerdict pins every red closure package of a check verdict — the

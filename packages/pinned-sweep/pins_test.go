@@ -7,6 +7,57 @@ import (
 	"testing"
 )
 
+func TestRetargetPin(t *testing.T) {
+	existing := Pin{Version: "0.15.1"}
+	green := &Build{NixName: "protonup-rs-0.15.1", Timestamp: 1792698000} // 2026-10-22
+	tests := []struct {
+		name     string
+		pin      Pin
+		lastGood string
+		build    *Build
+		changed  bool
+		revision string
+	}{
+		{"drift: same version frozen to green revision", existing, "0.15.1", green, true, "2026-10-22"},
+		{"version bump: no freeze, manual", existing, "0.15.0", green, false, ""},
+		{"no last good: no freeze", existing, "", green, false, ""},
+		{"no build: no freeze", existing, "0.15.1", nil, false, ""},
+		{"already frozen: idempotent", Pin{Version: "0.15.1", Revision: "2026-10-22"}, "0.15.1", green, false, "2026-10-22"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, changed := retargetPin(tt.pin, tt.lastGood, tt.build)
+			if changed != tt.changed {
+				t.Fatalf("retargetPin changed = %v, want %v", changed, tt.changed)
+			}
+			if got.Revision != tt.revision {
+				t.Fatalf("retargetPin revision = %q, want %q", got.Revision, tt.revision)
+			}
+		})
+	}
+}
+
+func TestEmitPinsRevision(t *testing.T) {
+	p := PinSets{
+		Nixos: map[string]Pin{
+			"protonup-rs": {Version: "0.15.1", Revision: "2026-10-22", Reason: "deps relocked"},
+		},
+	}
+	out := emitPins(p)
+	for _, want := range []string{
+		`version = "0.15.1";`,
+		`revision = "2026-10-22";`,
+	} {
+		if !strings.Contains(out, want) {
+			t.Errorf("emitPins missing %q in:\n%s", want, out)
+		}
+	}
+	p2 := PinSets{Nixos: map[string]Pin{"calibre": {Version: "9.14.0"}}}
+	if strings.Contains(emitPins(p2), "revision = ") {
+		t.Error("pins without revision must not render a revision field")
+	}
+}
+
 func TestSplitPkgName(t *testing.T) {
 	tests := []struct {
 		in, pkg, ver string
@@ -62,20 +113,21 @@ func TestEmitPinsRoundTrip(t *testing.T) {
 	}
 	out := emitPins(p)
 	for _, want := range []string{
-		`{ inputs, ... }:`,
+		`{ ... }:`,
 		`flake.pins = pins;`,
 		`darwin = {`,
 		`version = "2.13.3";`,
 		`tracker = "https://github.com/NixOS/nixpkgs/issues/572435";`,
 		`reason = "says \"hi\" \${now}";`,
 		`nixos = { };`,
-		`flake.overlays.multiverse-pins =`,
-		`inputs.multiverse.lib.pinOverlay`,
-		`overlay final _prev;`,
+		`modules/system/types/base/system-minimal.nix`,
 	} {
 		if !strings.Contains(out, want) {
 			t.Errorf("emitPins missing %q in:\n%s", want, out)
 		}
+	}
+	if strings.Contains(out, "overlays") {
+		t.Error("pins.nix is data only; the overlay lives in system-minimal.nix")
 	}
 	if strings.Index(out, "darwin = {") > strings.Index(out, "nixos = {") {
 		t.Error("emitPins must emit darwin before nixos")
