@@ -11,7 +11,13 @@ let
         reason = "3.0 fails to build on darwin";
       };
     };
-    nixos = { };
+    nixos = {
+      protonup-rs = {
+        version = "0.15.1";
+        tracker = "";
+        reason = "0.15.1 fails on x86_64-linux (auto-pinned after failed build, see https://hydra.nixos.org/build/350243362)";
+      };
+    };
   };
 in
 {
