@@ -35,6 +35,7 @@ in
                 provider = "custom";
                 podCIDR = "10.244.0.0/16";
                 serviceCIDR = "10.96.0.0/12";
+                kubeProxy.disabled = true;
               };
               storage.etcd.peerAddress = "192.168.1.54";
               workerProfiles = [
