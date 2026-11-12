@@ -43,7 +43,6 @@
       casks = [
         "google-chrome"
         "markedit"
-        "nextcloud"
         "steam"
         "vorssaint"
       ];
