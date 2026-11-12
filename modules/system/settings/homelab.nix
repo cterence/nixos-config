@@ -60,6 +60,7 @@
           9964 # cilium-envoy metrics
           9965 # hubble flow metrics
           9120 # metallb speaker metrics (prometheus → speaker)
+          38081 # catbox health/metrics (prometheus scrapes the hostNetwork port)
         ];
         allowedUDPPorts = [
           8472 # cilium vxlan (pod-to-pod between nodes)
