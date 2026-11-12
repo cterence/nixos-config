@@ -39,7 +39,7 @@ jobs:
         with:
           determinate: false
           extra-conf: |
-            extra-substituters = http://niks3.snow-delta.ts.net:5751
+            extra-substituters = https://niks3.snow-delta.ts.net
             extra-trusted-public-keys = niks3.terence.cloud-1:NCPzN3IfN1Izs3bAqR+zsOkp1KHjtMvkMRqU7fL5//U=%
       - name: Evaluate all hosts
         run: |
@@ -161,8 +161,8 @@ jobs:
       - name: Setup niks3 cache
         uses: Mic92/niks3-action@f0743610fddd7d96239c78d9e457440fc15019e2 # v1.4.0
         with:
-          server-url: http://niks3.snow-delta.ts.net:5751
-          substituter: http://niks3.snow-delta.ts.net:5751
+          server-url: https://niks3.snow-delta.ts.net
+          substituter: https://niks3.snow-delta.ts.net
       - name: Build
         run: |
           if [ "${{ runner.os }}" = "Linux" ]; then
