@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -53,14 +54,18 @@ func (b Build) Status() string {
 	}
 }
 
-// Hydra queries hydra.nixos.org's REST API.
+// Hydra queries hydra.nixos.org's REST API. Concurrent-safe; LatestBuild
+// results (including 404s) are memoized for the process lifetime.
 type Hydra struct {
 	Base string
 	HTTP *http.Client
+
+	mu     sync.Mutex
+	latest map[string]*Build
 }
 
 func NewHydra() *Hydra {
-	return &Hydra{Base: hydraBase, HTTP: &http.Client{Timeout: 30 * time.Second}}
+	return &Hydra{Base: hydraBase, HTTP: &http.Client{Timeout: 30 * time.Second}, latest: map[string]*Build{}}
 }
 
 func (h *Hydra) get(path string) ([]byte, error) {
@@ -69,6 +74,7 @@ func (h *Hydra) get(path string) ([]byte, error) {
 		return nil, err
 	}
 	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", "pinned-sweep/"+version+" (+https://github.com/cterence/nixos-config)")
 	resp, err := h.HTTP.Do(req)
 	if err != nil {
 		return nil, err
@@ -88,17 +94,30 @@ func (h *Hydra) get(path string) ([]byte, error) {
 }
 
 // LatestBuild returns the job's most recent build, or nil if Hydra has no
-// such job.
+// such job. Results are memoized per process.
 func (h *Hydra) LatestBuild(job string) (*Build, error) {
+	h.mu.Lock()
+	if b, ok := h.latest[job]; ok {
+		h.mu.Unlock()
+		return b, nil
+	}
+	h.mu.Unlock()
 	body, err := h.get("/job/nixpkgs/unstable/" + job + "/latest")
-	if err != nil || body == nil {
+	if err != nil {
 		return nil, err
 	}
-	var b Build
-	if err := json.Unmarshal(body, &b); err != nil {
-		return nil, fmt.Errorf("parsing build for %s: %w", job, err)
+	var b *Build
+	if body != nil {
+		b = &Build{}
+		if err := json.Unmarshal(body, b); err != nil {
+			return nil, fmt.Errorf("parsing build for %s: %w", job, err)
+		}
 	}
-	return &b, nil
+	// Only settled answers (build or 404) are cached, never the error path.
+	h.mu.Lock()
+	h.latest[job] = b
+	h.mu.Unlock()
+	return b, nil
 }
 
 var buildIDRe = regexp.MustCompile(`/build/(\d+)`)
