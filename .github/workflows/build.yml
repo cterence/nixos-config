@@ -146,6 +146,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           set -euo pipefail
+          tailscale status
           tsip=$(tailscale status --json | jq -r '.Peer[] | select(.DNSName | startswith("niks3.")) | .TailscaleIPs[0]')
           test -n "$tsip"
           echo "$tsip niks3.snow-delta.ts.net" | sudo tee -a /etc/hosts
