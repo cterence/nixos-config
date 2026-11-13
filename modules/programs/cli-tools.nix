@@ -197,7 +197,7 @@
               };
               "profile garage-terraform-states" = {
                 region = "us-east-1";
-                endpoint_url = "https://grg.terence.cloud";
+                endpoint_url = "http://garage.snow-delta.ts.net:3900";
                 credential_process = "${pkgs.coreutils}/bin/cat ${config.sops.templates.garage-terraform-states-credentials.path}";
               };
             };

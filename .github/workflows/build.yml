@@ -153,9 +153,9 @@ jobs:
           test -n "$tsip"
           echo "$tsip niks3.snow-delta.ts.net" | sudo tee -a /etc/hosts
           # Presigned NAR uploads go to the tailscale-exposed garage gateway.
-          vsip=$(tailscale status --json | jq -r '.Peer[] | select(.DNSName | startswith("garage.")) | .TailscaleIPs[0]')
+          vsip=$(tailscale status --json | jq -r '.Peer[] | select(.DNSName | startswith("garage-ssd.")) | .TailscaleIPs[0]')
           if [ -n "$vsip" ]; then
-            echo "$vsip garage.snow-delta.ts.net" | sudo tee -a /etc/hosts
+            echo "$vsip garage-ssd.snow-delta.ts.net" | sudo tee -a /etc/hosts
           else
             echo "::warning::garage tailscale peer not found; s3 cache uploads will fail"
           fi
