@@ -44,6 +44,12 @@ func TestEmitPinsRevision(t *testing.T) {
 		},
 	}
 	out := emitPins(p)
+	if !strings.Contains(out, "\n_:\n") {
+		t.Error("emitPins must keep the `_:` module head; `{ ... }:` trips static checks")
+	}
+	if strings.Contains(out, "{ ... }:") {
+		t.Error("emitPins must not emit a `{ ... }:` module head")
+	}
 	for _, want := range []string{
 		`version = "0.15.1";`,
 		`revision = "2026-10-22";`,
@@ -113,7 +119,7 @@ func TestEmitPinsRoundTrip(t *testing.T) {
 	}
 	out := emitPins(p)
 	for _, want := range []string{
-		`{ ... }:`,
+		`_:`,
 		`flake.pins = pins;`,
 		`darwin = {`,
 		`version = "2.13.3";`,

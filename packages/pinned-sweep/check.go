@@ -9,6 +9,7 @@ import (
 	"path"
 	"regexp"
 	"strings"
+	"sync"
 )
 
 // Platform class -> the Hydra platform its pins must build on.
@@ -273,7 +274,8 @@ func drvPkg(drvPath string) (string, string) {
 
 // checkClosure dry-runs a host closure and Hydra-checks every package the
 // host would actually build (cache miss). Pinned packages are skipped: their
-// Hydra job reflects current unstable, not the pinned version.
+// Hydra job reflects current unstable, not the pinned version. Queries run
+// bounded-parallel; LatestBuild memoizes repeats across closures.
 func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr string) ([]ClosureVerdict, error) {
 	system := linuxPlatform
 	if strings.Contains(attr, "darwinConfigurations") {
@@ -293,40 +295,79 @@ func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr string) (
 		return nil, fmt.Errorf("dry-run %s: %w", attr, err)
 	}
 
+	type job struct {
+		pkg, version, drvPath string
+	}
+	var jobs []job
 	seen := map[string]bool{}
-	var out []ClosureVerdict
 	for _, drvPath := range parseDryRun(stderr.String()) {
 		pkg, version := drvPkg(drvPath)
 		if pkg == "" || seen[pkg] || pinned[pkg].Version != "" {
 			continue
 		}
 		seen[pkg] = true
-		job := pkg + "." + system
-		fmt.Fprintf(os.Stderr, "%s ...", job)
-		b, err := hydra.LatestBuild(job)
-		if err != nil {
-			return nil, err
-		}
-		cv := ClosureVerdict{Host: host, System: system, Package: pkg, Version: version, DrvPath: drvPath, Status: "skipped"}
-		switch {
-		case b == nil:
-			// Not a Hydra job (local package, scoped attr): no signal, skip.
-		case b.DrvPath != "" && b.DrvPath != drvPath:
-			// Hydra's verdict is for a different derivation (older eval or
-			// different nixpkgs snapshot): no signal for this drv.
-		case b.Status() == "failed":
-			cv.Status = "failed"
-			cv.BuildURL = b.URL()
-			lastGood, _, err := hydra.LastGood(job, 25)
+		jobs = append(jobs, job{pkg, version, drvPath})
+	}
+
+	// Parallel fan-out must stay bounded and back off on Hydra 429s.
+	const workers = 4
+	sem := make(chan struct{}, workers)
+	var wg sync.WaitGroup
+	var mu sync.Mutex
+	var firstErr error
+	results := make([]ClosureVerdict, len(jobs))
+	for i, j := range jobs {
+		sem <- struct{}{}
+		wg.Go(func() {
+			defer func() { <-sem }()
+			jobName := j.pkg + "." + system
+			b, err := hydra.LatestBuild(jobName)
 			if err != nil {
-				return nil, err
+				mu.Lock()
+				if firstErr == nil {
+					firstErr = fmt.Errorf("%s: %w", jobName, err)
+				}
+				mu.Unlock()
+				return
 			}
-			cv.LastGood = lastGood
-		default:
-			cv.Status = "success"
+			cv := ClosureVerdict{Host: host, System: system, Package: j.pkg, Version: j.version, DrvPath: j.drvPath, Status: "skipped"}
+			switch {
+			case b == nil:
+				// Not a Hydra job (local package, scoped attr): no signal, skip.
+			case b.DrvPath != "" && b.DrvPath != j.drvPath:
+				// Hydra's verdict is for a different derivation (older eval or
+				// different nixpkgs snapshot): no signal for this drv.
+			case b.Status() == "failed":
+				cv.Status = "failed"
+				cv.BuildURL = b.URL()
+				lastGood, _, err := hydra.LastGood(jobName, 25)
+				if err != nil {
+					mu.Lock()
+					if firstErr == nil {
+						firstErr = fmt.Errorf("%s: %w", jobName, err)
+					}
+					mu.Unlock()
+					return
+				}
+				cv.LastGood = lastGood
+			default:
+				cv.Status = "success"
+			}
+			fmt.Fprintf(os.Stderr, "%s ... %s\n", jobName, cv.Status)
+			mu.Lock()
+			results[i] = cv
+			mu.Unlock()
+		})
+	}
+	wg.Wait()
+	if firstErr != nil {
+		return nil, firstErr
+	}
+	var out []ClosureVerdict
+	for _, cv := range results {
+		if cv.Package != "" {
+			out = append(out, cv)
 		}
-		fmt.Fprintf(os.Stderr, " %s\n", cv.Status)
-		out = append(out, cv)
 	}
 	return out, nil
 }
