@@ -42,3 +42,44 @@ func TestLatestBuildMemoizes(t *testing.T) {
 		t.Fatalf("LatestBuild hit the server %d times total, want 2 (404 memoized)", hits)
 	}
 }
+
+func TestLatestBuildRetriesOn429(t *testing.T) {
+	hits := 0
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		hits++
+		if hits == 1 {
+			w.Header().Set("Retry-After", "0")
+			w.WriteHeader(http.StatusTooManyRequests)
+			return
+		}
+		w.Write([]byte(`{"id":1,"finished":1,"buildstatus":0,"nixname":"foo-1","job":"foo.x86_64-linux","drvpath":"/nix/store/xxx-foo-1.drv"}`))
+	}))
+	defer srv.Close()
+	h := NewHydra()
+	h.Base = srv.URL
+
+	b, err := h.LatestBuild("foo.x86_64-linux")
+	if err != nil {
+		t.Fatalf("LatestBuild after 429: %v", err)
+	}
+	if b == nil {
+		t.Fatal("LatestBuild after 429 returned nil, want the build")
+	}
+	if hits != 2 {
+		t.Fatalf("LatestBuild hit the server %d times, want 2 (one 429, one ok)", hits)
+	}
+}
+
+func TestLatestBuildFailsAfterPersistent429(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Retry-After", "0")
+		w.WriteHeader(http.StatusTooManyRequests)
+	}))
+	defer srv.Close()
+	h := NewHydra()
+	h.Base = srv.URL
+
+	if _, err := h.LatestBuild("foo.x86_64-linux"); err == nil {
+		t.Fatal("LatestBuild succeeded against a persistent 429, want an error")
+	}
+}

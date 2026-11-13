@@ -62,6 +62,8 @@ jobs:
             --closure macbook=darwinConfigurations.macbook.system \
             --json --report-out "$RUNNER_TEMP/gate-report.md" \
             > "$RUNNER_TEMP/gate-verdict.json"; then
+            # Empty/partial redirect target: never let it reach the pin job.
+            rm -f "$RUNNER_TEMP/gate-verdict.json"
             cat "$RUNNER_TEMP/gate-report.md" >> "$GITHUB_STEP_SUMMARY" || true
             exit 1
           fi

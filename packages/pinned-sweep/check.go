@@ -309,8 +309,8 @@ func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr string) (
 		jobs = append(jobs, job{pkg, version, drvPath})
 	}
 
-	// Parallel fan-out must stay bounded to respect Hydra rate limits.
-	const workers = 8
+	// Parallel fan-out must stay bounded and back off on Hydra 429s.
+	const workers = 4
 	sem := make(chan struct{}, workers)
 	var wg sync.WaitGroup
 	var mu sync.Mutex

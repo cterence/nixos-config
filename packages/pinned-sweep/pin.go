@@ -32,6 +32,29 @@ func cmdPin(args []string) int {
 	}
 
 	hydra := NewHydra()
+
+	// The verdict is read before anything else: a gate that died mid-run
+	// leaves an empty or truncated artifact behind, which must neither crash
+	// recovery pinning (from build logs) nor evaluate the flake.
+	var verdict *Verdict
+	if *verdictFile != "" {
+		data, err := os.ReadFile(*verdictFile)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, "pinned-sweep:", err)
+			return 1
+		}
+		if len(data) == 0 {
+			fmt.Fprintln(os.Stderr, "pinned-sweep: verdict artifact is empty, skipping")
+		} else {
+			v := Verdict{}
+			if err := json.Unmarshal(data, &v); err != nil {
+				fmt.Fprintf(os.Stderr, "pinned-sweep: ignoring malformed verdict artifact: %v\n", err)
+			} else {
+				verdict = &v
+			}
+		}
+	}
+
 	pins, err := loadPins(*flake)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "pinned-sweep:", err)
@@ -41,18 +64,8 @@ func cmdPin(args []string) int {
 	var b strings.Builder
 	changed := false
 
-	if *verdictFile != "" {
-		data, err := os.ReadFile(*verdictFile)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "pinned-sweep:", err)
-			return 1
-		}
-		var v Verdict
-		if err := json.Unmarshal(data, &v); err != nil {
-			fmt.Fprintln(os.Stderr, "pinned-sweep: parsing verdict:", err)
-			return 1
-		}
-		c, report := pinFromVerdict(pins, v)
+	if verdict != nil {
+		c, report := pinFromVerdict(pins, *verdict)
 		changed = changed || c
 		b.WriteString(report)
 	}

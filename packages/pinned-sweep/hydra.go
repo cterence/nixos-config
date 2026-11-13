@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math/rand/v2"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -62,6 +63,9 @@ type Hydra struct {
 
 	mu     sync.Mutex
 	latest map[string]*Build
+
+	cdMu    sync.Mutex
+	cdUntil time.Time
 }
 
 func NewHydra() *Hydra {
@@ -69,28 +73,77 @@ func NewHydra() *Hydra {
 }
 
 func (h *Hydra) get(path string) ([]byte, error) {
-	req, err := http.NewRequest(http.MethodGet, h.Base+path, nil)
-	if err != nil {
-		return nil, err
+	const maxAttempts = 6
+	for attempt := 1; ; attempt++ {
+		if h.waitCooldown() {
+			// Stagger workers waking from a shared penalty window.
+			time.Sleep(time.Duration(rand.IntN(250)) * time.Millisecond)
+		}
+		req, err := http.NewRequest(http.MethodGet, h.Base+path, nil)
+		if err != nil {
+			return nil, err
+		}
+		req.Header.Set("Accept", "application/json")
+		req.Header.Set("User-Agent", "pinned-sweep/"+version+" (+https://github.com/cterence/nixos-config)")
+		resp, err := h.HTTP.Do(req)
+		if err != nil {
+			return nil, err
+		}
+		body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<22))
+		resp.Body.Close()
+		if err != nil {
+			return nil, err
+		}
+		switch {
+		case resp.StatusCode == http.StatusNotFound:
+			return nil, nil // job unknown to Hydra: not an error, just no signal
+		case resp.StatusCode == http.StatusTooManyRequests && attempt < maxAttempts:
+			h.penalty(retryAfter(resp, attempt))
+		case resp.StatusCode != http.StatusOK:
+			return nil, fmt.Errorf("hydra %s: HTTP %d", path, resp.StatusCode)
+		default:
+			return body, nil
+		}
 	}
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", "pinned-sweep/"+version+" (+https://github.com/cterence/nixos-config)")
-	resp, err := h.HTTP.Do(req)
-	if err != nil {
-		return nil, err
+}
+
+// retryAfter is the per-process backoff asked for: Hydra's Retry-After
+// header when present, else an exponential fallback.
+func retryAfter(resp *http.Response, attempt int) time.Duration {
+	if v := resp.Header.Get("Retry-After"); v != "" {
+		if secs, err := strconv.Atoi(v); err == nil && secs >= 0 {
+			return time.Duration(secs) * time.Second
+		}
 	}
-	defer resp.Body.Close()
-	body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<22))
-	if err != nil {
-		return nil, err
+	if d := time.Duration(1<<uint(attempt)) * time.Second; d < 30*time.Second {
+		return d
 	}
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, nil // job unknown to Hydra: not an error, just no signal
+	return 30 * time.Second
+}
+
+// penalty delays every worker until the cooldown expires; 429s are shared so
+// the whole process backs off instead of each goroutine hammering on.
+func (h *Hydra) penalty(d time.Duration) {
+	h.cdMu.Lock()
+	if until := time.Now().Add(d); until.After(h.cdUntil) {
+		h.cdUntil = until
 	}
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("hydra %s: HTTP %d", path, resp.StatusCode)
+	h.cdMu.Unlock()
+}
+
+// waitCooldown sleeps through any active penalty and reports whether it waited.
+func (h *Hydra) waitCooldown() bool {
+	waited := false
+	for {
+		h.cdMu.Lock()
+		d := time.Until(h.cdUntil)
+		h.cdMu.Unlock()
+		if d <= 0 {
+			return waited
+		}
+		time.Sleep(d)
+		waited = true
 	}
-	return body, nil
 }
 
 // LatestBuild returns the job's most recent build, or nil if Hydra has no
