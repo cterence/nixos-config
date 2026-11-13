@@ -113,8 +113,8 @@
             # Configuration
             BUCKET="velero"
             PATH_PREFIX="v1/kopia/"
-            ENDPOINT_DOMAIN="garage-backup.snow-delta.ts.net"
-            ENDPOINT_URL="https://$ENDPOINT_DOMAIN"
+            ENDPOINT_DOMAIN="garage-backup.snow-delta.ts.net:3900"
+            ENDPOINT_URL="http://$ENDPOINT_DOMAIN"
             REGION="us-east-1"
             LOCAL_BASE_DIR="/mnt/elements/kopia-sync-garage/repositories"
             GARAGE_KEY_ID="$(${pkgs.coreutils}/bin/cat ${config.sops.secrets.garage-velero-access-key.path})"
@@ -149,6 +149,7 @@
                 ${pkgs.kopia}/bin/kopia repository connect s3 \
                     --bucket="$BUCKET" \
                     --password="$KOPIA_PASSWORD" \
+                    --disable-tls \
                     --region $REGION \
                     --access-key="$GARAGE_KEY_ID" \
                     --secret-access-key="$GARAGE_KEY" \
