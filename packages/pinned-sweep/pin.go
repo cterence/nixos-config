@@ -54,6 +54,11 @@ func cmdPin(args []string) int {
 			}
 		}
 	}
+	if verdict == nil && len(logs) == 0 {
+		// Nothing usable reached us; do not even evaluate the flake.
+		fmt.Fprintln(os.Stderr, "pinned-sweep: nothing to pin")
+		return 0
+	}
 
 	pins, err := loadPins(*flake)
 	if err != nil {
