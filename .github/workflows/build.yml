@@ -34,13 +34,8 @@ jobs:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           audience: ${{ secrets.TS_AUDIENCE }}
           tags: tag:github-actions
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
-        with:
-          determinate: false
-          extra-conf: |
-            extra-substituters = http://niks3.snow-delta.ts.net:5751
-            extra-trusted-public-keys = niks3.terence.cloud-1:NCPzN3IfN1Izs3bAqR+zsOkp1KHjtMvkMRqU7fL5//U=%
+      - uses: NixOS/nix-installer-action@v1
+      - uses: Mic92/hestia@v3
       - name: Setup niks3 cache
         uses: Mic92/niks3-action@f0743610fddd7d96239c78d9e457440fc15019e2 # v1.4.0
         with:
@@ -145,10 +140,8 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           # scope to all installation repos, not just this one (private inputs)
           owner: ${{ github.repository_owner }}
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
-        with:
-          determinate: false # plain Nix, no FlakeHub cache/login (see eval job)
+      - uses: NixOS/nix-installer-action@v1
+      - uses: Mic92/hestia@v3
       - name: Tailscale
         uses: tailscale/github-action@064b10558093f38325e838ddea35486bdc6b1d5c # v4
         with:
@@ -281,10 +274,8 @@ jobs:
           client-id: ${{ secrets.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
-        with:
-          determinate: false
+      - uses: NixOS/nix-installer-action@v1
+      - uses: Mic92/hestia@v3
       - name: Download build logs
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         continue-on-error: true
