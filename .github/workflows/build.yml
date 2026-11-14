@@ -94,6 +94,12 @@ jobs:
           - host: homelab2
             os: ubuntu-latest
             attr: nixosConfigurations.homelab2.config.system.build.toplevel
+          - host: homelab3
+            os: ubuntu-latest
+            attr: nixosConfigurations.homelab3.config.system.build.toplevel
+          - host: free-oracle-arm-1
+            os: ubuntu-26.04-arm
+            attr: nixosConfigurations.free-oracle-arm-1.config.system.build.toplevel
           - host: macbook # Change this to your MacBook's name
             os: macos-latest
             attr: darwinConfigurations.macbook.system # Adjust to nixosConfigurations if actually running NixOS on it
