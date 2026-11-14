@@ -59,6 +59,8 @@ jobs:
             .#pinned-sweep -- check \
             --closure stronghold=nixosConfigurations.stronghold.config.system.build.toplevel \
             --closure homelab2=nixosConfigurations.homelab2.config.system.build.toplevel \
+            --closure homelab3=nixosConfigurations.homelab3.config.system.build.toplevel \
+            --closure free-oracle-arm-1=nixosConfigurations.free-oracle-arm-1.config.system.build.toplevel:aarch64-linux \
             --closure macbook=darwinConfigurations.macbook.system \
             --json --report-out "$RUNNER_TEMP/gate-report.md" \
             > "$RUNNER_TEMP/gate-verdict.json"; then
