@@ -272,6 +272,27 @@ func drvPkg(drvPath string) (string, string) {
 	return splitPkgName(base)
 }
 
+type job struct {
+	pkg, version, drvPath string
+}
+
+// closureJobs turns drv paths into Hydra job candidates: deduplicated per
+// package, skipping pinned ones and versionless drvs (units, hm files,
+// activation scripts) that can only be Hydra 404s.
+func closureJobs(drvPaths []string, pinned map[string]Pin) []job {
+	var jobs []job
+	seen := map[string]bool{}
+	for _, drvPath := range drvPaths {
+		pkg, version := drvPkg(drvPath)
+		if pkg == "" || version == "" || seen[pkg] || pinned[pkg].Version != "" {
+			continue
+		}
+		seen[pkg] = true
+		jobs = append(jobs, job{pkg, version, drvPath})
+	}
+	return jobs
+}
+
 // checkClosure dry-runs a host closure and Hydra-checks every package the
 // host would actually build (cache miss). Pinned packages are skipped: their
 // Hydra job reflects current unstable, not the pinned version. Queries run
@@ -298,16 +319,10 @@ func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr string) (
 	type job struct {
 		pkg, version, drvPath string
 	}
-	var jobs []job
-	seen := map[string]bool{}
-	for _, drvPath := range parseDryRun(stderr.String()) {
-		pkg, version := drvPkg(drvPath)
-		if pkg == "" || seen[pkg] || pinned[pkg].Version != "" {
-			continue
-		}
-		seen[pkg] = true
-		jobs = append(jobs, job{pkg, version, drvPath})
-	}
+
+	// Versionless drvs (unit files, hm files, activation scripts) are never
+	// Hydra jobs — filtering them saves one wasted Hydra query each.
+	jobs := closureJobs(parseDryRun(stderr.String()), pinned)
 
 	// Parallel fan-out must stay bounded and back off on Hydra 429s.
 	const workers = 4
