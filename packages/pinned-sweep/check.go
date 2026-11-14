@@ -93,12 +93,29 @@ func cmdCheck(args []string) int {
 		fmt.Fprintln(os.Stderr, "pinned-sweep:", err)
 		return 1
 	}
-	for _, c := range closures {
-		cvs, err := checkClosure(hydra, *flake, pins, c.host, c.attr)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, "pinned-sweep:", err)
-			return 1
-		}
+	// Closures are independent dry-runs: run them in parallel, keep the
+	// verdict list in flag order whatever the completion order.
+	results := make([][]ClosureVerdict, len(closures))
+	var wg sync.WaitGroup
+	var mu sync.Mutex
+	var firstErr error
+	for i, c := range closures {
+		wg.Go(func() {
+			cvs, err := checkClosure(hydra, *flake, pins, c.host, c.attr, closureSystem(c.attr, c.system))
+			mu.Lock()
+			defer mu.Unlock()
+			if err != nil && firstErr == nil {
+				firstErr = err
+			}
+			results[i] = cvs
+		})
+	}
+	wg.Wait()
+	if firstErr != nil {
+		fmt.Fprintln(os.Stderr, "pinned-sweep:", firstErr)
+		return 1
+	}
+	for _, cvs := range results {
 		v.Closures = append(v.Closures, cvs...)
 	}
 
@@ -128,8 +145,9 @@ func cmdCheck(args []string) int {
 }
 
 type closureFlag struct {
-	host string
-	attr string
+	host   string
+	attr   string
+	system string // optional override, else inferred from the attr
 }
 
 type closureFlags []closureFlag
@@ -137,12 +155,26 @@ type closureFlags []closureFlag
 func (c *closureFlags) String() string { return "" }
 
 func (c *closureFlags) Set(s string) error {
-	host, attr, ok := strings.Cut(s, "=")
+	host, rest, ok := strings.Cut(s, "=")
 	if !ok {
-		return fmt.Errorf("--closure wants host=attr, got %q", s)
+		return fmt.Errorf("--closure wants host=attr[:system], got %q", s)
 	}
-	*c = append(*c, closureFlag{host, attr})
+	attr, system, _ := strings.Cut(rest, ":")
+	*c = append(*c, closureFlag{host, attr, system})
 	return nil
+}
+
+// closureSystem picks the Hydra platform for a closure attr: darwin attrs
+// gate on aarch64-darwin, nixos ones on x86_64-linux unless overridden (ARM
+// hosts pass :aarch64-linux explicitly).
+func closureSystem(attr, explicit string) string {
+	if explicit != "" {
+		return explicit
+	}
+	if strings.Contains(attr, "darwinConfigurations") {
+		return darwinPlatform
+	}
+	return linuxPlatform
 }
 
 // checkPins Hydra-checks every pin on the platform its class needs. A
@@ -272,15 +304,32 @@ func drvPkg(drvPath string) (string, string) {
 	return splitPkgName(base)
 }
 
+type job struct {
+	pkg, version, drvPath string
+}
+
+// closureJobs turns drv paths into Hydra job candidates: deduplicated per
+// package, skipping pinned ones and versionless drvs (units, hm files,
+// activation scripts) that can only be Hydra 404s.
+func closureJobs(drvPaths []string, pinned map[string]Pin) []job {
+	var jobs []job
+	seen := map[string]bool{}
+	for _, drvPath := range drvPaths {
+		pkg, version := drvPkg(drvPath)
+		if pkg == "" || version == "" || seen[pkg] || pinned[pkg].Version != "" {
+			continue
+		}
+		seen[pkg] = true
+		jobs = append(jobs, job{pkg, version, drvPath})
+	}
+	return jobs
+}
+
 // checkClosure dry-runs a host closure and Hydra-checks every package the
 // host would actually build (cache miss). Pinned packages are skipped: their
 // Hydra job reflects current unstable, not the pinned version. Queries run
 // bounded-parallel; LatestBuild memoizes repeats across closures.
-func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr string) ([]ClosureVerdict, error) {
-	system := linuxPlatform
-	if strings.Contains(attr, "darwinConfigurations") {
-		system = darwinPlatform
-	}
+func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr, system string) ([]ClosureVerdict, error) {
 	class := "nixos"
 	if system == darwinPlatform {
 		class = "darwin"
@@ -298,16 +347,10 @@ func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr string) (
 	type job struct {
 		pkg, version, drvPath string
 	}
-	var jobs []job
-	seen := map[string]bool{}
-	for _, drvPath := range parseDryRun(stderr.String()) {
-		pkg, version := drvPkg(drvPath)
-		if pkg == "" || seen[pkg] || pinned[pkg].Version != "" {
-			continue
-		}
-		seen[pkg] = true
-		jobs = append(jobs, job{pkg, version, drvPath})
-	}
+
+	// Versionless drvs (unit files, hm files, activation scripts) are never
+	// Hydra jobs — filtering them saves one wasted Hydra query each.
+	jobs := closureJobs(parseDryRun(stderr.String()), pinned)
 
 	// Parallel fan-out must stay bounded and back off on Hydra 429s.
 	const workers = 4
