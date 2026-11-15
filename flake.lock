@@ -136,11 +136,11 @@
     "cursor-plugins": {
       "flake": false,
       "locked": {
-        "lastModified": 1794609814,
-        "narHash": "sha256-w7Ia9fuCQg8txWPc2Ebg1Zif608Zuj/87QMp+WH1Qr8=",
+        "lastModified": 1794713777,
+        "narHash": "sha256-fXXJRZnQZlTfOemfJgC0zSMxsfcvxRhGo21T09/6xic=",
         "owner": "cursor",
         "repo": "plugins",
-        "rev": "3dbd22ff12742fb28c9700b9760baa29ed41dc13",
+        "rev": "bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7",
         "type": "github"
       },
       "original": {
@@ -491,11 +491,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794278858,
-        "narHash": "sha256-rkrJwLgLSHBnXfgoSKIDa+2LLGdTqynsV3GAxOTGhUU=",
+        "lastModified": 1794715309,
+        "narHash": "sha256-awkBBs5ctFKgEYjpNGpi3t/VqF589n5EWfdinRb2gNI=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "82ce401aa350502897c3f2e85f384d61cd3b0b6d",
+        "rev": "a1293da7dd8e497e08d26173f97e2976b36a31ea",
         "type": "github"
       },
       "original": {
@@ -513,11 +513,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1794591113,
-        "narHash": "sha256-9ENIDKYuZ/nTLaH6a6lGdvFMyfSOqrd/CLy/vdNQ8eM=",
+        "lastModified": 1794699908,
+        "narHash": "sha256-/Y9miPwLo1cuV6s9K0HeCMw5ju2pkVZyr/AOUqSh778=",
         "owner": "cterence",
         "repo": "homelab-gitops",
-        "rev": "84c6adc671c877f3a6338fe708e771e1f907f7fb",
+        "rev": "f044eeb1eff2e79cda5f02028c32c18d7422d8cd",
         "type": "github"
       },
       "original": {
@@ -588,11 +588,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1794634844,
-        "narHash": "sha256-8HlfWrlXejz26+kK2XQuNvhO6wpQ3g+JOONywNf8d1E=",
+        "lastModified": 1794721205,
+        "narHash": "sha256-2EnEIzGteNjjEcAuoM8aDLwVZpaoTthHHUnLeblChAg=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "ee05b5abb7c7f4af84a5ad5420f8a6e662774f2b",
+        "rev": "9178bae7d9e74074b08ffd0a77c4c1e376fa3179",
         "type": "github"
       },
       "original": {
@@ -1285,11 +1285,11 @@
     "spf13-go-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1793905847,
-        "narHash": "sha256-dk0DKY4sUpI4kMhHMV7LbzqsOs8wofsEQUyIwV6pasA=",
+        "lastModified": 1794691181,
+        "narHash": "sha256-F30PQR1a6SOv+qNHWDpKQ9V/D7Jk/jYBkn5f9aWtd80=",
         "owner": "spf13",
         "repo": "go-skills",
-        "rev": "c6ea8841a542d3a6f953e8b9b0ad596229163c1c",
+        "rev": "383c2f8916313b7f1260a6d15d92a468e4ecc89e",
         "type": "github"
       },
       "original": {
