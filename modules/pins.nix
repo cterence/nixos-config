@@ -4,13 +4,7 @@
 _:
 let
   pins = {
-    darwin = {
-      picard = {
-        version = "2.13.3";
-        tracker = "https://github.com/NixOS/nixpkgs/issues/572435";
-        reason = "3.0 fails to build on darwin";
-      };
-    };
+    darwin = { };
     nixos = { };
   };
 in
