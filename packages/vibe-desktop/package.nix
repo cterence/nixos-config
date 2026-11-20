@@ -1,11 +1,11 @@
 {
   lib,
-  stdenv,
+  stdenvNoCC,
   fetchurl,
-  _7zz,
+  undmg,
 }:
 
-stdenv.mkDerivation rec {
+stdenvNoCC.mkDerivation rec {
   pname = "vibe-desktop";
   version = "1.3.0";
 
@@ -14,21 +14,14 @@ stdenv.mkDerivation rec {
     hash = "sha256-G/JlBCFZiVmFk0lPw/kNNwxcU5+HOCTkHzdzc8vHzTY=";
   };
 
-  nativeBuildInputs = [ _7zz ];
+  nativeBuildInputs = [ undmg ];
 
   sourceRoot = ".";
-
-  # undmg does not support APFS; 7zz does.
-  unpackPhase = ''
-    runHook preUnpack
-    7zz x -snld $src
-    runHook postUnpack
-  '';
 
   installPhase = ''
     runHook preInstall
     mkdir -p $out/Applications
-    cp -a "Install Vibe by Mistral/Vibe.app" $out/Applications/
+    cp -a Vibe.app $out/Applications/
     runHook postInstall
   '';
 
