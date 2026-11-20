@@ -75,6 +75,8 @@
             src = "source $HOME/.zshrc";
             tf = "terraform";
             tg = "terragrunt";
+            v = "vibe";
+            vibe-desktop = "open /Applications/Vibe.app";
             watch = "watch ";
           };
 
