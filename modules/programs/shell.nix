@@ -76,8 +76,10 @@
             tf = "terraform";
             tg = "terragrunt";
             v = "vibe";
-            vibe-desktop = "open /Applications/Vibe.app";
             watch = "watch ";
+          }
+          // lib.optionalAttrs isDarwin {
+            vibe-desktop = "open ${pkgs.local.vibe-desktop}/Applications/Vibe.app";
           };
 
           localVariables = {
