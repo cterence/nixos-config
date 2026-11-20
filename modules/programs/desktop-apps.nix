@@ -66,6 +66,7 @@
               iina
               pkgs.local.art
               pkgs.local.todoist-electron
+              pkgs.local.vibe-desktop
             ];
           file = {
             ghostty = {
