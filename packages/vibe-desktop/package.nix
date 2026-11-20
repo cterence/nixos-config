@@ -29,6 +29,11 @@ stdenv.mkDerivation rec {
     runHook preInstall
     mkdir -p $out/Applications
     cp -a "Install Vibe by Mistral/Vibe.app" $out/Applications/
+
+    # 7zz drops xattrs (com.apple.macl etc.), which breaks the bundle seal and
+    # makes Gatekeeper report the app as damaged; re-sign ad-hoc. sigtool's
+    # codesign has no --deep, so use the system one.
+    /usr/bin/codesign --force --sign - --deep "$out/Applications/Vibe.app"
     runHook postInstall
   '';
 
