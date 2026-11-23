@@ -7,11 +7,11 @@
 
 stdenvNoCC.mkDerivation rec {
   pname = "vibe-desktop";
-  version = "1.3.0";
+  version = "1.5.0";
 
   src = fetchurl {
     url = "https://storage.googleapis.com/mistralai-ci-desktop-app/vibe-${version}.dmg";
-    hash = "sha256-G/JlBCFZiVmFk0lPw/kNNwxcU5+HOCTkHzdzc8vHzTY=";
+    hash = "sha256-kslQShQhPzgvfIUnJ9GSL3F3Pa3JNsCcq3UKAHtM0Z8=";
   };
 
   nativeBuildInputs = [ undmg ];

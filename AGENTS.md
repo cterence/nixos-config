@@ -198,12 +198,14 @@ Exposed as `.#<name>` and via `pkgs.local.<name>` overlay.
 ### Updating vibe-desktop
 
 ```bash
-nix run nixpkgs#nix-update -- vibe-desktop --flake --version <X.Y.Z>
+nix run github:Mic92/nix-update -- vibe-desktop --flake --version <X.Y.Z>
 ```
 
 The GCS bucket has no latest-version API, so `--version` is required.
-If the hash prefetch step fails (nix-update's temp flake copy can be GC'd
-mid-run), prefetch manually and edit the hash in
+Use the upstream nix-update, not `nixpkgs#nix-update`: 1.16.0 (pinned
+nixpkgs) fails with "No such file or directory" because it passes an
+unrealized store path to `getFlake`; 1.17.0+ works. If the hash prefetch
+still fails, prefetch manually and edit the hash in
 `packages/vibe-desktop/package.nix`:
 
 ```bash
