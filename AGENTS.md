@@ -191,8 +191,27 @@ Auto-discovered by `pkgs-by-name-for-flake-parts` from `packages/`:
 | `iterm2-ai-plugin` | darwin                | iTermAI 1.1 app                                                           |
 | `linear-linux`     | linux                 | Linear desktop app (dpkg + autoPatchelf)                                  |
 | `pinned-sweep`     | all                   | Go CLI sweeping multiverse pins against Hydra (`check` / `apply` / `pin`) |
+| `vibe-desktop`     | aarch64/x86_64-darwin | Mistral Vibe desktop app from the official GCS DMG (undmg)                |
 
 Exposed as `.#<name>` and via `pkgs.local.<name>` overlay.
+
+### Updating vibe-desktop
+
+```bash
+nix run github:Mic92/nix-update -- vibe-desktop --flake --version <X.Y.Z>
+```
+
+The GCS bucket has no latest-version API, so `--version` is required.
+Use the upstream nix-update, not `nixpkgs#nix-update`: 1.16.0 (pinned
+nixpkgs) fails with "No such file or directory" because it passes an
+unrealized store path to `getFlake`; 1.17.0+ works. If the hash prefetch
+still fails, prefetch manually and edit the hash in
+`packages/vibe-desktop/package.nix`:
+
+```bash
+nix store prefetch-file --json \
+  https://storage.googleapis.com/mistralai-ci-desktop-app/vibe-<X.Y.Z>.dmg
+```
 
 ## Adding a skill collection
 
