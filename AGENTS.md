@@ -195,18 +195,25 @@ Auto-discovered by `pkgs-by-name-for-flake-parts` from `packages/`:
 
 Exposed as `.#<name>` and via `pkgs.local.<name>` overlay.
 
-### Updating vibe-desktop
+### Updating custom packages
 
-```bash
-nix run github:Mic92/nix-update -- vibe-desktop --flake --version <X.Y.Z>
-```
+`.github/workflows/update-packages.yml` runs daily (00:30 UTC) and opens
+automerge PRs per platform with `nix-update --flake --build`:
 
-The GCS bucket has no latest-version API, so `--version` is required.
+| Package            | Version source                                            |
+|--------------------|----------------------------------------------------------|
+| `vibe-desktop`     | GCS bucket JSON list API (highest semver `vibe-X.Y.Z.dmg`) |
+| `todoist-electron` | `latest-mac.yml` electron-updater appcast                  |
+| `art`, `linear-linux` | GitHub releases (nix-update auto-detect)                |
+
+Skipped by CI (no version feed; bump manually with `--version <X.Y.Z>`):
+`iterm2-ai-plugin`, `pinned-sweep`.
+
 Use the upstream nix-update, not `nixpkgs#nix-update`: 1.16.0 (pinned
 nixpkgs) fails with "No such file or directory" because it passes an
 unrealized store path to `getFlake`; 1.17.0+ works. If the hash prefetch
 still fails, prefetch manually and edit the hash in
-`packages/vibe-desktop/package.nix`:
+`packages/<name>/package.nix`:
 
 ```bash
 nix store prefetch-file --json \

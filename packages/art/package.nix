@@ -6,17 +6,17 @@
 }:
 
 let
-  version = "1.26.8";
+  version = "1.26.11";
 
   sources = {
     aarch64-darwin = {
-      url = "https://github.com/artraweditor/ART/releases/download/${version}/ART-${version}_macOS-14.8_arm64.dmg";
-      hash = "sha256-g/gbFtr65mTPf3aV6GCw7rxvr0UDgpT/t3CQ7l8f/cU=";
-      dir = "ART-${version}_macOS-14.8_arm64";
+      url = "https://github.com/artraweditor/ART/releases/download/${version}/ART-${version}_macOS-15.8_arm64.dmg";
+      hash = "sha256-wO7CeUiLOQls6JMJGYPC2yBjvnGuaXU614pSlr0GiEk=";
+      dir = "ART-${version}_macOS-15.8_arm64";
     };
     x86_64-darwin = {
       url = "https://github.com/artraweditor/ART/releases/download/${version}/ART-${version}_macOS-15.7_x64.dmg";
-      hash = "sha256-A2WUZWjNxHLwQI5nUbdLidsZbiUuueoc38ka/X5PpZc=";
+      hash = "sha256-XH/qXDoajFnfrVcPSgRCE36warlhUgt3pTh6u6soCyQ=";
       dir = "ART-${version}_macOS-15.7_x64";
     };
   };
