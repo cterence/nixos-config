@@ -9,7 +9,7 @@
 
 let
   sources = {
-    version = "9.20.0";
+    version = "9.36.4";
     aarch64-darwin = {
       url = "https://electron-dl.todoist.net/mac/Todoist-darwin-9.20.0-arm64-latest.dmg";
       hash = "sha256-YAkabIQs3ereM0ja3LGIfTkcJyJBTWINtr4lUlr8V3w=";
