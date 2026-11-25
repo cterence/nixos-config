@@ -1,0 +1,142 @@
+# Daily nix-update sweep over the custom packages in packages/ that have an
+# upstream version feed. Each bump is built before it can leave this job, so
+# the automerge PR is verified.
+name: Update packages
+on:
+  workflow_dispatch:
+  schedule:
+    # After the lockfile/sweep workflows (00:00 UTC) to avoid overlap.
+    - cron: "30 0 * * *"
+
+jobs:
+  darwin:
+    name: Update darwin packages
+    runs-on: macos-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Generate Github app token
+        id: generate-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
+        with:
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+      - uses: NixOS/nix-installer-action@62c1943b776c509394b1e9212d6 # v1
+      - uses: Mic92/hestia@dfed9ced335d28978ba74e513939a10db1f71025 # v3
+      - name: Discover upstream versions
+        id: versions
+        run: |
+          # vibe-desktop: the GCS bucket has no latest tag; list objects and
+          # take the highest semver vibe-X.Y.Z.dmg.
+          vibe=""
+          token=""
+          while :; do
+            page=$(curl -fsSL "https://storage.googleapis.com/storage/v1/b/mistralai-ci-desktop-app/o?prefix=vibe-&maxResults=500${token:+&pageToken=$token}")
+            vibe="$vibe $(jq -r '.items[].name' <<<"$page" | sed -n 's/^vibe-\([0-9][0-9.]*\)\.dmg$/\1/p')"
+            token=$(jq -r '.nextPageToken // empty' <<<"$page")
+            [ -z "$token" ] && break
+          done
+          vibe=$(tr ' ' '\n' <<<"$vibe" | sort -V | tail -1)
+          todoist=$(curl -fsSL https://electron-dl.todoist.net/mac/latest-mac.yml | grep -m1 '^version:' | cut -d' ' -f2)
+          # Sanity-check what upstream served before it reaches package.nix.
+          for v in "$vibe" "$todoist"; do
+            grep -Eq '^[0-9]+(\.[0-9]+)+$' <<<"$v" || { echo "bad upstream version: $v"; exit 1; }
+          done
+          echo "vibe=$vibe" >> "$GITHUB_OUTPUT"
+          echo "todoist=$todoist" >> "$GITHUB_OUTPUT"
+      # One step per package: a failed update (e.g. renamed upstream assets)
+      # only reverts that package; it must not block the others.
+      - name: Update vibe-desktop
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          NIX_CONFIG: access-tokens = github.com=${{ steps.generate-token.outputs.token }}
+        run: |
+          nix run github:Mic92/nix-update -- vibe-desktop --flake --build --version "${{ steps.versions.outputs.vibe }}" \
+            || { git checkout -- packages/vibe-desktop/package.nix; echo "::warning title=vibe-desktop::nix update failed, package skipped"; }
+      - name: Update todoist-electron
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          NIX_CONFIG: access-tokens = github.com=${{ steps.generate-token.outputs.token }}
+        run: |
+          nix run github:Mic92/nix-update -- todoist-electron --flake --build --version "${{ steps.versions.outputs.todoist }}" \
+            || { git checkout -- packages/todoist-electron/package.nix; echo "::warning title=todoist-electron::nix update failed, package skipped"; }
+      - name: Update art
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          NIX_CONFIG: access-tokens = github.com=${{ steps.generate-token.outputs.token }}
+        run: |
+          # No --version: nix-update auto-detects the latest GitHub release.
+          nix run github:Mic92/nix-update -- art --flake --build \
+            || { git checkout -- packages/art/package.nix; echo "::warning title=art::nix update failed, package skipped"; }
+      - name: Commit and open PR
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        run: |
+          if [ -z "$(git diff --name-only)" ]; then
+            echo "All darwin packages are up to date."
+            exit 0
+          fi
+          git config user.name "nix-update[bot]"
+          git config user.email "nix-update[bot]@users.noreply.github.com"
+          git add packages/
+          git commit -m "chore(packages): update darwin apps"
+          gh auth setup-git
+          git push --force origin HEAD:update-packages-darwin
+          body=$(git show --stat --format="Automated nix-update run. Every bump was built (\`--build\`) on a macos runner before this PR was opened." HEAD)
+          if gh pr view update-packages-darwin >/dev/null 2>&1; then
+            gh pr edit update-packages-darwin --body "$body"
+          else
+            gh pr create --title "chore(packages): update darwin apps" --body "$body" --label automated --label automerge
+          fi
+
+  linux:
+    name: Update linux packages
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Generate Github app token
+        id: generate-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3
+        with:
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+      - uses: NixOS/nix-installer-action@62c1943b776c509394b1e9212d6 # v1
+      - uses: Mic92/hestia@dfed9ced335d28978ba74e513939a10db1f71025 # v3
+      - name: Update linear-linux
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
+          NIX_CONFIG: access-tokens = github.com=${{ steps.generate-token.outputs.token }}
+        run: |
+          nix run github:Mic92/nix-update -- linear-linux --flake --build \
+            || { git checkout -- packages/linear-linux/package.nix; echo "::warning title=linear-linux::nix update failed, package skipped"; }
+      - name: Commit and open PR
+        env:
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+        run: |
+          if [ -z "$(git diff --name-only)" ]; then
+            echo "linear-linux is up to date."
+            exit 0
+          fi
+          git config user.name "nix-update[bot]"
+          git config user.email "nix-update[bot]@users.noreply.github.com"
+          git add packages/
+          git commit -m "chore(packages): update linux apps"
+          gh auth setup-git
+          git push --force origin HEAD:update-packages-linux
+          body=$(git show --stat --format="Automated nix-update run. Every bump was built (\`--build\`) on an ubuntu runner before this PR was opened." HEAD)
+          if gh pr view update-packages-linux >/dev/null 2>&1; then
+            gh pr edit update-packages-linux --body "$body"
+          else
+            gh pr create --title "chore(packages): update linux apps" --body "$body" --label automated --label automerge
+          fi
