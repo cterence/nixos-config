@@ -87,7 +87,9 @@ jobs:
           git commit -m "chore(packages): update darwin apps"
           gh auth setup-git
           git push --force origin HEAD:update-packages-darwin
-          body=$(git show --stat --format="Automated nix-update run. Every bump was built (\`--build\`) on a macos runner before this PR was opened." HEAD)
+          body="Automated nix-update run. Every bump was built (\`--build\`) on a macos runner before this PR was opened.
+
+          $(git show --stat --format= HEAD)"
           if gh pr view update-packages-darwin >/dev/null 2>&1; then
             gh pr edit update-packages-darwin --body "$body"
           else
@@ -134,7 +136,9 @@ jobs:
           git commit -m "chore(packages): update linux apps"
           gh auth setup-git
           git push --force origin HEAD:update-packages-linux
-          body=$(git show --stat --format="Automated nix-update run. Every bump was built (\`--build\`) on an ubuntu runner before this PR was opened." HEAD)
+          body="Automated nix-update run. Every bump was built (\`--build\`) on an ubuntu runner before this PR was opened.
+
+          $(git show --stat --format= HEAD)"
           if gh pr view update-packages-linux >/dev/null 2>&1; then
             gh pr edit update-packages-linux --body "$body"
           else
