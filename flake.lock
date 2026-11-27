@@ -133,6 +133,21 @@
         "type": "github"
       }
     },
+    "crane": {
+      "locked": {
+        "lastModified": 1794962885,
+        "narHash": "sha256-zrweT2tXbcWiJMACOhOr2eYFJKVa6g59ouRaZ3BS5Do=",
+        "owner": "ipetkov",
+        "repo": "crane",
+        "rev": "95e62def851e9d650f0eab63cb4f59a3306e20bd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ipetkov",
+        "repo": "crane",
+        "type": "github"
+      }
+    },
     "cursor-plugins": {
       "flake": false,
       "locked": {
@@ -1224,6 +1239,7 @@
         "pre-commit-hooks": "pre-commit-hooks_2",
         "rea-skills": "rea-skills",
         "secrets": "secrets",
+        "sofka": "sofka",
         "sops-nix": "sops-nix",
         "spf13-cli-style-skills": "spf13-cli-style-skills",
         "spf13-go-skills": "spf13-go-skills",
@@ -1245,6 +1261,30 @@
         "type": "path"
       },
       "parent": []
+    },
+    "sofka": {
+      "inputs": {
+        "crane": "crane",
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1795812284,
+        "narHash": "sha256-kK+DQ4rZcR9QftUS+7mL65UWiIp84yJ+tOBHxyUThKQ=",
+        "owner": "nklmilojevic",
+        "repo": "sofka",
+        "rev": "d56c172bb2bf5da2d2cda2711c8374f96056f74e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nklmilojevic",
+        "repo": "sofka",
+        "type": "github"
+      }
     },
     "sops-nix": {
       "inputs": {

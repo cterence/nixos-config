@@ -6,6 +6,13 @@
 }:
 {
   flake-file.inputs = {
+    sofka = {
+      url = "github:nklmilojevic/sofka";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
+    };
     tailcat = {
       url = "github:tailscale/tailcat";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -176,7 +183,8 @@
               yq-go
               zip
             ]
-            ++ lib.optional pkgs.stdenv.hostPlatform.isLinux garage_2;
+            ++ lib.optional pkgs.stdenv.hostPlatform.isLinux garage_2
+            ++ [ inputs.sofka.packages.${pkgs.stdenv.hostPlatform.system}.default ];
         };
 
         programs = {

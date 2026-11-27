@@ -45,8 +45,8 @@ models = [
 [[mcp_servers]]
 name = "grafana"
 transport = "streamable-http"
-url = "https://gmcp.terence.cloud/mcp"
-disabled = false
+url = "https://mcp.terence.cloud/grafana/mcp"
+disabled = true
 
 [mcp_servers.auth]
 type = "static"
@@ -359,4 +359,7 @@ permission = "always"
 permission = "always"
 
 [tools.connector_grafana_bdd0_query_loki_logs]
+permission = "always"
+
+[tools.connector_grafana_bdd0_query_prometheus]
 permission = "always"

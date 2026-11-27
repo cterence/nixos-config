@@ -73,6 +73,7 @@
                 "nixos-rebuild switch --sudo --flake ~/nixos"
             } && cd -";
             src = "source $HOME/.zshrc";
+            sk = "sofka";
             tf = "terraform";
             tg = "terragrunt";
             v = "vibe";
