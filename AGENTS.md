@@ -239,7 +239,8 @@ vibe, edit `modules/programs/skills.nix`:
 
 Raw non-nix files in `dotfiles/` (flake=false, `path:./dotfiles`), sourced
 declaratively via `inputs.dotfiles` in modules. Used for: `.p10k.zsh`,
-ghostty config, `.XCompose`, k9s plugins, skopeo policy, vibe config.
+ghostty config, `.XCompose`, k9s plugins, skopeo policy, vibe config and
+hooks.
 
 ## Maintaining this file
 
