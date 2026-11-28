@@ -1,4 +1,4 @@
-active_model = "glm-5-3"
+active_model = "deepseek-v4-1-flash-1017"
 theme = "mistral-dark"
 disable_welcome_banner_animation = false
 autocopy_to_clipboard = true

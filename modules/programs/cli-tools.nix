@@ -294,6 +294,10 @@
             target = "${config.home.homeDirectory}/.config/k9s/plugins.yaml";
             source = "${inputs.dotfiles}/k9s-plugins.yaml";
           };
+          sofka-k9s-plugins = {
+            target = "${config.home.homeDirectory}/.config/sofka/conf.d/00-k9s.yaml";
+            source = "${inputs.dotfiles}/sofka/00-k9s.yaml";
+          };
           skopeo-config = {
             target = "${config.home.homeDirectory}/.config/containers/policy.json";
             source = "${inputs.dotfiles}/skopeo-policy.json";

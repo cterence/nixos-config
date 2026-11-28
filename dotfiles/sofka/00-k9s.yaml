@@ -1,0 +1,516 @@
+# sofka plugins imported from k9s (`sofka import k9s`), then made warning-free:
+# object names are passed as args and read as "$1", and plugin keys avoid
+# shadowing built-in keys.table actions (remaps noted per plugin).
+hide_header: true
+logs:
+  since: 300s
+plugins:
+- args:
+  - -c
+  - kubectl annotate externalsecrets.external-secrets.io --context "$3" -n "$2" "$1" force-sync=$(date +%s) --overwrite
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: R
+  mutating: false
+  name: refresh-external-secrets
+  output: background
+  scopes:
+  - externalsecrets
+- args:
+  - -c
+  - kubectl annotate pushsecrets.external-secrets.io --context "$3" -n "$2" "$1" force-sync=$(date +%s) --overwrite
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: R
+  mutating: false
+  name: refresh-push-secrets
+  output: background
+  scopes:
+  - pushsecrets
+- args:
+  - app
+  - sync
+  - $NAME
+  - --app-namespace
+  - $NAMESPACE
+  command: argocd
+  confirm: true
+  key: ctrl-s
+  mutating: false
+  name: argocd
+  output: background
+  scopes:
+  - application
+- args:
+  - -c
+  - kubectl annotate applications -n argocd "${1}" argocd.argoproj.io/refresh=hard
+  - sofka
+  - $NAME
+  command: bash
+  key: R
+  mutating: false
+  name: refresh-apps
+  scopes:
+  - apps
+- args:
+  - patch
+  - applications
+  - -n
+  - argocd
+  - $NAME
+  - --type=json
+  - '-p=[{"op":"replace", "path": "/spec/syncPolicy", "value": {}}]'
+  command: kubectl
+  key: ctrl-j
+  mutating: false
+  name: disable-auto-sync
+  scopes:
+  - apps
+- args:
+  - patch
+  - applications
+  - -n
+  - argocd
+  - $NAME
+  - --type=merge
+  - -p={"spec":{"syncPolicy":{"automated":{"prune":true,"selfHeal":true},"syncOptions":["ApplyOutOfSyncOnly=true","CreateNamespace=true","PruneLast=true","PrunePropagationPolicy=foreground"]}}}
+  command: kubectl
+  key: B
+  mutating: false
+  name: enable-auto-sync
+  scopes:
+  - apps
+- args:
+  - -c
+  - cmctl status certificate --context "$3" -n "$2" "$1" |& less
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: ctrl-t
+  mutating: false
+  name: cert-status
+  scopes:
+  - certificates
+- args:
+  - -c
+  - cmctl renew --context "$3" -n "$2" "$1" |& less
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: R
+  mutating: false
+  name: cert-renew
+  scopes:
+  - certificates
+- args:
+  - -c
+  - cmctl inspect secret --context "$3" -n "$2" "$1" |& less
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: ctrl-i
+  mutating: false
+  name: secret-inspect
+  scopes:
+  - secrets
+- args:
+  - -c
+  - >-
+    suspended=$(kubectl --context "$3" get helmreleases -n "$2" "$1" -o=custom-columns=TYPE:.spec.suspend | tail -1);
+    verb=$([ "$suspended" = "true" ] && echo "resume" || echo "suspend");
+    flux $verb helmrelease --context "$3" -n "$2" "$1" | less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  confirm: true
+  key: ctrl-t
+  mutating: false
+  name: toggle-helmrelease
+  scopes:
+  - helmreleases
+- args:
+  - -c
+  - >-
+    suspended=$(kubectl --context "$3" get kustomizations -n "$2" "$1" -o=custom-columns=TYPE:.spec.suspend | tail -1);
+    verb=$([ "$suspended" = "true" ] && echo "resume" || echo "suspend");
+    flux $verb kustomization --context "$3" -n "$2" "$1" | less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  confirm: true
+  key: ctrl-t
+  mutating: false
+  name: toggle-kustomization
+  scopes:
+  - kustomizations
+- args:
+  - -c
+  - flux reconcile source git --context "$3" -n "$2" "$1" | less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: R
+  mutating: false
+  name: reconcile-git
+  scopes:
+  - gitrepositories
+- args:
+  - -c
+  - flux reconcile helmrelease --context "$3" -n "$2" "$1" | less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: R
+  mutating: false
+  name: reconcile-hr
+  scopes:
+  - helmreleases
+- args:
+  - -c
+  - flux reconcile source helm --context "$3" -n "$2" "$1" | less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: Z
+  mutating: false
+  name: reconcile-helm-repo
+  scopes:
+  - helmrepositories
+- args:
+  - -c
+  - flux reconcile source oci --context "$3" -n "$2" "$1" | less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: Z
+  mutating: false
+  name: reconcile-oci-repo
+  scopes:
+  - ocirepositories
+- args:
+  - -c
+  - flux reconcile kustomization --context "$3" -n "$2" "$1" | less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: R
+  mutating: false
+  name: reconcile-ks
+  scopes:
+  - kustomizations
+- args:
+  - -c
+  - flux reconcile image repository --context "$3" -n "$2" "$1" | less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: sh
+  key: R
+  mutating: false
+  name: reconcile-ir
+  scopes:
+  - imagerepositories
+- args:
+  - -c
+  - flux reconcile image update --context "$3" -n "$2" "$1" | less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: sh
+  key: R
+  mutating: false
+  name: reconcile-iua
+  scopes:
+  - imageupdateautomations
+- args:
+  - -c
+  - >-
+    reconcile=$(kubectl --context "$3" get resourceset -n "$2" "$1" -o=custom-columns='TYPE:.metadata.annotations.fluxcd\.controlplane\.io/reconcile' | tail -1);
+    verb=$([ "$reconcile" = "disabled" ] && echo "resume" || echo "suspend");
+    flux-operator $verb rset --kube-context "$3" -n "$2" "$1" | less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: ctrl-t
+  mutating: false
+  name: toggle-rset
+  scopes:
+  - resourcesets
+- args:
+  - -c
+  - >-
+    reconcile=$(kubectl --context "$3" get resourcesetinputprovider -n "$2" "$1" -o=custom-columns='TYPE:.metadata.annotations.fluxcd\.controlplane\.io/reconcile' | tail -1);
+    verb=$([ "$reconcile" = "disabled" ] && echo "resume" || echo "suspend");
+    flux-operator $verb inputprovider --kube-context "$3" -n "$2" "$1" | less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: ctrl-t
+  mutating: false
+  name: toggle-inputprovider
+  scopes:
+  - resourcesetinputprovider
+- args:
+  - -c
+  - flux-operator reconcile rset --kube-context "$3" -n "$2" "$1" | less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: R
+  mutating: false
+  name: reconcile-rset
+  scopes:
+  - resourcesets
+- args:
+  - -c
+  - flux-operator reconcile inputprovider --kube-context "$3" -n "$2" "$1" | less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: R
+  mutating: false
+  name: reconcile-inputprovider
+  scopes:
+  - resources
+- args:
+  - -c
+  - flux-operator reconcile instance --kube-context "$3" -n "$2" "$1" | less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: R
+  mutating: false
+  name: reconcile-fluxinstance
+  scopes:
+  - fluxinstances
+- args:
+  - -c
+  - >-
+    if [ -n "$4" ]; then api_endpoint="/apis/$4/$5"; else api_endpoint="/api/$5"; fi;
+    api_resource=$(kubectl get --raw "$api_endpoint" | jq -r ".resources[] | select(.name==\"$6\")");
+    kind=$(echo $api_resource | jq -r '.kind');
+    namespace_arg=$(echo ${api_resource} | jq -r "if .namespaced == true then \"--namespace $2\" else \"\" end");
+    [ -n "$4" ] && api_version=$4/;
+    api_version=${api_version}$5;
+    flux trace --context "$3" --kind ${kind} --api-version ${api_version} ${namespace_arg} "$1" |& less -K
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  - $GROUP
+  - $VERSION
+  - $RESOURCE
+  command: bash
+  key: Q
+  mutating: false
+  name: trace
+- args:
+  - -c
+  - kubectl get --context "$1" --all-namespaces helmreleases.helm.toolkit.fluxcd.io -o json | jq -r '.items[] | select(.spec.suspend==true) | [.metadata.namespace,.metadata.name,.spec.suspend] | @tsv' | less -K
+  - sofka
+  - $CONTEXT
+  command: sh
+  key: U
+  mutating: false
+  name: get-suspended-helmreleases
+  scopes:
+  - helmrelease
+- args:
+  - -c
+  - kubectl get --context "$1" --all-namespaces kustomizations.kustomize.toolkit.fluxcd.io -o json | jq -r '.items[] | select(.spec.suspend==true) | [.metadata.name,.spec.suspend] | @tsv' | less -K
+  - sofka
+  - $CONTEXT
+  command: sh
+  key: U
+  mutating: false
+  name: get-suspended-kustomizations
+  scopes:
+  - kustomizations
+- args:
+  - stern
+  - --tail
+  - '50'
+  - $FILTER
+  - -n
+  - $NAMESPACE
+  - --context
+  - $CONTEXT
+  command: kubectl
+  key: ctrl-y
+  mutating: false
+  name: stern
+  scopes:
+  - pods
+- args:
+  - -c
+  - kubectl cnpg backup "$1" -n "$2" --context "$3" |& less -R
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  confirm: true
+  key: b
+  mutating: false
+  name: cnpg-backup
+  scopes:
+  - cluster
+- args:
+  - -c
+  - kubectl cnpg hibernate status "$1" -n "$2" --context "$3" |& less -R
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: h
+  mutating: false
+  name: cnpg-hibernate-status
+  scopes:
+  - cluster
+- args:
+  - -c
+  - kubectl cnpg hibernate on "$1" -n "$2" --context "$3" |& less -R
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  confirm: true
+  key: H
+  mutating: false
+  name: cnpg-hibernate
+  scopes:
+  - cluster
+- args:
+  - -c
+  - kubectl cnpg hibernate off "$1" -n "$1" --context "$2" |& less -R
+  - sofka
+  - $NAME
+  - $CONTEXT
+  command: bash
+  confirm: true
+  key: H
+  mutating: false
+  name: cnpg-hibernate-off
+  scopes:
+  - namespace
+- args:
+  - -c
+  - kubectl cnpg logs cluster "$1" -f -n "$2" --context "$3"
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: ctrl-l
+  mutating: false
+  name: cnpg-logs
+  scopes:
+  - cluster
+- args:
+  - -c
+  - kubectl cnpg psql "$1" -n "$2" --context "$3"
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: p
+  mutating: false
+  name: cnpg-psql
+  scopes:
+  - cluster
+- args:
+  - -c
+  - kubectl cnpg reload "$1" -n "$2" --context "$3" |& less -R
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  confirm: true
+  key: alt-r
+  mutating: false
+  name: cnpg-reload
+  scopes:
+  - cluster
+- args:
+  - -c
+  - kubectl cnpg restart "$1" -n "$2" --context "$3" |& less -R
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  confirm: true
+  key: R
+  mutating: false
+  name: cnpg-restart
+  scopes:
+  - cluster
+- args:
+  - -c
+  - kubectl cnpg status "$1" -n "$2" --context "$3" |& less -R
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: ctrl-s
+  mutating: false
+  name: cnpg-status
+  scopes:
+  - cluster
+- args:
+  - -c
+  - kubectl cnpg status "$1" -n "$2" --context "$3" --verbose |& less -R
+  - sofka
+  - $NAME
+  - $NAMESPACE
+  - $CONTEXT
+  command: bash
+  key: ctrl-t
+  mutating: false
+  name: cnpg-status-verbose
+  scopes:
+  - cluster
+plugins_merge: name
