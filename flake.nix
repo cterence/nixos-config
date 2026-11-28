@@ -4,6 +4,10 @@
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 
   inputs = {
+    asd-ste100-skills = {
+      url = "github:danyuchn/asd-ste100-skill";
+      flake = false;
+    };
     caveman-skills = {
       url = "github:JuliusBrussee/caveman";
       flake = false;
