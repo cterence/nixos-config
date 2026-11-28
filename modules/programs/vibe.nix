@@ -73,7 +73,9 @@
           inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.mistral-vibe
         ];
 
-        file = toHomeFile self.lib.skills;
+        file = toHomeFile self.lib.skills // {
+          ".vibe/hooks.toml".source = "${inputs.dotfiles}/vibe/hooks.toml";
+        };
       };
     };
 }

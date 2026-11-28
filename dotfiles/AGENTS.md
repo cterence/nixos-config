@@ -8,6 +8,7 @@
 - Use go skill when doing go work.
 - When using the grilling / grill-me skill, always ask questions with the question tool (ask_user_question).
 - After finishing coding work that left `ponytail:` deferred shortcuts, run the ponytail-debt skill to harvest them.
+- Use the asd-ste100 skill to rewrite agent-facing English (tool descriptions, error messages, prompts, status reports) when a misread has a real cost.
 
 ## User preferences
 

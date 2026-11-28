@@ -4,6 +4,10 @@
 }:
 {
   flake-file.inputs = {
+    asd-ste100-skills = {
+      flake = false;
+      url = "github:danyuchn/asd-ste100-skill";
+    };
     caveman-skills = {
       flake = false;
       url = "github:JuliusBrussee/caveman";
@@ -250,6 +254,11 @@
       source = "${inputs.trailofbits-skills}/plugins/github-triage/skills";
       agents = [ "vibe" ];
       flatten = true;
+    }
+    {
+      name = "asd-ste100";
+      source = "${inputs.asd-ste100-skills}";
+      agents = [ "vibe" ];
     }
   ];
 }

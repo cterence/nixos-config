@@ -23,6 +23,22 @@
         "type": "github"
       }
     },
+    "asd-ste100-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1795479590,
+        "narHash": "sha256-hlXt+J7lzOlmtjsEkz8MWL3FHPW4nUGdgzG1TgPlB/Q=",
+        "owner": "danyuchn",
+        "repo": "asd-ste100-skill",
+        "rev": "d714e5364e16825dbb6fe7194671d6a435e9fb3f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "danyuchn",
+        "repo": "asd-ste100-skill",
+        "type": "github"
+      }
+    },
     "brew-src": {
       "flake": false,
       "locked": {
@@ -1200,6 +1216,7 @@
     },
     "root": {
       "inputs": {
+        "asd-ste100-skills": "asd-ste100-skills",
         "caveman-skills": "caveman-skills",
         "comin": "comin",
         "cursor-plugins": "cursor-plugins",

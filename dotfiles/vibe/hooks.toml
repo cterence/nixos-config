@@ -1,0 +1,7 @@
+# Injected into the first message of every new conversation, so the
+# asd-ste100 rules are in context without a skill call.
+[[hooks]]
+name = "asd-ste100"
+type = "session_start"
+match = "re:startup|clear"
+command = "f=$HOME/.vibe/skills/asd-ste100/SKILL.md; [ -f \"$f\" ] || exit 0; jq -Rs '{hook_specific_output: {additional_context: .}}' \"$f\""
