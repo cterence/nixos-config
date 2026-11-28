@@ -24,6 +24,9 @@ func isTTY(f *os.File) bool {
 func renderReport(v Verdict, markdown bool) string {
 	var b strings.Builder
 	fmt.Fprintf(&b, "Pinned package sweep — %s\n\n", time.Now().Format("2006-01-02"))
+	for _, n := range v.Notes {
+		fmt.Fprintf(&b, "Warning: %s.\n\n", n)
+	}
 
 	if len(v.Pins) == 0 && len(v.Closures) == 0 {
 		b.WriteString("No pins and no closure checks to report.\n")

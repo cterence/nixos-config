@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -14,6 +15,13 @@ import (
 )
 
 const hydraBase = "https://hydra.nixos.org"
+
+// Hydra 429s above a handful of concurrent requests, so total in-flight
+// requests are capped process-wide rather than per closure.
+const (
+	hydraConcurrency = 4
+	maxRetryAfter    = 60 * time.Second
+)
 
 // Build statuses as returned by Hydra's buildstatus field.
 const (
@@ -61,6 +69,10 @@ type Hydra struct {
 	Base string
 	HTTP *http.Client
 
+	// ctx bounds every request; sem caps total in-flight requests.
+	ctx context.Context
+	sem chan struct{}
+
 	mu     sync.Mutex
 	latest map[string]*Build
 
@@ -69,7 +81,35 @@ type Hydra struct {
 }
 
 func NewHydra() *Hydra {
-	return &Hydra{Base: hydraBase, HTTP: &http.Client{Timeout: 30 * time.Second}, latest: map[string]*Build{}}
+	return &Hydra{
+		Base:   hydraBase,
+		HTTP:   &http.Client{Timeout: 30 * time.Second},
+		ctx:    context.Background(),
+		sem:    make(chan struct{}, hydraConcurrency),
+		latest: map[string]*Build{},
+	}
+}
+
+// once performs a single GET under the process-wide concurrency cap.
+func (h *Hydra) once(path string) (*http.Response, []byte, error) {
+	h.sem <- struct{}{}
+	defer func() { <-h.sem }()
+	req, err := http.NewRequestWithContext(h.ctx, http.MethodGet, h.Base+path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("User-Agent", "pinned-sweep/"+version+" (+https://github.com/cterence/nixos-config)")
+	resp, err := h.HTTP.Do(req)
+	if err != nil {
+		return nil, nil, err
+	}
+	defer resp.Body.Close()
+	body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<22))
+	if err != nil {
+		return nil, nil, err
+	}
+	return resp, body, nil
 }
 
 func (h *Hydra) get(path string) ([]byte, error) {
@@ -79,18 +119,10 @@ func (h *Hydra) get(path string) ([]byte, error) {
 			// Stagger workers waking from a shared penalty window.
 			time.Sleep(time.Duration(rand.IntN(250)) * time.Millisecond)
 		}
-		req, err := http.NewRequest(http.MethodGet, h.Base+path, nil)
-		if err != nil {
+		if err := h.ctx.Err(); err != nil {
 			return nil, err
 		}
-		req.Header.Set("Accept", "application/json")
-		req.Header.Set("User-Agent", "pinned-sweep/"+version+" (+https://github.com/cterence/nixos-config)")
-		resp, err := h.HTTP.Do(req)
-		if err != nil {
-			return nil, err
-		}
-		body, err := io.ReadAll(io.LimitReader(resp.Body, 1<<22))
-		resp.Body.Close()
+		resp, body, err := h.once(path)
 		if err != nil {
 			return nil, err
 		}
@@ -98,7 +130,13 @@ func (h *Hydra) get(path string) ([]byte, error) {
 		case resp.StatusCode == http.StatusNotFound:
 			return nil, nil // job unknown to Hydra: not an error, just no signal
 		case resp.StatusCode == http.StatusTooManyRequests && attempt < maxAttempts:
-			h.penalty(retryAfter(resp, attempt))
+			// Only an explicit Retry-After is worth freezing every worker
+			// for; otherwise back off this request alone.
+			if d, ok := retryAfter(resp); ok {
+				h.penalty(d)
+			} else {
+				time.Sleep(jitteredBackoff(attempt))
+			}
 		case resp.StatusCode != http.StatusOK:
 			return nil, fmt.Errorf("hydra %s: HTTP %d", path, resp.StatusCode)
 		default:
@@ -107,18 +145,24 @@ func (h *Hydra) get(path string) ([]byte, error) {
 	}
 }
 
-// retryAfter is the per-process backoff asked for: Hydra's Retry-After
-// header when present, else an exponential fallback.
-func retryAfter(resp *http.Response, attempt int) time.Duration {
-	if v := resp.Header.Get("Retry-After"); v != "" {
-		if secs, err := strconv.Atoi(v); err == nil && secs >= 0 {
-			return time.Duration(secs) * time.Second
-		}
+// retryAfter is the backoff the server explicitly asked for, if it named one.
+func retryAfter(resp *http.Response) (time.Duration, bool) {
+	v := resp.Header.Get("Retry-After")
+	if v == "" {
+		return 0, false
 	}
-	if d := time.Duration(1<<uint(attempt)) * time.Second; d < 30*time.Second {
-		return d
+	secs, err := strconv.Atoi(v)
+	if err != nil || secs < 0 {
+		return 0, false
 	}
-	return 30 * time.Second
+	return min(time.Duration(secs)*time.Second, maxRetryAfter), true
+}
+
+// jitteredBackoff spreads retries of a throttled request over 100ms-3.2s so
+// a burst of 429s does not resolve into a second burst.
+func jitteredBackoff(attempt int) time.Duration {
+	d := 200 * time.Millisecond << uint(min(attempt-1, 4))
+	return d/2 + time.Duration(rand.Int64N(int64(d)))
 }
 
 // penalty delays every worker until the cooldown expires; 429s are shared so

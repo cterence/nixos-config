@@ -49,7 +49,8 @@ jobs:
       # Fail fast before the build matrix spins up: if a package a host would
       # actually build (cache miss) is already failing on Hydra, the local
       # build will fail too. The daily sweep in update-flake.yml auto-pins
-      # such packages at their last good version.
+      # such packages at their last good version. The timeout keeps a slow
+      # Hydra from cancelling the whole eval job: the gate fails open.
       - name: Gate on Hydra-failed packages
         id: gate
         run: |
@@ -62,7 +63,7 @@ jobs:
             --closure homelab3=nixosConfigurations.homelab3.config.system.build.toplevel \
             --closure free-oracle-arm-1=nixosConfigurations.free-oracle-arm-1.config.system.build.toplevel:aarch64-linux \
             --closure macbook=darwinConfigurations.macbook.system \
-            --json --report-out "$RUNNER_TEMP/gate-report.md" \
+            --timeout 10m --json --report-out "$RUNNER_TEMP/gate-report.md" \
             > "$RUNNER_TEMP/gate-verdict.json"; then
             # Empty/partial redirect target: never let it reach the pin job.
             rm -f "$RUNNER_TEMP/gate-verdict.json"

@@ -25,6 +25,8 @@ Check flags:
   --flake <path>          flake to read pins from (default ".")
   --closure <host=attr>   also dry-run a host closure and Hydra-check the
                           packages it would build; repeatable; exit 1 on red
+  --timeout <duration>    stop gating after this long and gate on partial
+                          results instead of failing (0 = no limit)
   --build-unknown         fallback: nix-build pins Hydra has no data for,
                           from nixos-unstable, for the native system only
 
