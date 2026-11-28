@@ -27,7 +27,6 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
       - uses: NixOS/nix-installer-action@62c1943b776c509394b550f3f983adc14e9212d6 # v1
-      - uses: Mic92/hestia@dfed9ced335d28978ba74e513939a10db1f71025 # v3
       - name: Discover upstream versions
         id: versions
         run: |
@@ -114,7 +113,6 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
       - uses: NixOS/nix-installer-action@62c1943b776c509394b550f3f983adc14e9212d6 # v1
-      - uses: Mic92/hestia@dfed9ced335d28978ba74e513939a10db1f71025 # v3
       - name: Update linear-linux
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}

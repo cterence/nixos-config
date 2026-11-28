@@ -15,7 +15,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: NixOS/nix-installer-action@62c1943b776c509394b550f3f983adc14e9212d6 # v1
-      - uses: Mic92/hestia@dfed9ced335d28978ba74e513939a10db1f71025 # v3
       # https://status.nixos.org shows the last update time
       - name: Generate Github app token
         id: generate-token
@@ -98,7 +97,6 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
       - uses: NixOS/nix-installer-action@62c1943b776c509394b550f3f983adc14e9212d6 # v1
-      - uses: Mic92/hestia@dfed9ced335d28978ba74e513939a10db1f71025 # v3
       - name: Check pins against Hydra
         id: check
         run: |
@@ -136,7 +134,6 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
       - uses: NixOS/nix-installer-action@62c1943b776c509394b550f3f983adc14e9212d6 # v1
-      - uses: Mic92/hestia@dfed9ced335d28978ba74e513939a10db1f71025 # v3
       - name: Check pins with build fallback
         run: |
           nix run \
@@ -173,7 +170,6 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
       - uses: NixOS/nix-installer-action@62c1943b776c509394b550f3f983adc14e9212d6 # v1
-      - uses: Mic92/hestia@dfed9ced335d28978ba74e513939a10db1f71025 # v3
       - name: Download verdicts
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
         continue-on-error: true
