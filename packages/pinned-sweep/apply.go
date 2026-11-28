@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -31,7 +32,7 @@ func cmdApply(args []string) int {
 
 	var v Verdict
 	if len(verdicts) == 0 {
-		v, err = checkPins(hydra, pins, false)
+		v, err = checkPins(context.Background(), hydra, pins, false)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "pinned-sweep:", err)
 			return 1

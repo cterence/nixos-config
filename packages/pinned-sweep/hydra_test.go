@@ -1,9 +1,14 @@
 package main
 
 import (
+	"context"
+	"errors"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"sync"
 	"testing"
+	"time"
 )
 
 func TestLatestBuildMemoizes(t *testing.T) {
@@ -81,5 +86,83 @@ func TestLatestBuildFailsAfterPersistent429(t *testing.T) {
 
 	if _, err := h.LatestBuild("foo.x86_64-linux"); err == nil {
 		t.Fatal("LatestBuild succeeded against a persistent 429, want an error")
+	}
+}
+
+// Without a Retry-After header the fallback backoff must stay local to the
+// throttled request: a shared freeze is what turned a slow gate into a
+// 22-minute timeout.
+func Test429WithoutRetryAfterDoesNotFreezeEveryWorker(t *testing.T) {
+	hits := 0
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		hits++
+		if hits == 1 {
+			w.WriteHeader(http.StatusTooManyRequests)
+			return
+		}
+		w.Write([]byte(`{"id":1,"finished":1,"buildstatus":0,"nixname":"foo-1","job":"foo.x86_64-linux","drvpath":"/nix/store/xxx-foo-1.drv"}`))
+	}))
+	defer srv.Close()
+	h := NewHydra()
+	h.Base = srv.URL
+
+	if _, err := h.LatestBuild("foo.x86_64-linux"); err != nil {
+		t.Fatalf("LatestBuild after a bare 429: %v", err)
+	}
+	h.cdMu.Lock()
+	frozen := !h.cdUntil.IsZero()
+	h.cdMu.Unlock()
+	if frozen {
+		t.Fatal("a 429 without Retry-After set the shared cooldown, want a per-request backoff")
+	}
+}
+
+// Total in-flight requests are capped process-wide, not per closure: Hydra
+// 429s above a handful of concurrent queries.
+func TestConcurrencyCap(t *testing.T) {
+	var mu sync.Mutex
+	inFlight, peak := 0, 0
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		mu.Lock()
+		inFlight++
+		peak = max(peak, inFlight)
+		mu.Unlock()
+		time.Sleep(20 * time.Millisecond)
+		mu.Lock()
+		inFlight--
+		mu.Unlock()
+		w.Write([]byte(`{"id":1,"finished":1,"buildstatus":0,"nixname":"foo-1","job":"foo.x86_64-linux","drvpath":"/nix/store/xxx-foo-1.drv"}`))
+	}))
+	defer srv.Close()
+	h := NewHydra()
+	h.Base = srv.URL
+
+	var wg sync.WaitGroup
+	for i := range 3 * hydraConcurrency {
+		wg.Go(func() {
+			if _, err := h.LatestBuild(fmt.Sprintf("foo%d.x86_64-linux", i)); err != nil {
+				t.Errorf("LatestBuild: %v", err)
+			}
+		})
+	}
+	wg.Wait()
+	if peak > hydraConcurrency {
+		t.Fatalf("%d requests in flight, want at most %d", peak, hydraConcurrency)
+	}
+}
+
+func TestGetStopsOnContextDeadline(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`{}`))
+	}))
+	defer srv.Close()
+	h := NewHydra()
+	h.Base = srv.URL
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	h.ctx = ctx
+
+	if _, err := h.LatestBuild("foo.x86_64-linux"); !errors.Is(err, context.Canceled) {
+		t.Fatalf("LatestBuild with a cancelled context = %v, want context.Canceled", err)
 	}
 }

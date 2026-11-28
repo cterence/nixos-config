@@ -25,6 +25,22 @@ func TestClosureJobs(t *testing.T) {
 	}
 }
 
+func TestClosureJobsSkipsGranularCargoCrates(t *testing.T) {
+	drvPaths := []string{
+		"/nix/store/aaa-picard-3.0.2.drv",
+		"/nix/store/hhh-cargo-src-itoa-1.0.1.drv",       // granular cargo crate
+		"/nix/store/iii-cargo-package-tokio-1.44.0.drv", // granular cargo crate
+		"/nix/store/jjj-cargo-nextest-0.9.0.drv",        // a real cargo package
+	}
+	got := closureJobs(drvPaths, nil)
+	if len(got) != 2 {
+		t.Fatalf("closureJobs returned %d jobs (%v), want 2", len(got), got)
+	}
+	if got[0].pkg != "picard" || got[1].pkg != "cargo-nextest" {
+		t.Fatalf("closureJobs = %v, want picard and cargo-nextest", got)
+	}
+}
+
 func TestClosureFlagSet(t *testing.T) {
 	tests := []struct {
 		in                 string

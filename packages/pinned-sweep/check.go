@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -29,6 +30,7 @@ func platformFor(class string) string {
 type Verdict struct {
 	Pins     []PinVerdict     `json:"pins"`
 	Closures []ClosureVerdict `json:"closures,omitempty"`
+	Notes    []string         `json:"notes,omitempty"`
 }
 
 type PinVerdict struct {
@@ -75,20 +77,29 @@ func cmdCheck(args []string) int {
 	asJSON := fs.Bool("json", false, "print verdict JSON on stdout")
 	buildUnknown := fs.Bool("build-unknown", false, "nix-build pins Hydra has no data for, natively")
 	reportOut := fs.String("report-out", "", "also write the markdown report to this file")
+	timeout := fs.Duration("timeout", 0, "give up on the closure gate after this long and gate on what it has (0 = no limit)")
 	var closures closureFlags
 	fs.Var(&closures, "closure", "host=attr closure to gate, repeatable; exit 1 on red")
 	if err := fs.Parse(args); err != nil {
 		return 2
 	}
 
+	ctx := context.Background()
+	if *timeout > 0 {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, *timeout)
+		defer cancel()
+	}
+
 	hydra := NewHydra()
+	hydra.ctx = ctx
 	pins, err := loadPins(*flake)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "pinned-sweep:", err)
 		return 1
 	}
 
-	v, err := checkPins(hydra, pins, *buildUnknown)
+	v, err := checkPins(ctx, hydra, pins, *buildUnknown)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "pinned-sweep:", err)
 		return 1
@@ -101,7 +112,7 @@ func cmdCheck(args []string) int {
 	var firstErr error
 	for i, c := range closures {
 		wg.Go(func() {
-			cvs, err := checkClosure(hydra, *flake, pins, c.host, c.attr, closureSystem(c.attr, c.system))
+			cvs, err := checkClosure(ctx, hydra, *flake, pins, c.host, c.attr, closureSystem(c.attr, c.system))
 			mu.Lock()
 			defer mu.Unlock()
 			if err != nil && firstErr == nil {
@@ -111,7 +122,12 @@ func cmdCheck(args []string) int {
 		})
 	}
 	wg.Wait()
-	if firstErr != nil {
+	// Running out of time is not a verdict: report what was gated and let the
+	// build matrix run, rather than failing the whole eval job on a slow gate.
+	switch {
+	case firstErr != nil && ctx.Err() != nil:
+		v.Notes = append(v.Notes, fmt.Sprintf("closure gate stopped after %s; gated on partial results", *timeout))
+	case firstErr != nil:
 		fmt.Fprintln(os.Stderr, "pinned-sweep:", firstErr)
 		return 1
 	}
@@ -181,7 +197,7 @@ func closureSystem(attr, explicit string) string {
 // Hydra verdict only counts when the build's drvpath equals the derivation
 // current nixos-unstable would build — Hydra's "latest build" is often from
 // an older eval (deps changed since), and trusting it unpins broken packages.
-func checkPins(hydra *Hydra, pins PinSets, buildUnknown bool) (Verdict, error) {
+func checkPins(ctx context.Context, hydra *Hydra, pins PinSets, buildUnknown bool) (Verdict, error) {
 	v := Verdict{}
 	for _, class := range []struct {
 		name string
@@ -192,7 +208,7 @@ func checkPins(hydra *Hydra, pins PinSets, buildUnknown bool) (Verdict, error) {
 			pv := PinVerdict{Package: name, Class: class.name, Version: pin.Version, Tracker: pin.Tracker}
 			platform := platformFor(class.name)
 			job := name + "." + platform
-			currentDrv, err := currentDrvPath(name, platform)
+			currentDrv, err := currentDrvPath(ctx, name, platform)
 			if err != nil {
 				return v, err
 			}
@@ -206,7 +222,7 @@ func checkPins(hydra *Hydra, pins PinSets, buildUnknown bool) (Verdict, error) {
 			// native build of it.
 			if pv.Platforms[0].Status == "pending" || pv.Platforms[0].Status == "unknown" {
 				if buildUnknown {
-					if s, err := buildUnstable(name); err != nil {
+					if s, err := buildUnstable(ctx, name); err != nil {
 						fmt.Fprintf(os.Stderr, "build fallback for %s failed: %v\n", name, err)
 					} else if s {
 						pv.Platforms[0].Status = "success"
@@ -248,8 +264,8 @@ func verdictFor(job, platform string, b *Build, currentDrv string) PlatformVerdi
 
 // currentDrvPath evaluates the drv path current nixos-unstable builds for a
 // package on the given system.
-func currentDrvPath(pkg, system string) (string, error) {
-	out, err := exec.Command("nix", "eval", "--raw", "--system", system,
+func currentDrvPath(ctx context.Context, pkg, system string) (string, error) {
+	out, err := exec.CommandContext(ctx, "nix", "eval", "--raw", "--system", system,
 		"github:NixOS/nixpkgs/nixos-unstable#"+pkg+".drvPath").Output()
 	if err != nil {
 		return "", fmt.Errorf("nix eval %s.drvPath (%s): %w", pkg, system, err)
@@ -258,8 +274,8 @@ func currentDrvPath(pkg, system string) (string, error) {
 }
 
 // buildUnstable builds a package from current nixos-unstable natively.
-func buildUnstable(pkg string) (bool, error) {
-	cmd := exec.Command("nix", "build", "--impure", "--no-link",
+func buildUnstable(ctx context.Context, pkg string) (bool, error) {
+	cmd := exec.CommandContext(ctx, "nix", "build", "--impure", "--no-link",
 		"github:NixOS/nixpkgs/nixos-unstable#"+pkg)
 	cmd.Env = append(os.Environ(), "NIXPKGS_ALLOW_UNFREE=1")
 	cmd.Stdout = os.Stderr
@@ -306,30 +322,34 @@ func drvPkg(drvPath string) (string, string) {
 
 type job struct {
 	pkg, version, drvPath string
+	attr                  string // nixpkgs attribute, once resolved
 }
 
 // closureJobs turns drv paths into Hydra job candidates: deduplicated per
-// package, skipping pinned ones and versionless drvs (units, hm files,
-// activation scripts) that can only be Hydra 404s.
+// package, skipping pinned ones and drvs that can only be Hydra 404s —
+// versionless ones (units, hm files, activation scripts) and granular cargo
+// crates, which make up the bulk of a cache-missed closure.
 func closureJobs(drvPaths []string, pinned map[string]Pin) []job {
 	var jobs []job
 	seen := map[string]bool{}
 	for _, drvPath := range drvPaths {
 		pkg, version := drvPkg(drvPath)
-		if pkg == "" || version == "" || seen[pkg] || pinned[pkg].Version != "" {
+		if pkg == "" || version == "" || seen[pkg] || pinned[pkg].Version != "" || isGranularCargoDrv(pkg) {
 			continue
 		}
 		seen[pkg] = true
-		jobs = append(jobs, job{pkg, version, drvPath})
+		jobs = append(jobs, job{pkg, version, drvPath, ""})
 	}
 	return jobs
 }
 
 // checkClosure dry-runs a host closure and Hydra-checks every package the
-// host would actually build (cache miss). Pinned packages are skipped: their
-// Hydra job reflects current unstable, not the pinned version. Queries run
-// bounded-parallel; LatestBuild memoizes repeats across closures.
-func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr, system string) ([]ClosureVerdict, error) {
+// host would actually build (cache miss). Only packages with a matching
+// nixpkgs attribute are queried: Hydra job names are attribute names, so a
+// drv without one (sub-derivations, local packages) can only be a 404.
+// Pinned packages are skipped: their Hydra job reflects current unstable,
+// not the pinned version. LatestBuild memoizes repeats across closures.
+func checkClosure(ctx context.Context, hydra *Hydra, flake string, pins PinSets, host, attr, system string) ([]ClosureVerdict, error) {
 	class := "nixos"
 	if system == darwinPlatform {
 		class = "darwin"
@@ -337,33 +357,36 @@ func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr, system s
 	pinned := pins.Class(class)
 
 	fmt.Fprintf(os.Stderr, "dry-running closure %s (%s)\n", host, attr)
-	cmd := exec.Command("nix", "build", "--dry-run", "--no-link", flake+"#"+attr)
+	cmd := exec.CommandContext(ctx, "nix", "build", "--dry-run", "--no-link", flake+"#"+attr)
 	var stderr strings.Builder
 	cmd.Stderr = &stderr
 	if err := cmd.Run(); err != nil {
 		return nil, fmt.Errorf("dry-run %s: %w", attr, err)
 	}
 
-	type job struct {
-		pkg, version, drvPath string
-	}
-
 	// Versionless drvs (unit files, hm files, activation scripts) are never
 	// Hydra jobs — filtering them saves one wasted Hydra query each.
 	jobs := closureJobs(parseDryRun(stderr.String()), pinned)
+	resolveJobAttrs(ctx, system, jobs)
 
-	// Parallel fan-out must stay bounded and back off on Hydra 429s.
-	const workers = 4
-	sem := make(chan struct{}, workers)
+	fmt.Fprintf(os.Stderr, "gating %d closure packages of %s on Hydra\n", len(jobs), host)
+
+	// Total Hydra concurrency is bounded inside Hydra (hydraConcurrency);
+	// fan out freely and let it queue.
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 	var firstErr error
 	results := make([]ClosureVerdict, len(jobs))
 	for i, j := range jobs {
-		sem <- struct{}{}
 		wg.Go(func() {
-			defer func() { <-sem }()
-			jobName := j.pkg + "." + system
+			if j.attr == "" {
+				fmt.Fprintf(os.Stderr, "%s ... skipped (no nixpkgs attribute)\n", j.pkg)
+				mu.Lock()
+				results[i] = ClosureVerdict{Host: host, System: system, Package: j.pkg, Version: j.version, DrvPath: j.drvPath, Status: "skipped"}
+				mu.Unlock()
+				return
+			}
+			jobName := j.attr + "." + system
 			b, err := hydra.LatestBuild(jobName)
 			if err != nil {
 				mu.Lock()
@@ -376,7 +399,7 @@ func checkClosure(hydra *Hydra, flake string, pins PinSets, host, attr, system s
 			cv := ClosureVerdict{Host: host, System: system, Package: j.pkg, Version: j.version, DrvPath: j.drvPath, Status: "skipped"}
 			switch {
 			case b == nil:
-				// Not a Hydra job (local package, scoped attr): no signal, skip.
+				// Hydra has no such job on this platform: no signal, skip.
 			case b.DrvPath != "" && b.DrvPath != j.drvPath:
 				// Hydra's verdict is for a different derivation (older eval or
 				// different nixpkgs snapshot): no signal for this drv.
